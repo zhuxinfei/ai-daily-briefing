@@ -1,7 +1,14 @@
 name: Test Dispatch
 
 on:
+  schedule:
+    - cron: '0 22 * * *'
   workflow_dispatch:
+    inputs:
+      run_date:
+        description: "Test date"
+        required: false
+        type: string
 
 jobs:
   test:
