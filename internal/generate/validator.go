@@ -135,44 +135,35 @@ func hasSequentialNumbering(text string) bool {
 	return true
 }
 
-// ValidateInsight checks that the LLM output contains both sections, that
-// each section has the expected bullet count, and that no banned pattern
-// appears. Mirrors validateInsightOutput() in slack-notify.js (rows 104-132).
+// ValidateInsight checks that the LLM output contains industry insight section,
+// the expected bullet count, and that no banned pattern appears.
 //
-// Beyond the JS port it also runs two v1.0.1 checks:
+// Also runs two v1.0.1 checks:
 //   - annotation coverage (jargon without nearby 括号注释) → Warnings
 //   - mermaid block presence → Warnings
 //
 // 注释覆盖保持软要求：它很重要，但不能因为个别名词漏注释就让整期日报
-// 直接失败，避免“好内容因局部表述问题整期报废”。
+// 直接失败，避免”好内容因局部表述问题整期报废”。
 func ValidateInsight(raw string) ValidationResult {
 	industryRaw, ourRaw := ParseInsightSections(raw)
 
 	var reasons []string
 
-	if industryRaw == "" || ourRaw == "" {
-		reasons = append(reasons, "缺少\"行业洞察\"或\"对我们的启发\"模块")
+	if industryRaw == “” {
+		reasons = append(reasons, “缺少\”行业洞察\”模块”)
 	}
 
 	industryCount := countNumberedItems(industryRaw)
-	ourCount := countNumberedItems(ourRaw)
 
-	if industryCount < 3 || industryCount > 4 {
+	if industryCount < 2 || industryCount > 5 {
 		reasons = append(reasons,
-			"行业洞察条数异常（当前 "+itoa(industryCount)+" 条）")
-	}
-	if ourCount < 2 || ourCount > 3 {
-		reasons = append(reasons,
-			"对我们的启发条数异常（当前 "+itoa(ourCount)+" 条）")
+			“行业洞察条数异常（当前 “+itoa(industryCount)+” 条）”)
 	}
 	if !hasSequentialNumbering(industryRaw) {
-		reasons = append(reasons, "行业洞察编号不连续或未从 1 开始")
+		reasons = append(reasons, “行业洞察编号不连续或未从 1 开始”)
 	}
-	if !hasSequentialNumbering(ourRaw) {
-		reasons = append(reasons, "对我们的启发编号不连续或未从 1 开始")
-	}
-	if industryCount > 0 && strings.Count(industryRaw, "【洞察】") < industryCount {
-		reasons = append(reasons, "行业洞察缺少对应的【洞察】判断行")
+	if industryCount > 0 && strings.Count(industryRaw, “【洞察】”) < industryCount {
+		reasons = append(reasons, “行业洞察缺少对应的【洞察】判断行”)
 	}
 
 	for _, bp := range bannedPatterns {
@@ -184,7 +175,7 @@ func ValidateInsight(raw string) ValidationResult {
 	warnings := checkAnnotationCoverage(raw)
 
 	if !mermaidBlockRegex.MatchString(raw) {
-		warnings = append(warnings, "missing mermaid relationship diagram")
+		warnings = append(warnings, “missing mermaid relationship diagram”)
 	}
 
 	return ValidationResult{

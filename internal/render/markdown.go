@@ -136,8 +136,8 @@ func RenderMarkdown(issue *store.Issue, items []*store.IssueItem, insight *store
 	}
 
 	industryMD := strings.TrimSpace(insight.IndustryMD)
-	ourMD := strings.TrimSpace(insight.OurMD)
-	if industryMD == "" && ourMD == "" {
+	industryMD := strings.TrimSpace(insight.IndustryMD)
+	if industryMD == "" {
 		return b.String()
 	}
 
@@ -145,12 +145,11 @@ func RenderMarkdown(issue *store.Issue, items []*store.IssueItem, insight *store
 
 	// v1.0.1: extract mermaid diagram from insight and render it BEFORE
 	// the analysis sections (reader sees the map, then reads the analysis).
-	combined := industryMD + "\n" + ourMD
+	combined := industryMD
 	if mermaidBlock := mermaidBlockRe.FindString(combined); mermaidBlock != "" {
 		b.WriteString(mermaidBlock)
 		b.WriteString("\n\n")
 		industryMD = strings.TrimSpace(StripMermaidBlocks(industryMD))
-		ourMD = strings.TrimSpace(StripMermaidBlocks(ourMD))
 	}
 
 	if industryMD != "" {
@@ -158,16 +157,6 @@ func RenderMarkdown(issue *store.Issue, items []*store.IssueItem, insight *store
 		fmt.Fprintf(&b, "### 📊 行业洞察（今日 %d 条）\n\n", industryN)
 		b.WriteString(industryMD)
 		if !strings.HasSuffix(industryMD, "\n") {
-			b.WriteString("\n")
-		}
-		b.WriteString("\n")
-	}
-
-	if ourMD != "" {
-		ourN := countNumberedLines(ourMD)
-		fmt.Fprintf(&b, "### 💭 对我们的启发（今日 %d 条）\n\n", ourN)
-		b.WriteString(ourMD)
-		if !strings.HasSuffix(ourMD, "\n") {
 			b.WriteString("\n")
 		}
 		b.WriteString("\n")
