@@ -23,7 +23,7 @@ window:
   # is 24h. extended_hours is only a safety valve if the 24h fetch
   # produced too few items after history dedup.
   lookback_hours: 24
-  extended_hours: 48
+  extended_hours: 0
 
 # LLM client config. All values can be overridden via environment variables
 # listed in the *_env fields.
