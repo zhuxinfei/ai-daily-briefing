@@ -232,8 +232,6 @@ func (g *Gate) Check(
 			if r.IndustryBullets < g.cfg.MinIndustryBullets || r.IndustryBullets > g.cfg.MaxIndustryBullets {
 				r.Warnings = append(r.Warnings, "行业洞察条数超出范围")
 			}
-				r.Warnings = append(r.Warnings, "启发条数超出范围")
-			}
 		}
 		if r.SourceDomainCount < g.cfg.MinSourceDomains {
 			r.Warnings = append(r.Warnings, "源多样性不足")
