@@ -1,0 +1,31 @@
+[Unit]
+Description=briefing-v3 daily AI briefing run (orchestrator-driven, v1.0.1)
+After=network.target
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/root/briefing-v3
+EnvironmentFile=/root/briefing-v3/config/secrets.env
+# v1.0.1 Phase 4.5 (W12): Hugo modules refresh 需要 go 工具链 (go.sum 校验 /
+# theme dep 下载). systemd 默认 PATH 不含 /usr/local/go/bin, cache 失效时
+# hugo build 会 "binary go not found" 失败. 日报 hugo cache 今早还热没中招,
+# 但周报 smoke 已经踩到, 两边都加保险.
+Environment=PATH=/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# 仅保留 cloudflared hostname 同步 (确保 Slack 按钮 URL 指向最新 tunnel).
+# briefing-daily-reset-dedup.sh 的调用已经移到 orchestrator 内部, 紧挨着真正
+# 开始 pipeline 的那一刻, 避免 pre-flight 失败时白清空 dedup 文件.
+ExecStartPre=/usr/local/bin/cloudflared-hostname-sync.sh
+# orchestrator 内置 D4 重试公式 (06:00/06:20/06:45/07:15/08:00/09:00) +
+# pre-flight + LLM ping + D3 自愈 + 09:15 紧急告警. 替代了 briefing-retry-{1,2,3}.timer.
+ExecStart=/usr/local/bin/briefing-orchestrator.sh
+# post-run 已移入 orchestrator 内部 (仅 pipeline 成功时执行)
+StandardOutput=journal
+StandardError=journal
+# 总预算 06:00 -> 09:15 = 195min (3.25h), 加 buffer 到 3.5h (12600s).
+# orchestrator 自己在 09:15 前已 exit, 这里只是兜底防它卡死.
+TimeoutStartSec=12600
+
+# 注意: 原版的 OnFailure=briefing-alert.service briefing-retry-1.timer 已删除.
+# 告警和重试现在由 orchestrator.sh 内部处理 (exit 4/5 会主动 POST 测试频道
+# 告警, exit 6 表示已发告警并进入 needs_human, systemd 不要 restart).

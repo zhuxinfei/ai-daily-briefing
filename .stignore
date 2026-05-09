@@ -1,0 +1,31 @@
+# Syncthing ignore for briefing-v3 claude-4 to Mac mirror (send-only).
+# 目标: Mac 拿到最小灾备集合 (code + DB + state), 排除大 / regenerable / host-local.
+
+# host-specific
+bin
+/briefing
+
+# git history: 代码已在 GitHub, .git 太大太频繁变
+.git
+
+# Go 下载缓存
+vendor
+node_modules
+
+# SQLite WAL / SHM (毫秒级变动, 同步会撕裂 DB)
+data/briefing.db-wal
+data/briefing.db-shm
+
+# 日志 / 运行锁
+logs
+*.pid
+*.lock
+
+# Claude / IDE 状态
+.claude
+.vscode
+.idea
+docs/chat
+
+# 如不想把 secrets 同步到 Mac, 取消下一行注释:
+# config/secrets.env

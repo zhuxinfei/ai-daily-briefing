@@ -1,0 +1,38 @@
+[Unit]
+Description=briefing-v3 weekly AI report run (v1.0.1 Phase 4.5 W1)
+After=network.target
+# v1.0.1 Phase 4.5 (W2): StartLimit* 必须放 [Unit] 而非 [Service], 否则
+# systemd 静默忽略 (坑). 失败后 15min 再 retry, 最多 3 次, 1h 滑动窗口.
+StartLimitBurst=3
+StartLimitIntervalSec=3600
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/root/briefing-v3
+EnvironmentFile=/root/briefing-v3/config/secrets.env
+# v1.0.1 Phase 4.5 (W12): Hugo modules 可能需要 go 工具链 (subprocess
+# 下载/校验 go.sum); systemd 默认 PATH 无 /usr/local/go/bin, 周报 smoke 时
+# 暴露过 "failed to download modules: binary go not found". 显式加上.
+Environment=PATH=/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# 2026-04-27: 周报与日报架构对齐, 走 dry-run-style + promote 工作流.
+# BRIEFING_WEEKLY_NO_PUBLISH=1 → weekly 命令跳过 Slack/飞书推送, 仅生成
+# LLM + 写 Hugo + 存 snapshot. 真正的 Slack/飞书 prod 推送由
+# ExecStartPost 在 GitHub Pages 部署完成后用 promote-weekly +
+# promote-weekly-feishu 重放完成. 避免"推送发出时 Pages 还没好链接 404".
+Environment=BRIEFING_WEEKLY_NO_PUBLISH=1
+ExecStart=/root/briefing-v3/bin/briefing weekly --target test
+# push site → wait pages → promote-weekly + promote-weekly-feishu →
+# push state. 跟 briefing-post-run.sh (daily) 时序一致.
+ExecStartPost=/usr/local/bin/briefing-weekly-post-run.sh
+StandardOutput=journal
+StandardError=journal
+# 30 min 超时, 周报 LLM 比日报快 (rank/compose 等都省了),
+# 实测 generate+hugo+push 总共 ~3-5 min.
+TimeoutStartSec=1800
+# v1.0.1 Phase 4.5 (W2): [Service] 只放 Restart*; StartLimit* 上移到 [Unit].
+Restart=on-failure
+RestartSec=15min
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,430 @@
+# briefing-v3 AI domain config
+# Sources verified on 2026-04-10. 21 sources covering:
+#   - English AI news (smol.ai / the-decoder / techcrunch / openai)
+#   - AI researcher blogs (Mollick / Willison / J.Clark / Raschka / L.Weng)
+#   - Chinese tech blogs (baoyu / ruanyifeng)
+#   - Papers (arxiv cs.AI / cs.LG / HuggingFace)
+#   - Code (ossinsight GitHub trending)
+#   - Community (HN top / Reddit r/ML + r/LocalLLaMA)
+#   - Chinese news fallback (Google News RSS)
+#   - Anthropic (HTML scraping, no public RSS)
+
+domain:
+  id: ai
+  name: "AI 行业早报"
+  title_template: "AI资讯日报 {{.DateZH}}"
+  subtitle: "briefing-v3 · 每日早读 · 全网深度聚合"
+  timezone: "Asia/Shanghai"
+
+# Time window for item filtering. Items older than this are dropped during
+# dedup+filter stage even if the source returns them.
+window:
+  # Day-1 hard requirement: briefing is a DAILY report. Primary window
+  # is 24h. extended_hours is only a safety valve if the 24h fetch
+  # produced too few items after history dedup.
+  lookback_hours: 24
+  extended_hours: 48
+
+# LLM client config. All values can be overridden via environment variables
+# listed in the *_env fields.
+llm:
+  base_url_env: OPENAI_BASE_URL
+  api_key_env: OPENAI_API_KEY
+  model_env: OPENAI_MODEL
+  default_base_url: "http://64.186.239.99:8080"
+  default_model: "gpt-5.4"
+  temperature: 0.3
+  max_tokens: 2000
+  timeout_seconds: 120
+  max_retries: 5
+  # v1.0.1 Bug J 修复: LLM 502 分钟级退避序列 (秒)。
+  # 旧策略 1/2/4/8s 共 15s 对上游分钟级抖动无效 (2026-04-14 故障证据)。
+  # 数组长度决定最大重试次数, 每个元素是该次重试前等待的秒数。
+  retry_backoff_seconds: [10, 30, 90, 180, 300]
+
+# Rank-stage knobs. v1.0.0 introduces per-category quotas so a
+# single explosive source (e.g. arxiv with 300 papers/day) cannot
+# starve other sections downstream. Rank first sorts by LLM score
+# then caps each source category at the quota below before passing
+# the top N to classify.
+rank:
+  # v1.0.1 Phase 4.1: 提高 news/blog 配额给 priority weighting 腾位置.
+  # news 从 8→12 (16+ news 源争 8 位挤不下), blog 从 6→10 (加了 4 个 substack).
+  # paper/project/community 保持不变 (arxiv 不能再挤 res).
+  per_category_quota:
+    news: 12
+    blog: 10
+    paper: 8
+    project: 6
+    community: 6
+
+# Hard quality gate. Pipeline fails loudly if any of these are not met.
+# v1.0.0: the gate is tri-state — pass / warn / fail. Only hard-fail
+# conditions (items=0, no sections, insight missing, every compose
+# section failed) block the test-channel publish. Soft-warn conditions
+# (counters below min) still publish with a "质量待审" marker.
+gate:
+  # v1.0.0+: 用户原则 "内容要扎实新鲜有影响力, 数量略少没关系".
+  # 阈值放宽: 10 条高质量 > 28 条水文. 3 sections OK (不强求 5).
+  # 真正 fail 的条件只有: items=0 / insight 完全没有 / 全 section 失败.
+  min_items: 10                # 20→10, 14 条也能 pass
+  min_sections_with_content: 3 # 4→3, social 一个 502 不应该 block
+  min_insight_chars: 100       # 150→100, 宽松一些
+  # 洞察/启发条数不固定, 有多少输出多少, 不硬凑 (用户原话).
+  # min 降到 1 防 gate 误 fail, max 放到 8 不限制 LLM.
+  min_industry_bullets: 1
+  max_industry_bullets: 8
+  min_takeaway_bullets: 1
+  max_takeaway_bullets: 8
+  min_source_domains: 3        # 5→3, 高质量内容不一定来自 5 个不同源
+
+# Slack distribution. test channel is the default/safe target.
+# prod channel is only written when gate passes AND target=auto.
+slack:
+  test_webhook_env: SLACK_TEST_WEBHOOK
+  prod_webhook_env: SLACK_PROD_WEBHOOK
+  default_target: test          # test | auto
+  enable_alert_on_failure: true # failure posts to test channel
+
+# Headline cover image. Generated once per issue by scripts/gen_headline.py.
+image:
+  enabled: true
+  width: 1200
+  height: 630
+  output_dir: data/images
+  python_bin: python3
+  generator_script: scripts/gen_headline.py
+  font_bold: /usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc
+  font_regular: /usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc
+
+# Compose / render section ordering (matches upstream ai.hubtoday.app).
+sections:
+  - id: product_update
+    title: "产品与功能更新"
+    min_items: 3
+    max_items: 8
+  - id: research
+    title: "前沿研究"
+    min_items: 3
+    max_items: 8
+  - id: industry
+    title: "行业展望与社会影响"
+    min_items: 3
+    max_items: 8
+  - id: opensource
+    title: "开源TOP项目"
+    min_items: 2
+    max_items: 6
+  - id: social
+    title: "社媒分享"
+    min_items: 2
+    max_items: 6
+
+# Sources. Each entry maps to an ingest adapter via `type` field.
+# Adapters defined in internal/ingest/*.go via init() registration.
+#
+# type values:
+#   rss             - generic RSS/Atom feed (rss.go)
+#   hn_top          - HackerNews firebase API (hn.go)
+#   reddit_json     - Reddit listing JSON API (reddit.go)
+#   huggingface_papers - HF daily papers HTML (hf_papers.go)
+#   anthropic_news  - anthropic.com/news HTML (anthropic.go)
+#   google_news     - Google News RSS search (gnews.go)
+#   ossinsight      - ossinsight.io GitHub trending API (ossinsight.go)
+sources:
+  # === AI news (English) ===
+  - id: smol-ai
+    type: rss
+    category: news
+    name: "smol.ai news"
+    url: "https://news.smol.ai/rss.xml"
+    # v1.0.1 Phase 1.1: smol.ai 返回 611 items 全量历史 (最早 2024-07).
+    # 限 48h 避免老条目灌进 rank (rank LLM 耗时主因).
+    max_age_hours: 48
+    enabled: true
+    priority: 10
+  - id: the-decoder
+    type: rss
+    category: news
+    name: "The Decoder"
+    url: "https://the-decoder.com/feed/"
+    enabled: true
+    priority: 9
+  - id: techcrunch-ai
+    type: rss
+    category: news
+    name: "TechCrunch AI"
+    url: "https://techcrunch.com/category/artificial-intelligence/feed/"
+    enabled: true
+    priority: 8
+  - id: openai-news
+    type: rss
+    category: news
+    name: "OpenAI News"
+    url: "https://openai.com/news/rss.xml"
+    # v1.0.1 Phase 1.1: OpenAI 返回 935 items 全量历史 (最早 2018-10).
+    # 限 48h, 让 rank 阶段数据量降 ~700+ items, 耗时 13min → ~8min.
+    max_age_hours: 48
+    enabled: true
+    priority: 10
+
+  # === Anthropic (HTML scrape — no public RSS) ===
+  - id: anthropic-news
+    type: anthropic_news
+    category: news
+    name: "Anthropic News"
+    url: "https://www.anthropic.com/news"
+    enabled: true
+    priority: 10
+
+  # === Chinese content (境外托管) ===
+  - id: baoyu
+    type: rss
+    category: news
+    name: "宝玉的分享"
+    url: "https://baoyu.io/feed.xml"
+    enabled: true
+    priority: 9
+  - id: ruanyifeng
+    type: rss
+    category: news
+    name: "阮一峰的网络日志"
+    url: "https://www.ruanyifeng.com/blog/atom.xml"
+    enabled: true
+    priority: 8
+
+  # === Chinese news via Google News RSS (bypasses GFW) ===
+  - id: gnews-ai-cn
+    type: google_news
+    category: news
+    name: "Google News: 人工智能"
+    query: "人工智能"
+    hl: "zh-CN"
+    gl: "US"
+    ceid: "US:zh-Hans"
+    when: "1d"
+    enabled: true
+    priority: 7
+  - id: gnews-llm-cn
+    type: google_news
+    category: news
+    name: "Google News: 大语言模型"
+    # v1.0.1 Phase 1.2: 多 query fallback — 实测 "大语言模型" 某些天返回 0 items,
+    # 自动切下一个. 顺序尝试直到拿到非空 feed, 或全部空才 fail.
+    queries:
+      - "大语言模型"
+      - "LLM 大模型"
+      - "生成式AI"
+      - "ChatGPT OR Claude OR Gemini"
+    hl: "zh-CN"
+    gl: "US"
+    ceid: "US:zh-Hans"
+    when: "1d"
+    enabled: true
+    priority: 7
+
+  # === AI researcher blogs ===
+  - id: blog-emollick
+    type: rss
+    category: blog
+    name: "Ethan Mollick (oneusefulthing)"
+    url: "https://www.oneusefulthing.org/feed"
+    enabled: true
+    priority: 8
+  - id: blog-simonw
+    type: rss
+    category: blog
+    name: "Simon Willison"
+    url: "https://simonwillison.net/atom/everything/"
+    enabled: true
+    priority: 9
+  - id: blog-jackclark
+    type: rss
+    category: blog
+    name: "Jack Clark (Import AI)"
+    url: "https://jack-clark.net/feed/"
+    enabled: true
+    priority: 9
+  - id: blog-raschka
+    type: rss
+    category: blog
+    name: "Sebastian Raschka"
+    url: "https://magazine.sebastianraschka.com/feed"
+    enabled: true
+    priority: 8
+  - id: blog-lilianweng
+    type: rss
+    category: blog
+    name: "Lilian Weng (OpenAI)"
+    url: "https://lilianweng.github.io/index.xml"
+    enabled: true
+    priority: 8
+
+  # === Papers ===
+  - id: arxiv-cs-ai
+    type: rss
+    category: paper
+    name: "arXiv cs.AI"
+    url: "https://rss.arxiv.org/rss/cs.AI"
+    enabled: true
+    priority: 7
+  - id: arxiv-cs-lg
+    type: rss
+    category: paper
+    name: "arXiv cs.LG"
+    url: "https://rss.arxiv.org/rss/cs.LG"
+    enabled: true
+    priority: 7
+  - id: hf-papers
+    type: huggingface_papers
+    category: paper
+    name: "HuggingFace Daily Papers"
+    url: "https://huggingface.co/papers"
+    enabled: true
+    priority: 9
+
+  # === Open source (GitHub trending) ===
+  - id: gh-trending
+    type: ossinsight
+    category: project
+    name: "GitHub Trending (via ossinsight)"
+    url: "https://api.ossinsight.io/v1/trends/repos"
+    # v1.0.1 Phase 4.5 (T3): period 控制时间窗口 — 用户原则 "看人气和影响力,
+    # 不只看创建时间". past_week 收 7 天涨星最快, 让 Seedance 2.0 这种"老项
+    # 目+大版本→trending"自然出现. 选项: past_24_hours / past_week / past_month.
+    period: past_week
+    enabled: true
+    priority: 10
+
+  # === v1.0.1 Phase 3.1 — 海外 AI 厂商官博 (5 个) ===
+  - id: deepmind-blog
+    type: rss
+    category: news
+    name: "DeepMind Blog"
+    url: "https://deepmind.google/blog/rss.xml"
+    # DeepMind 一次返回 100 items 跨 6 周, 限 48h 只留近 1-3 条
+    max_age_hours: 48
+    enabled: true
+    priority: 10
+
+  - id: google-ai-blog
+    type: rss
+    category: news
+    name: "Google AI Blog"
+    url: "https://blog.google/technology/ai/rss/"
+    enabled: true
+    priority: 10
+
+  - id: ms-research
+    type: rss
+    category: news
+    name: "Microsoft Research Blog"
+    url: "https://www.microsoft.com/en-us/research/feed/"
+    # 通用 feed (含 AI + 非 AI 内容), 由 classify LLM 二次过滤
+    enabled: true
+    priority: 8
+
+  - id: nvidia-ai-blog
+    type: rss
+    category: news
+    name: "NVIDIA AI Blog"
+    url: "https://blogs.nvidia.com/blog/category/deep-learning/feed/"
+    max_age_hours: 48
+    enabled: true
+    priority: 8
+
+  - id: hf-blog
+    type: rss
+    category: blog
+    name: "Hugging Face Blog"
+    url: "https://huggingface.co/blog/feed.xml"
+    # HF 返回 762 items 跨 3 年, 必须限 48h
+    max_age_hours: 48
+    enabled: true
+    priority: 9
+
+  # === v1.0.1 Phase 3.2 — 商业 / 行业分析 Substack (4 个) ===
+  - id: platformer
+    type: rss
+    category: blog
+    name: "Platformer (Casey Newton)"
+    url: "https://www.platformer.news/rss/"
+    enabled: true
+    priority: 9
+
+  - id: big-technology
+    type: rss
+    category: blog
+    name: "Big Technology (Alex Kantrowitz)"
+    url: "https://www.bigtechnology.com/feed"
+    enabled: true
+    priority: 8
+
+  - id: semianalysis
+    type: rss
+    category: blog
+    name: "SemiAnalysis"
+    url: "https://semianalysis.com/feed/"
+    enabled: true
+    priority: 9
+
+  - id: stratechery
+    type: rss
+    category: blog
+    name: "Stratechery (Ben Thompson)"
+    url: "https://stratechery.com/feed/"
+    enabled: true
+    priority: 9
+
+  # === v1.0.1 Phase 3.3 — AI 政策 / 监管 (2 个) ===
+  - id: politico-tech
+    type: rss
+    category: news
+    name: "Politico Tech"
+    url: "https://www.politico.com/rss/politicopicks.xml"
+    # 通用 Politico picks (含 AI + 政策 + 政治), 由 classify 二次过滤
+    enabled: true
+    priority: 7
+
+  - id: eu-ai-act
+    type: rss
+    category: news
+    name: "EU AI Act Tracker"
+    url: "https://artificialintelligenceact.eu/feed/"
+    enabled: true
+    priority: 8
+
+  # === HackerNews ===
+  - id: hn-top
+    type: hn_top
+    category: community
+    name: "HackerNews Top Stories"
+    url: "https://hacker-news.firebaseio.com/v0/topstories.json"
+    top_n: 30
+    # v1.0.1 Phase 4.4: 过滤低分 HN 帖子. 100 分是经验阈值 (front-page 常见
+    # 200+, 刚冒头的试探帖 <=50), 0 = 不过滤. 打开后能剔掉 social section
+    # 里那种"HN 榜单位置靠前但其实没几个 upvote 的凑数帖".
+    min_points: 100
+    enabled: true
+    priority: 8
+
+  # === Reddit ===
+  - id: reddit-ml
+    type: reddit_json
+    category: community
+    name: "r/MachineLearning"
+    url: "https://www.reddit.com/r/MachineLearning/hot.json"
+    limit: 25
+    # v1.0.1 Phase 4.4: r/MachineLearning 正经内容常 100+, 设 50 保守一些.
+    min_score: 50
+    enabled: true
+    priority: 7
+  - id: reddit-localllama
+    type: reddit_json
+    category: community
+    name: "r/LocalLLaMA"
+    url: "https://www.reddit.com/r/LocalLLaMA/hot.json"
+    limit: 25
+    min_score: 50
+    enabled: true
+    priority: 7

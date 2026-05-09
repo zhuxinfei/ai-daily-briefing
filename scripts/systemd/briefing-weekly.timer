@@ -1,0 +1,15 @@
+[Unit]
+Description=briefing-v3 weekly trigger (every Monday 10:00 Asia/Shanghai = Mon 02:00 UTC)
+
+[Timer]
+# 周日 22:00 BJT = 周日 14:00 UTC. 理由:
+# 1) 美东周日 10:00 AM 周末空闲, LLM proxy 稳定.
+# 2) 距下周一 06:00 BJT 日报 8h+ buffer, 两个 pipeline 资源完全隔离.
+# 3) 周日 22:00 时本周 Mon-Sun 7 天日报全齐, 周报数据最完整.
+# 4) 用户周日晚睡前看深度回顾, 新一周开始前完成上周总结.
+OnCalendar=Sun *-*-* 14:00:00 UTC
+Persistent=true
+Unit=briefing-weekly.service
+
+[Install]
+WantedBy=timers.target

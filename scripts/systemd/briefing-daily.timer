@@ -1,0 +1,11 @@
+[Unit]
+Description=briefing-v3 daily trigger (Asia/Shanghai 06:00 = UTC 22:00)
+
+[Timer]
+# 北京 6:00 = UTC 22:00 (前一天)
+OnCalendar=*-*-* 22:00:00 UTC
+Persistent=true
+Unit=briefing-daily.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,185 @@
+name: Daily Briefing
+
+on:
+  # schedule 已关: 宿主为 claude-4 systemd timer (briefing-daily.timer 22:00 UTC),
+  # GHA 仅保留 workflow_dispatch 作为手工兜底, 避免双宿主重复推送 + 降低账号被封风险.
+  # (20260420 决策; 旧前号 xinfeizhu 曾因频繁 actions 被 suspend, 这次不敢再踩.)
+  workflow_dispatch:
+    inputs:
+      run_date:
+        description: "Issue date in Asia/Shanghai, format YYYY-MM-DD. Leave empty for today."
+        required: false
+        type: string
+      no_images:
+        description: "Skip infocard/headline image generation"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: briefing-daily
+  cancel-in-progress: false
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      STATE_BRANCH: automation-state
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_BASE_URL: ${{ vars.OPENAI_BASE_URL }}
+      OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
+      SLACK_TEST_WEBHOOK: ${{ secrets.SLACK_TEST_WEBHOOK }}
+      SLACK_PROD_WEBHOOK: ${{ secrets.SLACK_PROD_WEBHOOK }}
+      AI_DAILY_SITE_PUSH_TOKEN: ${{ secrets.AI_DAILY_SITE_PUSH_TOKEN }}
+      BRIEFING_REPORT_URL_BASE: ${{ vars.BRIEFING_REPORT_URL_BASE }}
+      FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
+      FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
+      FEISHU_CHAT_ID: ${{ secrets.FEISHU_CHAT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout ai-daily-site
+        uses: actions/checkout@v4
+        with:
+          repository: ylzsdafei/ai-daily-site
+          ref: main
+          path: site
+          token: ${{ secrets.AI_DAILY_SITE_PUSH_TOKEN }}
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.147.5"
+          extended: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install runtime dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pillow
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+
+      - name: Configure git bot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C site config user.name "github-actions[bot]"
+          git -C site config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Resolve runtime inputs
+        id: runtime
+        env:
+          INPUT_RUN_DATE: ${{ inputs.run_date }}
+          INPUT_NO_IMAGES: ${{ inputs.no_images }}
+          VAR_REPORT_URL: ${{ vars.BRIEFING_REPORT_URL_BASE }}
+        run: |
+          if [ -n "$INPUT_RUN_DATE" ]; then
+            run_date="$INPUT_RUN_DATE"
+          else
+            run_date="$(TZ=Asia/Shanghai date +%F)"
+          fi
+
+          if [ -n "$VAR_REPORT_URL" ]; then
+            report_url="$VAR_REPORT_URL"
+          else
+            report_url="https://ylzsdafei.github.io/ai-daily-site/{{YEAR}}/{{YEARMONTH}}/{{DATE}}/"
+          fi
+
+          no_images_flag=""
+          if [ "$INPUT_NO_IMAGES" = "true" ]; then
+            no_images_flag="--no-images"
+          fi
+
+          echo "RUN_DATE=$run_date" >> "$GITHUB_ENV"
+          echo "PUBLISH_TARGET=auto" >> "$GITHUB_ENV"
+          echo "BRIEFING_MODE=prod" >> "$GITHUB_ENV"
+          echo "BRIEFING_SKIP_IF_REPORT_EXISTS=1" >> "$GITHUB_ENV"
+          echo "BRIEFING_REPORT_URL_BASE=$report_url" >> "$GITHUB_ENV"
+          echo "NO_IMAGES_FLAG=$no_images_flag" >> "$GITHUB_ENV"
+          echo "HEXTRA_SITE_DIR=$GITHUB_WORKSPACE/site" >> "$GITHUB_ENV"
+          echo "HUGO_BIN=$(command -v hugo)" >> "$GITHUB_ENV"
+
+      - name: Skip if daily report already exists on site
+        run: |
+          year="${RUN_DATE:0:4}"
+          yearmonth="${RUN_DATE:0:7}"
+          report_path="site/content/cn/${year}/${yearmonth}/${RUN_DATE}.md"
+          if [ -f "$report_path" ]; then
+            echo "SKIP_DAILY=true" >> "$GITHUB_ENV"
+            echo "daily already exists at ${report_path}, skipping generation/publish"
+          else
+            echo "SKIP_DAILY=false" >> "$GITHUB_ENV"
+          fi
+
+      - name: Validate required secrets
+        if: env.SKIP_DAILY != 'true'
+        run: |
+          test -n "$OPENAI_API_KEY" || { echo "OPENAI_API_KEY is required"; exit 1; }
+          test -n "$SLACK_TEST_WEBHOOK" || { echo "SLACK_TEST_WEBHOOK is required"; exit 1; }
+          test -n "$SLACK_PROD_WEBHOOK" || { echo "SLACK_PROD_WEBHOOK is required"; exit 1; }
+          test -n "$AI_DAILY_SITE_PUSH_TOKEN" || { echo "AI_DAILY_SITE_PUSH_TOKEN is required"; exit 1; }
+          test -n "$FEISHU_APP_ID" || { echo "FEISHU_APP_ID is required"; exit 1; }
+          test -n "$FEISHU_APP_SECRET" || { echo "FEISHU_APP_SECRET is required"; exit 1; }
+          test -n "$FEISHU_CHAT_ID" || { echo "FEISHU_CHAT_ID is required"; exit 1; }
+
+      - name: Restore automation state
+        if: env.SKIP_DAILY != 'true'
+        run: bash ./scripts/gha_restore_state.sh
+
+      - name: Build briefing
+        if: env.SKIP_DAILY != 'true'
+        run: go build -o ./bin/briefing ./cmd/briefing
+
+      - name: Prepare database
+        if: env.SKIP_DAILY != 'true'
+        run: |
+          ./bin/briefing migrate
+          ./bin/briefing seed
+
+      - name: Run daily pipeline
+        if: env.SKIP_DAILY != 'true'
+        run: ./bin/briefing run --date "$RUN_DATE" --domain ai --target "$PUBLISH_TARGET" $NO_IMAGES_FLAG
+
+      - name: Save automation state
+        if: success() && env.SKIP_DAILY != 'true'
+        run: bash ./scripts/gha_save_state.sh
+
+      - name: Push ai-daily-site update
+        if: success() && env.SKIP_DAILY != 'true'
+        working-directory: site
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "site repo: no changes"
+            exit 0
+          fi
+          git commit -m "chore(site): update daily briefing for ${RUN_DATE}"
+          git push origin HEAD:main
+
+      - name: Notify test channel on failure
+        if: failure() && env.SKIP_DAILY != 'true'
+        run: |
+          run_url="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          payload=$(cat <<EOF
+{"text":"🚨 Daily Briefing workflow failed\n• 日期: ${RUN_DATE:-unknown}\n• 仓库: ${GITHUB_REPOSITORY}\n• Run: ${run_url}\n• 说明: 本次日报未进入正式 Slack / 飞书，请先检查 Actions 日志。"}
+EOF
+)
+          curl -sS -X POST -H "Content-type: application/json" --data "$payload" "$SLACK_TEST_WEBHOOK"

@@ -1,0 +1,182 @@
+# glossary.yaml — 注解白名单 + 需注解术语词表
+#
+# 用途：validator.go 的 ValidateInsight / ValidateCompose 用此词表判断
+# 非技术读者（HR、运营、业务）可能不认识的专业术语是否加了括号注释。
+#
+# 判断标准："一个会用 ChatGPT 但不会写代码的老板是否认识"：
+#   - 认识 → well_known（白名单，无需注解）
+#   - 不认识 → jargon（必须在 ±30 字符内配括号注释）
+#
+# 维护原则：宁可多加 jargon 也不要漏；白名单只放真正耳熟能详的大公司/大概念。
+# 新增术语时请配合更新 prompts.go 注解示例。
+
+well_known:
+  # 一线大模型厂商 + 旗舰产品
+  - OpenAI
+  - ChatGPT
+  - GPT
+  - GPT-4
+  - GPT-5
+  - Anthropic
+  - Claude
+  - Claude Code
+  - Codex
+  - Google
+  - Gemini
+  - DeepMind
+  - Meta
+  - Llama
+  - xAI
+  - Grok
+  - Microsoft
+  - Copilot
+  - Nvidia
+  - NVIDIA
+  - 英伟达
+  - DeepSeek
+  - 深度求索
+  - 阿里
+  - 阿里巴巴
+  - 通义
+  - 通义千问
+  - 百度
+  - 文心
+  - 腾讯
+  - 混元
+  - 字节
+  - 字节跳动
+  - 豆包
+  # 基础概念/职业词
+  - AI
+  - 人工智能
+  - 大模型
+  - 开源
+  - 闭源
+  - API
+  - Agent
+  - prompt
+  - 提示词
+  - chatbot
+  - 对话机器人
+  # 普及度高的平台
+  - GitHub
+  - arxiv
+  - Reddit
+  - X
+  - 推特
+  - Twitter
+  - YouTube
+  - TikTok
+  - 抖音
+
+jargon:
+  # 训练/推理技术
+  - RAG
+  - embedding
+  - MoE
+  - RLHF
+  - RLAIF
+  - fine-tuning
+  - fine-tuned
+  - pre-training
+  - post-training
+  - distillation
+  - quantization
+  - pruning
+  - inference
+  - tokenizer
+  - tokenization
+  - attention
+  - transformer
+  - context window
+  - diffusion model
+  - LoRA
+  - PEFT
+  - SFT
+  - DPO
+  # 协议/接口
+  - MCP
+  - function calling
+  - tool use
+  - tool calling
+  - agentic
+  - chain-of-thought
+  - CoT
+  - ReAct
+  - multi-modal
+  - 多模态
+  # 数据与基础设施
+  - vector database
+  - 向量数据库
+  - knowledge graph
+  - 知识图谱
+  - self-hosted
+  - 自托管
+  - deployment
+  - benchmark
+  - leaderboard
+  - eval
+  - evaluation
+  - SLA
+  # 多模态细分
+  - OCR
+  - TTS
+  - ASR
+  - STT
+  - speech-to-text
+  - text-to-speech
+  # 对齐 & 安全
+  - reasoning
+  - alignment
+  - jailbreak
+  - red teaming
+  - prompt injection
+  - hallucination
+  - 幻觉
+  - guardrails
+  - constitutional AI
+  # 工程平台/库
+  - HuggingFace
+  - Hugging Face
+  - Mistral
+  - Sentry
+  - PyTorch
+  - TensorFlow
+  - JAX
+  - CUDA
+  - LLVM
+  - Kubernetes
+  - K8s
+  - Docker
+  - Triton
+  - vLLM
+  - Ollama
+  - LangChain
+  - LlamaIndex
+  - Notion
+  - Supabase
+  - Firebase
+  - Vercel
+  - Cloudflare
+  - Safetensors
+  - Skyscanner
+  # 硬件/芯片
+  - TPU
+  - GPU
+  - NPU
+  - ASIC
+  - FPGA
+  - HBM
+  - GaN
+  # 新兴研究概念
+  - world model
+  - 世界模型
+  - embodied AI
+  - 具身智能
+  - autonomous agent
+  - mixture of experts
+  - speculative decoding
+  - retrieval-augmented
+  - in-context learning
+  - zero-shot
+  - few-shot

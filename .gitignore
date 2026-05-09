@@ -1,0 +1,40 @@
+# Build artifacts
+/bin/
+*.o
+*.a
+*.exe
+*.test
+*.out
+
+# Data and logs (not tracked)
+/data/*.db
+/data/*.db-wal
+/data/*.db-shm
+/data/*.bak*
+/data/backups/
+/data/export/
+/data/images/
+/data/github_stars_cache.json
+/data/feishu-daily-card-*.json
+/data/feishu-weekly-card-*.json
+/logs/
+/config/secrets.env
+
+# Python bytecode (scripts/)
+__pycache__/
+*.pyc
+
+# Stray files at repo root
+/briefing
+/ai-daily-site*/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Chat / session records (not for public repo)
+/docs/chat/
+
+# Go
+vendor/
