@@ -1,9 +1,9 @@
 name: Daily Briefing
 
 on:
-  # schedule 已关: 宿主为 claude-4 systemd timer (briefing-daily.timer 22:00 UTC),
-  # GHA 仅保留 workflow_dispatch 作为手工兜底, 避免双宿主重复推送 + 降低账号被封风险.
-  # (20260420 决策; 旧前号 xinfeizhu 曾因频繁 actions 被 suspend, 这次不敢再踩.)
+  # Daily run at UTC 22:00 = Beijing time 06:00 next morning
+  schedule:
+    - cron: '0 22 * * *'
   workflow_dispatch:
     inputs:
       run_date:
@@ -48,7 +48,7 @@ jobs:
       - name: Checkout ai-daily-site
         uses: actions/checkout@v4
         with:
-          repository: ylzsdafei/ai-daily-site
+          repository: zhuxinfei/ai-daily-site
           ref: main
           path: site
           token: ${{ secrets.AI_DAILY_SITE_PUSH_TOKEN }}
@@ -100,7 +100,7 @@ jobs:
           if [ -n "$VAR_REPORT_URL" ]; then
             report_url="$VAR_REPORT_URL"
           else
-            report_url="https://ylzsdafei.github.io/ai-daily-site/{{YEAR}}/{{YEARMONTH}}/{{DATE}}/"
+            report_url="https://zhuxinfei.github.io/ai-daily-site/{{YEAR}}/{{YEARMONTH}}/{{DATE}}/"
           fi
 
           no_images_flag=""
@@ -133,12 +133,10 @@ jobs:
         if: env.SKIP_DAILY != 'true'
         run: |
           test -n "$OPENAI_API_KEY" || { echo "OPENAI_API_KEY is required"; exit 1; }
-          test -n "$SLACK_TEST_WEBHOOK" || { echo "SLACK_TEST_WEBHOOK is required"; exit 1; }
-          test -n "$SLACK_PROD_WEBHOOK" || { echo "SLACK_PROD_WEBHOOK is required"; exit 1; }
           test -n "$AI_DAILY_SITE_PUSH_TOKEN" || { echo "AI_DAILY_SITE_PUSH_TOKEN is required"; exit 1; }
-          test -n "$FEISHU_APP_ID" || { echo "FEISHU_APP_ID is required"; exit 1; }
-          test -n "$FEISHU_APP_SECRET" || { echo "FEISHU_APP_SECRET is required"; exit 1; }
-          test -n "$FEISHU_CHAT_ID" || { echo "FEISHU_CHAT_ID is required"; exit 1; }
+          # Slack/Feishu are optional — warn if missing but don't fail
+          test -n "$SLACK_TEST_WEBHOOK" || echo "[warn] SLACK_TEST_WEBHOOK not set, Slack notifications disabled"
+          test -n "$FEISHU_APP_ID" || echo "[warn] FEISHU_APP_ID not set, Feishu disabled"
 
       - name: Restore automation state
         if: env.SKIP_DAILY != 'true'
