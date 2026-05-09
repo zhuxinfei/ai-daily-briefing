@@ -136,7 +136,6 @@ func RenderMarkdown(issue *store.Issue, items []*store.IssueItem, insight *store
 	}
 
 	industryMD := strings.TrimSpace(insight.IndustryMD)
-	industryMD := strings.TrimSpace(insight.IndustryMD)
 	if industryMD == "" {
 		return b.String()
 	}

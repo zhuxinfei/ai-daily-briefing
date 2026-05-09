@@ -57,10 +57,10 @@ type ValidationResult struct {
 
 // splitInsightRegex splits on the "💭 对我们的启发" header, optionally eating leading
 // '#' markers. Mirrors the JS split regex.
-var splitInsightRegex = regexp.MustCompile(`(?:#{1,6}\s*)?💭\s*对我们的启发[^）]*[）)]?\s*`)
+var splitInsightRegex = regexp.MustCompile(`(?:#{1,6}\s*)?💭\s*对我们的启发[^)]*[))]?\s*`)
 
 // industryHeaderRegex strips the "📊 行业洞察" header from the industry chunk.
-var industryHeaderRegex = regexp.MustCompile(`(?:#{1,6}\s*)?📊\s*行业洞察[^）]*[）)]?\s*\n*`)
+var industryHeaderRegex = regexp.MustCompile(`(?:#{1,6}\s*)?📊\s*行业洞察[^)]*[))]?\s*\n*`)
 
 // leadingHeaderRegex strips leading markdown header symbols at the start of any line.
 var leadingHeaderRegex = regexp.MustCompile(`(?m)^#{1,6}\s+`)
@@ -143,27 +143,27 @@ func hasSequentialNumbering(text string) bool {
 //   - mermaid block presence → Warnings
 //
 // 注释覆盖保持软要求：它很重要，但不能因为个别名词漏注释就让整期日报
-// 直接失败，避免”好内容因局部表述问题整期报废”。
+// 直接失败，避免"好内容因局部表述问题整期报废"。
 func ValidateInsight(raw string) ValidationResult {
 	industryRaw, ourRaw := ParseInsightSections(raw)
 
 	var reasons []string
 
-	if industryRaw == “” {
-		reasons = append(reasons, “缺少\”行业洞察\”模块”)
+	if industryRaw == "" {
+		reasons = append(reasons, `缺少"行业洞察"模块`)
 	}
 
 	industryCount := countNumberedItems(industryRaw)
 
 	if industryCount < 2 || industryCount > 5 {
 		reasons = append(reasons,
-			“行业洞察条数异常（当前 “+itoa(industryCount)+” 条）”)
+			"行业洞察条数异常(当前 " + itoa(industryCount) + " 条)"
 	}
 	if !hasSequentialNumbering(industryRaw) {
-		reasons = append(reasons, “行业洞察编号不连续或未从 1 开始”)
+		reasons = append(reasons, "行业洞察编号不连续或未从 1 开始")
 	}
-	if industryCount > 0 && strings.Count(industryRaw, “【洞察】”) < industryCount {
-		reasons = append(reasons, “行业洞察缺少对应的【洞察】判断行”)
+	if industryCount > 0 && strings.Count(industryRaw, "【洞察】") < industryCount {
+		reasons = append(reasons, "行业洞察缺少对应的【洞察】判断行")
 	}
 
 	for _, bp := range bannedPatterns {
@@ -175,7 +175,7 @@ func ValidateInsight(raw string) ValidationResult {
 	warnings := checkAnnotationCoverage(raw)
 
 	if !mermaidBlockRegex.MatchString(raw) {
-		warnings = append(warnings, “missing mermaid relationship diagram”)
+		warnings = append(warnings, "missing mermaid relationship diagram")
 	}
 
 	return ValidationResult{
@@ -252,9 +252,9 @@ type Glossary struct {
 }
 
 // annotationWindow is how many runes on either side of a jargon hit we
-// scan looking for a nearby （注释） / (annotation). 30 runes either way
+// scan looking for a nearby (注释) / (annotation). 30 runes either way
 // was chosen because a realistic annotation pattern like
-// "RAG（检索增强生成，先查资料再回答）" places its closing brace within
+// "RAG(检索增强生成，先查资料再回答)" places its closing brace within
 // roughly 20 runes of the term.
 const annotationWindow = 30
 
@@ -326,9 +326,9 @@ func isASCIIIdent(s string) bool {
 	return true
 }
 
-// hasNearbyAnnotation reports whether a （...） or (...) clause appears
+// hasNearbyAnnotation reports whether a (...) or (...) clause appears
 // within ±annotationWindow runes of the match at [matchStart, matchEnd)
-// inside rawRunes. Both full-width （）and half-width () are accepted
+// inside rawRunes. Both full-width ()and half-width () are accepted
 // since editors routinely mix them.
 func hasNearbyAnnotation(rawRunes []rune, matchStart, matchEnd int) bool {
 	lo := matchStart - annotationWindow
@@ -343,12 +343,12 @@ func hasNearbyAnnotation(rawRunes []rune, matchStart, matchEnd int) bool {
 
 	// We want an OPEN paren followed by a CLOSE paren (mixed or matched).
 	// A bare "(" with no ")" within the window is not an annotation.
-	openIdx := strings.IndexAny(window, "（(")
+	openIdx := strings.IndexAny(window, "((")
 	if openIdx < 0 {
 		return false
 	}
 	after := window[openIdx:]
-	closeIdx := strings.IndexAny(after, "）)")
+	closeIdx := strings.IndexAny(after, "))")
 	return closeIdx > 0 // >0 so we require at least one char inside
 }
 
@@ -405,7 +405,7 @@ func checkAnnotationCoverage(text string) []string {
 		}
 
 		warnings = append(warnings,
-			fmt.Sprintf("jargon %q 缺少括号注释（读者可能看不懂）", actualTerm))
+			fmt.Sprintf("jargon %q 缺少括号注释(读者可能看不懂)", actualTerm))
 		reported[actualTerm] = true
 	}
 
