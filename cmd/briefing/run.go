@@ -896,8 +896,6 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 		MinInsightChars:        cfg.Gate.MinInsightChars,
 		MinIndustryBullets:     cfg.Gate.MinIndustryBullets,
 		MaxIndustryBullets:     cfg.Gate.MaxIndustryBullets,
-		MinTakeawayBullets:     cfg.Gate.MinTakeawayBullets,
-		MaxTakeawayBullets:     cfg.Gate.MaxTakeawayBullets,
 		MinSourceDomains:       cfg.Gate.MinSourceDomains,
 	})
 	report := g.Check(issue, issueItems, insight, composeFailedSections, len(cfg.Sections))
@@ -931,9 +929,9 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 		QualityWarnings:  report.Warnings,
 		FailedSections:   report.FailedSections,
 	}
-	stage(fmt.Sprintf("gate: pass=%v warn=%v items=%d sections=%d insightChars=%d industry=%d takeaways=%d domains=%d failedSections=%d",
+	stage(fmt.Sprintf("gate: pass=%v warn=%v items=%d sections=%d insightChars=%d industry=%d domains=%d failedSections=%d",
 		report.Pass, report.Warn, report.ItemCount, report.SectionCount, report.InsightChars,
-		report.IndustryBullets, report.TakeawayBullets, report.SourceDomainCount,
+		report.IndustryBullets, report.SourceDomainCount,
 		len(report.FailedSections)))
 
 	if shouldSkipBecauseReportAlreadyExists(ctx, reportURL) {
@@ -2688,8 +2686,8 @@ func buildGateFailAlert(issue *store.Issue, r *gate.Report) string {
 	}
 	fmt.Fprintf(&b, "• 条目数 %d | 非空 section %d | 洞察字数 %d\n",
 		r.ItemCount, r.SectionCount, r.InsightChars)
-	fmt.Fprintf(&b, "• 行业洞察 %d 条 | 启发 %d 条 | 独立源 %d 个\n",
-		r.IndustryBullets, r.TakeawayBullets, r.SourceDomainCount)
+	fmt.Fprintf(&b, "• 行业洞察 %d 条 | 独立源 %d 个\n",
+		r.IndustryBullets, r.SourceDomainCount)
 	if len(r.FailedSections) > 0 {
 		fmt.Fprintf(&b, "• 降级 section: %s\n", strings.Join(r.FailedSections, ","))
 	}
@@ -2738,8 +2736,8 @@ func prodPublishIssues(ctx context.Context, rendered *publish.RenderedIssue) []s
 	if rendered.Insight == nil || strings.TrimSpace(rendered.Insight.IndustryMD) == "" {
 		issues = append(issues, "缺少完整行业洞察")
 	}
-	if rendered.Insight == nil || strings.TrimSpace(rendered.Insight.OurMD) == "" {
-		issues = append(issues, "缺少完整对我们的启发")
+	if rendered.Insight == nil || strings.TrimSpace(rendered.Insight.IndustryMD) == "" {
+		issues = append(issues, "缺少行业洞察")
 	}
 	if strings.TrimSpace(rendered.Issue.Summary) == "" {
 		issues = append(issues, "缺少完整今日摘要")

@@ -257,7 +257,7 @@ func TestProdPublishIssues(t *testing.T) {
 		issues := prodPublishIssues(context.Background(), rendered)
 		// #2: checkPublicReportURL 降级为 warn-only 后不再计入 issues,
 		// 只剩 3 条 (industry/our/summary 缺失).
-		if len(issues) != 3 {
+		if len(issues) != 2 {
 			t.Fatalf("prodPublishIssues() len = %d, want 3; issues=%v", len(issues), issues)
 		}
 	})

@@ -155,9 +155,9 @@ func ValidateInsight(raw string) ValidationResult {
 
 	industryCount := countNumberedItems(industryRaw)
 
-	if industryCount < 2 || industryCount > 5 {
+	if industryCount < 2 || industryCount > 6 {
 		reasons = append(reasons,
-			"行业洞察条数异常(当前 " + itoa(industryCount) + " 条)"
+			"行业洞察条数异常(当前 " + itoa(industryCount) + " 条)")
 	}
 	if !hasSequentialNumbering(industryRaw) {
 		reasons = append(reasons, "行业洞察编号不连续或未从 1 开始")

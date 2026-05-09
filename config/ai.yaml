@@ -74,8 +74,6 @@ gate:
   # min 降到 1 防 gate 误 fail, max 放到 8 不限制 LLM.
   min_industry_bullets: 1
   max_industry_bullets: 8
-  min_takeaway_bullets: 1
-  max_takeaway_bullets: 8
   min_source_domains: 3        # 5→3, 高质量内容不一定来自 5 个不同源
 
 # Slack distribution. test channel is the default/safe target.
