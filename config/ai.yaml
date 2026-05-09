@@ -35,7 +35,7 @@ llm:
   default_model: "gpt-5.4"
   temperature: 0.3
   max_tokens: 2000
-  timeout_seconds: 120
+  timeout_seconds: 600
   max_retries: 5
   # v1.0.1 Bug J 修复: LLM 502 分钟级退避序列 (秒)。
   # 旧策略 1/2/4/8s 共 15s 对上游分钟级抖动无效 (2026-04-14 故障证据)。
