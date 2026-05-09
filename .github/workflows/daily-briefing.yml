@@ -105,7 +105,7 @@ jobs:
             no_images_flag="--no-images"
           fi
           echo "RUN_DATE=$run_date" >> "$GITHUB_ENV"
-          echo "PUBLISH_TARGET=auto" >> "$GITHUB_ENV"
+          echo "PUBLISH_TARGET=test" >> "$GITHUB_ENV" # test=skip Slack/Feishu prod, only site
           echo "BRIEFING_MODE=prod" >> "$GITHUB_ENV"
           echo "BRIEFING_SKIP_IF_REPORT_EXISTS=1" >> "$GITHUB_ENV"
           echo "BRIEFING_REPORT_URL_BASE=$report_url" >> "$GITHUB_ENV"
