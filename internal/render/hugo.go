@@ -384,7 +384,7 @@ func verifyExternalImage(url string) bool {
 			return false
 		}
 	}
-	client := &http.Client{Timeout: 5 * time.Second}
+	client := &http.Client{Timeout: 15 * time.Second}
 	req, err := http.NewRequest(http.MethodHead, url, nil)
 	if err != nil {
 		return false
@@ -392,7 +392,19 @@ func verifyExternalImage(url string) bool {
 	req.Header.Set("User-Agent", "briefing-v3/1.0")
 	resp, err := client.Do(req)
 	if err != nil {
-		return false
+		// HEAD failed — fall back to GET with range for compatibility
+		req2, err2 := http.NewRequest(http.MethodGet, url, nil)
+		if err2 != nil {
+			return false
+		}
+		req2.Header.Set("User-Agent", "briefing-v3/1.0")
+		req2.Header.Set("Range", "bytes=0-0")
+		resp2, err2 := http.DefaultClient.Do(req2)
+		if err2 != nil {
+			return false
+		}
+		resp2.Body.Close()
+		return resp2.StatusCode >= 200 && resp2.StatusCode < 300
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
@@ -401,7 +413,7 @@ func verifyExternalImage(url string) bool {
 	if cl := resp.Header.Get("Content-Length"); cl != "" {
 		var size int64
 		if _, err := fmt.Sscanf(cl, "%d", &size); err == nil {
-			if size < 5*1024 || size > 50*1024*1024 {
+			if size > 50*1024*1024 {
 				return false
 			}
 		}
