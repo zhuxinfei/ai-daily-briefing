@@ -15,7 +15,7 @@
 //      contain inline ![alt](url) references injected upstream by
 //      infocard (item-N.png) and mediaextract (og:image hotlinks). We:
 //        - VERIFY every external http(s) URL via HEAD: status 200 +
-//          Content-Length in [5 KB, 50 MB]. mediaextract has its own
+//          Content-Length in up to 50 MB. mediaextract has its own
 //          blacklist + multi-candidate scan to filter logos/banners,
 //          and the HEAD check is a "minimum viable" guard so we never
 //          publish a 404 / timeout / favicon-sized icon. Verified URLs
@@ -252,7 +252,7 @@ func scrubAndRelocateImages(body, siteDir, dateStr string) string {
 		}
 
 		// External http(s) URL: keep IF it passes a minimum-viable HEAD
-		// probe (200 + Content-Length in [5 KB, 50 MB]). mediaextract
+		// probe (200 + Content-Length in up to 50 MB). mediaextract
 		// already filtered logos/banners via blacklist + multi-candidate
 		// scan, so we trust the URL semantically and only verify it can
 		// actually load. Anything that fails the HEAD (404, timeout,
@@ -366,9 +366,9 @@ var bannedImageHosts = []string{
 // verifyExternalImage HEAD-probes an external image URL and returns
 // true only when:
 //   - the URL host is NOT on bannedImageHosts,
-//   - the request completes within 5 s,
+//   - the request completes within 15 s,
 //   - the status code is 2xx,
-//   - the response advertises a Content-Length in [5 KB, 50 MB] OR no
+//   - the response advertises a Content-Length in up to 50 MB OR no
 //     Content-Length at all (chunked encoding — we have no choice but
 //     to trust the upstream filter in that case).
 //

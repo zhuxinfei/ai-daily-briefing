@@ -19,53 +19,47 @@ launchd plist 语法正确但脚本 bug 导致静默失败。
 # 1. Go 环境
 export GOROOT=$HOME/go GOPATH=$HOME/gopath GOMODCACHE=$HOME/gopath/pkg/mod
 export PATH=$GOROOT/bin:$GOPATH/bin:$PATH GOPROXY="https://goproxy.cn,direct" GOTOOLCHAIN=auto
+mkdir -p $GOPATH $GOMODCACHE
 
-# 2. API 环境
+# 2. API 环境（替换为实际 key）
 export OPENAI_API_KEY="YOUR_OPENAI_API_KEY"
 export OPENAI_BASE_URL="https://api.gjs.ink"
 export OPENAI_MODEL="gpt-5.4"
 export AI_DAILY_SITE_PUSH_TOKEN="YOUR_GITHUB_PAT"
+export HEXTRA_SITE_DIR="/path/to/ai-daily-site"
+export BRIEFING_REPORT_URL_BASE="https://your-site.github.io/ai-daily-site/{{YEAR}}/{{YEARMONTH}}/{{DATE}}/"
+export PUBLISH_TARGET="test" BRIEFING_MODE="prod" BRIEFING_SKIP_IF_REPORT_EXISTS="1"
+export SLACK_TEST_WEBHOOK="https://hooks.slack.com/services/disabled"
 
-# 3. 工作目录必须是 repo 根目录
+# 3. 构建 + 运行
 cd /path/to/ai-daily-briefing
+go build -o /tmp/briefing ./cmd/briefing
+/tmp/briefing migrate && /tmp/briefing seed
+/tmp/briefing run --date $(TZ=Asia/Shanghai date +%F) --domain ai --target test
 
-# 4. 验证：config 文件存在
-test -f config/ai.yaml || { echo "MISSING config/ai.yaml"; exit 1; }
-
-# 5. 运行
-./briefing migrate && ./briefing seed
-./briefing run --date $(TZ=Asia/Shanghai date +%F) --domain ai --target test
-
-# 6. 验证产出
-ls -la $HEXTRA_SITE_DIR/content/cn/$(date +%Y)/$(date +%Y-%m)/$(date +%F).md
+# 4. 验证产出
+ls -la $HEXTRA_SITE_DIR/content/cn/$(TZ=Asia/Shanghai date +%Y)/$(TZ=Asia/Shanghai date +%Y-%m)/$(TZ=Asia/Shanghai date +%F).md
 ```
 
-## 修复清单
+## 修复记录
 
-### ✅ P0: 扩展窗口超时
-- **根因**: `extended_hours: 48` 触发第二轮 60 批 LLM 排序（+14 分钟），耗光 parent context，导致 infocard/Python/Slack 全超时
+### P0: 扩展窗口超时（已修复）
+- **根因**: `extended_hours: 48` 触发第二轮 LLM 排序，耗光时间
 - **修复**: `extended_hours: 0`
-- **验证**: 运行 pipeline，只看到一轮 rank，infocard 完整产出
+- **验证**: 单轮 rank，infocard 12/12 完整产出
 
-### ✅ P1: CF Worker cron 不触发【已验证：free tier 就是不会触发】
-- **根因**: CF free tier cron trigger API 接受但不实际执行（* * * * * 每分 cron 等了 2 分钟 0 events）
-- **主力方案**: launchd + caffeinate 每天 06:00 自动运行
-- **备用方案**: CF Worker 手动触发 `GET /run` 或在 cron-job.org 注册免费账号
+### P1: CF Worker cron 不触发（已确认）
+- **结论**: free tier 不会触发，已用 cron-job.org 替代
 
-### ✅ P2: launchd 脚本 bug
-- **根因**: GOMODCACHE 写成 `/pkg`（只读），未 cd 到 repo 根目录
-- **修复**: 脚本用绝对路径 `$HOME/gopath/pkg/mod`，执行前 cd
-- **验证**: 手动 `launchctl start` 测试
+### P2: launchd 脚本 bug（已修复）
+- **根因**: GOMODCACHE 指向只读路径 + 未 cd 到 repo 根目录
+- **修复**: 绝对路径 + 执行前 cd
 
-### ✅ P3: 大字报字体路径
-- **根因**: 硬编码 Linux 路径 `/usr/share/fonts/...`
-- **修复**: 改为 macOS 字体 `/System/Library/Fonts/STHeiti Medium.ttc`
-- **验证**: `data/images/20xx-xx-xx.png` 生成成功
+### P3: 大字报字体路径（已修复）
+- **修复**: `/System/Library/Fonts/STHeiti Medium.ttc`
 
-### ✅ P4: 外部图片 HEAD 校验过严
-- **根因**: 从国内网络 HEAD 请求海外图片源 5s 超时
+### P4: 外部图片校验过严（已修复）
 - **修复**: 超时 15s，去掉 5KB 下限，HEAD 失败回退 GET
-- **验证**: 日报产出 >10 张图片
 
 ## 常见错误
 

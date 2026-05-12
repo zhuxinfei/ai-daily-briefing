@@ -26,7 +26,7 @@ SITE_DIR="$HOME/Downloads/development/ai-daily-site-main"
 
 echo "[1] Build..."
 cd "$BRIEFING_DIR"
-mkdir -p "$GOPATH" "$GOMODCACHE"
+git pull origin mainmkdir -p "$GOPATH" "$GOMODCACHE"
 go build -o /tmp/briefing ./cmd/briefing
 echo "  $(ls -lh /tmp/briefing | awk '{print $5}')"
 
@@ -35,7 +35,6 @@ cd "$SITE_DIR" && git pull origin main
 
 echo "[3] Migrate & seed..."
 cd "$BRIEFING_DIR"
-/tmp/briefing migrate
 /tmp/briefing seed
 
 echo "[4] Run pipeline..."
