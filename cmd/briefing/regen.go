@@ -364,6 +364,8 @@ func regenCommand(ctx context.Context, cfg *config.Config, date time.Time, gf *g
 		MinInsightChars:        cfg.Gate.MinInsightChars,
 		MinIndustryBullets:     cfg.Gate.MinIndustryBullets,
 		MaxIndustryBullets:     cfg.Gate.MaxIndustryBullets,
+		MinTakeawayBullets:     cfg.Gate.MinTakeawayBullets,
+		MaxTakeawayBullets:     cfg.Gate.MaxTakeawayBullets,
 		MinSourceDomains:       cfg.Gate.MinSourceDomains,
 	})
 	// INTERFACE CHANGE (T2/C4): gate.Check() now takes failedSections and

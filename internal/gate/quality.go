@@ -31,6 +31,8 @@ type Config struct {
 	MinInsightChars        int
 	MinIndustryBullets     int
 	MaxIndustryBullets     int
+	MinTakeawayBullets     int
+	MaxTakeawayBullets     int
 	MinSourceDomains       int
 	BannedPatterns         []*regexp.Regexp
 }
@@ -68,6 +70,7 @@ type Report struct {
 	SectionCount      int
 	InsightChars      int
 	IndustryBullets   int
+	TakeawayBullets   int
 	SourceDomainCount int
 	BannedHits        []string
 	FailedSections    []string // sections compose degraded on (from run.go)
@@ -196,6 +199,7 @@ func (g *Gate) Check(
 		combined := industryMD + ourMD
 		r.InsightChars = countRunes(combined)
 		r.IndustryBullets = countNumberedBullets(industryMD)
+		r.TakeawayBullets = countNumberedBullets(ourMD)
 
 		for _, re := range g.cfg.BannedPatterns {
 			if re == nil {
@@ -231,6 +235,9 @@ func (g *Gate) Check(
 			}
 			if r.IndustryBullets < g.cfg.MinIndustryBullets || r.IndustryBullets > g.cfg.MaxIndustryBullets {
 				r.Warnings = append(r.Warnings, "行业洞察条数超出范围")
+			}
+			if r.TakeawayBullets < g.cfg.MinTakeawayBullets || r.TakeawayBullets > g.cfg.MaxTakeawayBullets {
+				r.Warnings = append(r.Warnings, "启发条数超出范围")
 			}
 		}
 		if r.SourceDomainCount < g.cfg.MinSourceDomains {

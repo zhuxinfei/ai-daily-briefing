@@ -23,7 +23,7 @@ window:
   # is 24h. extended_hours is only a safety valve if the 24h fetch
   # produced too few items after history dedup.
   lookback_hours: 24
-  extended_hours: 0
+  extended_hours: 48
 
 # LLM client config. All values can be overridden via environment variables
 # listed in the *_env fields.
@@ -35,7 +35,7 @@ llm:
   default_model: "gpt-5.4"
   temperature: 0.3
   max_tokens: 2000
-  timeout_seconds: 600
+  timeout_seconds: 120
   max_retries: 5
   # v1.0.1 Bug J 修复: LLM 502 分钟级退避序列 (秒)。
   # 旧策略 1/2/4/8s 共 15s 对上游分钟级抖动无效 (2026-04-14 故障证据)。
@@ -74,6 +74,8 @@ gate:
   # min 降到 1 防 gate 误 fail, max 放到 8 不限制 LLM.
   min_industry_bullets: 1
   max_industry_bullets: 8
+  min_takeaway_bullets: 1
+  max_takeaway_bullets: 8
   min_source_domains: 3        # 5→3, 高质量内容不一定来自 5 个不同源
 
 # Slack distribution. test channel is the default/safe target.

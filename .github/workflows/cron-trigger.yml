@@ -1,0 +1,24 @@
+name: Cron Trigger
+
+on:
+  schedule:
+    - cron: '0 22 * * *'  # UTC 22:00 = Beijing 06:00
+  workflow_dispatch:
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger CF Worker
+        run: |
+          for i in 1 2 3; do
+            HTTP=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 \
+              "https://daily-briefing.18368151865.workers.dev/run")
+            echo "Attempt $i: HTTP $HTTP"
+            if [ "$HTTP" = "200" ]; then
+              echo "✅ Worker triggered successfully"
+              exit 0
+            fi
+            sleep 30
+          done
+          echo "⚠️ Worker may have failed after 3 attempts"

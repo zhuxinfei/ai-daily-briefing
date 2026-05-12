@@ -21,12 +21,13 @@ import (
 // also fails, the Generator hard-fails — no degraded fallback is produced.
 const finalStrictSystemPrompt = `你是一位资深AI行业分析师。这是最后一次生成机会，前面的尝试都失败了，这次必须严格符合以下所有要求：
 
-1. 必须输出 📊 行业洞察（3-4条）
-2. 严格使用有序列表格式（1. 2. 3.），每条40-70字，不得少于3条行业洞察
+1. 必须严格输出两个模块：📊 行业洞察（3-4条）和 💭 对我们的启发（2-3条）
+2. 严格使用有序列表格式（1. 2. 3.），每条40-70字，不得少于3条行业洞察，不得少于2条启发
 3. 绝对禁止出现任何运维调度词汇：webhook、cron、schedule、缓存、轮询、幂等、具体时间戳、频道、告警、补发、北京时间、推送链路、本地设备、GitHub Actions
 4. 每条洞察必须包含：具体事件（提公司/产品名）→ 明确判断 → 为什么这么判断
 5. 必须加括号注释非大众熟知的专业名词（标准：会用ChatGPT但不懂代码的HR是否认识）
 6. 必须客观中立，不讨好不吹捧，机会和风险都要说
+7. "对我们的启发"聚焦于 Agent 调度与进化平台（A2A 方向），从产品、业务、市场、组织判断角度说
 
 前几次失败的具体原因会在 user message 里列出，这次必须完全避开那些问题。`
 
@@ -37,13 +38,17 @@ const finalStrictSystemPrompt = `你是一位资深AI行业分析师。这是最
 //	%s: source context (raw item excerpts)
 const finalStrictUserPromptTemplate = `前几次输出全部失败，失败原因汇总：%s
 
-这是最后一次机会。请严格输出：
+这是最后一次机会。请严格输出下面两个模块，不允许任何偏差：
 
 📊 行业洞察（今日N条）
 输出3-4条，有序列表格式 1. 2. 3.，每条40-70字。
 每条严格使用嵌套格式，第一行是事实，缩进行用【洞察】标签给判断：
 1. 事实陈述（公司/产品/具体事件）
   【洞察】你的判断（为什么这么判断）
+
+💭 对我们的启发（今日N条）
+输出2-3条，有序列表 1. 2. 3.，每条30-60字。
+引用今天的具体事件，说清楚跟我们做的 Agent 调度平台有什么关系，机会和风险都说。
 
 绝对禁止事项：
 - 任何运维、调度、发送、监控、缓存、时间戳、频道、告警、补发相关词汇
@@ -176,6 +181,7 @@ func (g *openaiGenerator) GenerateInsight(ctx context.Context, in *Input) (*stor
 		lastReasons []string
 		lastRaw     string
 		industryMD  string
+		ourMD       string
 		attempts    int
 		lastHTTPErr error
 	)
@@ -223,6 +229,7 @@ func (g *openaiGenerator) GenerateInsight(ctx context.Context, in *Input) (*stor
 		vr := ValidateInsight(raw)
 		if vr.OK {
 			industryMD = vr.IndustryRaw
+			ourMD = vr.OurRaw
 			break
 		}
 
@@ -233,7 +240,7 @@ func (g *openaiGenerator) GenerateInsight(ctx context.Context, in *Input) (*stor
 		lastRaw = raw
 	}
 
-	if industryMD == "" {
+	if industryMD == "" || ourMD == "" {
 		if lastHTTPErr != nil {
 			return nil, fmt.Errorf("generate: all %d attempts failed, last transport error: %w",
 				attempts, lastHTTPErr)
@@ -244,16 +251,17 @@ func (g *openaiGenerator) GenerateInsight(ctx context.Context, in *Input) (*stor
 
 	// 保证日报关系图不缺席, 也不能只是 3 个截断节点的敷衍图。
 	// 缺图或图太简单时, 用规则化 graph LR 替换, 并移除旧 mermaid/孤儿标题。
-	combined := industryMD
+	combined := industryMD + "\n" + ourMD
 	if block := mermaidBlockRegex.FindString(combined); block == "" || mermaidLooksTooSimple(block) {
 		industryMD = stripMermaidArtifacts(industryMD)
+		ourMD = stripMermaidArtifacts(ourMD)
 		industryMD = ruleBasedMermaidDiagram(in) + "\n\n" + strings.TrimSpace(industryMD)
 	}
 
 	return &store.IssueInsight{
 		IssueID:     in.Issue.ID,
 		IndustryMD:  industryMD,
-		OurMD:       "",
+		OurMD:       ourMD,
 		Model:       g.cfg.Model,
 		Temperature: g.cfg.Temperature,
 		RetryCount:  attempts,
