@@ -9,16 +9,23 @@ jobs:
   trigger:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger CF Worker
+      - name: Trigger CF Worker (retry x3)
         run: |
           for i in 1 2 3; do
-            HTTP=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 \
+            echo "Attempt $i/3..."
+            RESP=$(curl -s -w "\n%{http_code}" --max-time 60 \
               "https://daily-briefing.18368151865.workers.dev/run")
-            echo "Attempt $i: HTTP $HTTP"
-            if [ "$HTTP" = "200" ]; then
-              echo "✅ Worker triggered successfully"
+            HTTP=$(echo "$RESP" | tail -1)
+            BODY=$(echo "$RESP" | head -n -1)
+            echo "  HTTP $HTTP — $BODY"
+            if echo "$BODY" | grep -q "^ok_"; then
+              echo "✅ Success"
               exit 0
             fi
-            sleep 30
+            if [ $i -lt 3 ]; then
+              echo "  Retrying in 60s..."
+              sleep 60
+            fi
           done
-          echo "⚠️ Worker may have failed after 3 attempts"
+          echo "❌ All 3 attempts failed"
+          exit 1
