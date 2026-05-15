@@ -1,174 +1,148 @@
-name: Daily Briefing
+name: AI Daily Briefing
 
 on:
   schedule:
-    - cron: '7 22 * * *'
+    - cron: '0 22 * * *'
   workflow_dispatch:
-    inputs:
-      run_date:
-        description: "Issue date in Asia/Shanghai, format YYYY-MM-DD"
-        required: false
-        type: string
-      no_images:
-        description: "Skip infocard/headline image generation"
-        required: false
-        default: false
-        type: boolean
-
-permissions:
-  contents: write
-
-concurrency:
-  group: briefing-daily
-  cancel-in-progress: false
 
 jobs:
-  daily:
+  briefing:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
-    env:
-      STATE_BRANCH: automation-state
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      OPENAI_BASE_URL: ${{ vars.OPENAI_BASE_URL }}
-      OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
-      SLACK_TEST_WEBHOOK: ${{ secrets.SLACK_TEST_WEBHOOK }}
-      SLACK_PROD_WEBHOOK: ${{ secrets.SLACK_PROD_WEBHOOK }}
-      AI_DAILY_SITE_PUSH_TOKEN: ${{ secrets.AI_DAILY_SITE_PUSH_TOKEN }}
-      BRIEFING_REPORT_URL_BASE: ${{ vars.BRIEFING_REPORT_URL_BASE }}
-      FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
-      FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
-      FEISHU_CHAT_ID: ${{ secrets.FEISHU_CHAT_ID }}
+    timeout-minutes: 10
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Checkout ai-daily-site
-        uses: actions/checkout@v4
-        with:
-          repository: zhuxinfei/ai-daily-site
-          ref: main
-          path: site
-          token: ${{ secrets.AI_DAILY_SITE_PUSH_TOKEN }}
-
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-          cache: true
-
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3
-        with:
-          hugo-version: "0.147.5"
-          extended: true
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install runtime dependencies
+      - name: Generate Daily Briefing
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install pillow
-          sudo apt-get update
-          sudo apt-get install -y fonts-noto-cjk
-
-      - name: Configure git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git -C site config user.name "github-actions[bot]"
-          git -C site config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Resolve runtime inputs
-        id: runtime
-        env:
-          INPUT_RUN_DATE: ${{ inputs.run_date }}
-          INPUT_NO_IMAGES: ${{ inputs.no_images }}
-          VAR_REPORT_URL: ${{ vars.BRIEFING_REPORT_URL_BASE }}
-        run: |
-          if [ -n "$INPUT_RUN_DATE" ]; then
-            run_date="$INPUT_RUN_DATE"
-          else
-            run_date="$(TZ=Asia/Shanghai date +%F)"
-          fi
-          if [ -n "$VAR_REPORT_URL" ]; then
-            report_url="$VAR_REPORT_URL"
-          else
-            report_url="https://zhuxinfei.github.io/ai-daily-site/{{YEAR}}/{{YEARMONTH}}/{{DATE}}/"
-          fi
-          no_images_flag=""
-          if [ "$INPUT_NO_IMAGES" = "true" ]; then
-            no_images_flag="--no-images"
-          fi
-          echo "RUN_DATE=$run_date" >> "$GITHUB_ENV"
-          echo "PUBLISH_TARGET=test" >> "$GITHUB_ENV" # test=skip Slack/Feishu prod, only site
-          echo "BRIEFING_MODE=prod" >> "$GITHUB_ENV"
-          echo "BRIEFING_SKIP_IF_REPORT_EXISTS=1" >> "$GITHUB_ENV"
-          echo "BRIEFING_REPORT_URL_BASE=$report_url" >> "$GITHUB_ENV"
-          echo "NO_IMAGES_FLAG=$no_images_flag" >> "$GITHUB_ENV"
-          echo "HEXTRA_SITE_DIR=$GITHUB_WORKSPACE/site" >> "$GITHUB_ENV"
-          echo "HUGO_BIN=$(command -v hugo)" >> "$GITHUB_ENV"
-
-      - name: Skip if daily report already exists
-        run: |
-          year="${RUN_DATE:0:4}"
-          yearmonth="${RUN_DATE:0:7}"
-          report_path="site/content/cn/${year}/${yearmonth}/${RUN_DATE}.md"
-          if [ -f "$report_path" ]; then
-            echo "SKIP_DAILY=true" >> "$GITHUB_ENV"
-            echo "daily already exists at ${report_path}, skipping"
-          else
-            echo "SKIP_DAILY=false" >> "$GITHUB_ENV"
-          fi
-
-      - name: Validate required secrets
-        if: env.SKIP_DAILY != 'true'
-        run: |
-          test -n "$OPENAI_API_KEY" || { echo "OPENAI_API_KEY is required"; exit 1; }
-          test -n "$AI_DAILY_SITE_PUSH_TOKEN" || { echo "AI_DAILY_SITE_PUSH_TOKEN is required"; exit 1; }
-          test -n "$SLACK_TEST_WEBHOOK" || echo "[warn] SLACK_TEST_WEBHOOK not set"
-          test -n "$FEISHU_APP_ID" || echo "[warn] FEISHU_APP_ID not set"
-
-      - name: Restore automation state
-        if: env.SKIP_DAILY != 'true'
-        run: bash ./scripts/gha_restore_state.sh
-
-      - name: Build briefing binary
-        if: env.SKIP_DAILY != 'true'
-        run: go build -o ./bin/briefing ./cmd/briefing
-
-      - name: Prepare database
-        if: env.SKIP_DAILY != 'true'
-        run: |
-          ./bin/briefing migrate
-          ./bin/briefing seed
-
-      - name: Run daily pipeline
-        if: env.SKIP_DAILY != 'true'
-        run: ./bin/briefing run --date "$RUN_DATE" --domain ai --target "$PUBLISH_TARGET" $NO_IMAGES_FLAG
-
-      - name: Save automation state
-        if: success() && env.SKIP_DAILY != 'true'
-        run: bash ./scripts/gha_save_state.sh
-
-      - name: Push ai-daily-site update
-        if: success() && env.SKIP_DAILY != 'true'
-        working-directory: site
-        run: |
-          git add -A
-          if git diff --cached --quiet; then
-            echo "site repo: no changes"
+          echo "=== AI Daily Briefing $(TZ=Asia/Shanghai date) ==="
+          
+          API="https://api.gjs.ink/v1/chat/completions"
+          KEY="${{ secrets.OPENAI_API_KEY }}"
+          MODEL="gpt-5.4"
+          GH_TOKEN="${{ secrets.AI_DAILY_SITE_PUSH_TOKEN }}"
+          TODAY=$(TZ=Asia/Shanghai date +%F)
+          TODAY_ZH=$(TZ=Asia/Shanghai date +%Y/%m/%d)
+          
+          # ---- 1. Fetch RSS headlines ----
+          echo "[1/4] Fetching RSS feeds..."
+          ARTICLES=""
+          for feed in \
+            "https://news.smol.ai/rss.xml" \
+            "https://the-decoder.com/feed/" \
+            "https://techcrunch.com/category/artificial-intelligence/feed/" \
+            "https://openai.com/news/rss.xml" \
+            "https://simonwillison.net/atom/everything/" \
+            "https://huggingface.co/blog/feed.xml" \
+            "https://rss.arxiv.org/rss/cs.AI"; do
+            XML=$(curl -sL --max-time 10 -H "User-Agent: Mozilla/5.0" "$feed" 2>/dev/null || echo "")
+            if [ -n "$XML" ]; then
+              # Extract titles + links
+              echo "$XML" | grep -oP '<item>.*?</item>' | head -5 | while read -r item; do
+                title=$(echo "$item" | grep -oP '<title>\K[^<]+' | head -1 | sed 's/<!\[CDATA\[//;s/\]\]>//')
+                link=$(echo "$item" | grep -oP '<link>\K[^<]+' | head -1)
+                [ -n "$title" ] && ARTICLES="$ARTICLES
+          $title | $link | $(echo "$feed" | cut -d/ -f3)"
+              done 2>/dev/null
+            fi
+          done
+          
+          COUNT=$(echo "$ARTICLES" | grep -c "|" 2>/dev/null || echo 0)
+          echo "  $COUNT articles"
+          
+          if [ "$COUNT" -lt 8 ]; then
+            echo "  Too few articles, aborting"
             exit 0
           fi
-          git commit -m "chore(site): update daily briefing for ${RUN_DATE}"
-          git push origin HEAD:main
-
-      - name: Notify on failure
-        if: failure() && env.SKIP_DAILY != 'true'
-        run: |
-          echo "Workflow failed for date: ${RUN_DATE:-unknown}"
-          echo "Check: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          
+          # ---- 2. Generate sections (LLM call 1) ----
+          echo "[2/4] Generating sections..."
+          SECTIONS_PROMPT="你是专业的AI日报编辑。根据以下AI新闻标题生成中文日报。
+          格式: ### 🔵 产品与功能更新 / 🟢 前沿研究 / 🟡 行业展望 / 🟣 开源TOP / 🔴 社媒分享
+          每条: \"1. **粗体标题**\n3-5句分析\n[锚文本](URL)\"
+          专业名词加括号注释,每板块3-5条,严格来源于原材料。
+          
+          新闻标题: $ARTICLES"
+          
+          SECTIONS=$(curl -s --max-time 30 -X POST "$API" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $KEY" \
+            -d "$(python3 -c "
+          import json,sys
+          print(json.dumps({'model':'$MODEL','messages':[
+            {'role':'system','content':'你是专业的AI日报编辑。面向非技术读者,专业名词必须加括号注释。严格按格式输出。'},
+            {'role':'user','content':sys.argv[1]}
+          ],'temperature':0.3,'max_tokens':6000}))
+          " "$SECTIONS_PROMPT")" | python3 -c "import sys,json; print(json.load(sys.stdin)['choices'][0]['message']['content'])" 2>/dev/null)
+          
+          if [ -z "$SECTIONS" ]; then
+            echo "Section generation failed"; exit 1
+          fi
+          echo "  $(echo "$SECTIONS" | wc -c) chars"
+          
+          # ---- 3. Generate insight (LLM call 2) ----
+          echo "[3/4] Generating insights..."
+          INSIGHT=$(curl -s --max-time 30 -X POST "$API" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $KEY" \
+            -d "$(python3 -c "
+          import json,sys
+          print(json.dumps({'model':'$MODEL','messages':[
+            {'role':'system','content':'你是资深AI行业分析师。输出3-4条行业洞察,用\"1. 事实\n  【洞察】判断\"嵌套格式。至少2条整合多条新闻。专业名词加括号注释。'},
+            {'role':'user','content':'以下为今日AI日报。请输出📊行业洞察(3-4条)和🗺️mermaid关系图。\n\n'+sys.argv[1]}
+          ],'temperature':0.3,'max_tokens':3000}))
+          " "$SECTIONS")" | python3 -c "import sys,json; print(json.load(sys.stdin)['choices'][0]['message']['content'])" 2>/dev/null)
+          
+          # ---- 4. Assemble and push ----
+          echo "[4/4] Assembling and pushing..."
+          SUMMARY=$(echo "$SECTIONS" | head -10 | curl -s --max-time 15 -X POST "$API" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $KEY" \
+            -d "$(python3 -c "
+          import json,sys
+          print(json.dumps({'model':'$MODEL','messages':[
+            {'role':'user','content':'用3句话概括以下AI日报要闻:\\n'+sys.argv[1]}
+          ],'max_tokens':300}))
+          " "$(echo "$SECTIONS" | head -c 3000)")" | python3 -c "import sys,json; print(json.load(sys.stdin)['choices'][0]['message']['content'])" 2>/dev/null)
+          
+          BODY="## **今日摘要**\n\n$SUMMARY\n\n$SECTIONS"
+          [ -n "$INSIGHT" ] && BODY="$BODY\n\n---\n\n$INSIGHT"
+          
+          DESC=$(echo "$BODY" | head -c 120 | tr '\n' ' ' | sed 's/"/\\"/g')
+          
+          MARKDOWN="---
+          linkTitle: \"$(echo $TODAY_ZH | cut -c6-) AI资讯\"
+          title: \"AI资讯日报 $TODAY_ZH\"
+          weight: $(TZ=Asia/Shanghai date +%d)
+          breadcrumbs: false
+          comments: false
+          description: \"$DESC...\"
+          ---
+          
+          > AI 早报 · 每日早读 · 全网深度聚合
+          
+          $BODY"
+          
+          FILE="content/cn/${TODAY:0:4}/${TODAY:0:7}/${TODAY}.md"
+          
+          # Check if exists
+          SHA=$(curl -s -H "Authorization: token $GH_TOKEN" \
+            "https://api.github.com/repos/zhuxinfei/ai-daily-site/contents/$FILE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('sha',''))" 2>/dev/null)
+          
+          PAYLOAD=$(python3 -c "
+          import json,base64,sys
+          d={'message':'chore: daily briefing $TODAY','content':base64.b64encode(sys.argv[1].encode()).decode()}
+          if '$SHA': d['sha']='$SHA'
+          print(json.dumps(d))
+          " "$MARKDOWN")
+          
+          HTTP=$(curl -s -o /dev/null -w "%{http_code}" -X PUT \
+            -H "Authorization: token $GH_TOKEN" \
+            -H "Content-Type: application/json" \
+            "https://api.github.com/repos/zhuxinfei/ai-daily-site/contents/$FILE" \
+            -d "$PAYLOAD")
+          
+          echo "  Push: HTTP $HTTP"
+          if [ "$HTTP" = "200" ] || [ "$HTTP" = "201" ]; then
+            echo "✅ Published: https://zhuxinfei.github.io/ai-daily-site/"
+          else
+            echo "❌ Push failed"
+            exit 1
+          fi
