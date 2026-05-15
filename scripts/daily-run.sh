@@ -19,21 +19,22 @@ export BRIEFING_REPORT_URL_BASE="https://zhuxinfei.github.io/ai-daily-site/{{YEA
 export HEXTRA_SITE_DIR="$HOME/Downloads/development/ai-daily-site-main"
 export PUBLISH_TARGET="test" BRIEFING_MODE="prod" BRIEFING_SKIP_IF_REPORT_EXISTS="1"
 export SLACK_TEST_WEBHOOK="https://hooks.slack.com/services/disabled"
-export FEISHU_APP_ID="disabled" FEISHU_APP_SECRET="disabled" FEISHU_CHAT_ID="disabled"
+export FEISHU_APP_ID="disabled"
 
 BRIEFING_DIR="$HOME/Downloads/development/ai-daily-briefing-main"
 SITE_DIR="$HOME/Downloads/development/ai-daily-site-main"
 
 echo "[1] Build..."
 cd "$BRIEFING_DIR"
-git pull origin mainmkdir -p "$GOPATH" "$GOMODCACHE"
+git pull origin main
+mkdir -p "$GOPATH" "$GOMODCACHE"
 go build -o /tmp/briefing ./cmd/briefing
 echo "  $(ls -lh /tmp/briefing | awk '{print $5}')"
 
 echo "[2] Update site repo..."
 cd "$SITE_DIR" && git pull origin main
 
-echo "[3] Migrate & seed..."
+echo "[3] Seed..."
 cd "$BRIEFING_DIR"
 /tmp/briefing seed
 
