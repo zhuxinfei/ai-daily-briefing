@@ -8,12 +8,74 @@ on:
 jobs:
   briefing:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_BASE_URL: ${{ vars.OPENAI_BASE_URL || 'https://api.gjs.ink' }}
       OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-5.4' }}
       AI_DAILY_SITE_PUSH_TOKEN: ${{ secrets.AI_DAILY_SITE_PUSH_TOKEN }}
+      SLACK_TEST_WEBHOOK: ${{ secrets.SLACK_TEST_WEBHOOK || 'https://hooks.slack.com/services/disabled' }}
+      SLACK_PROD_WEBHOOK: ${{ secrets.SLACK_PROD_WEBHOOK || 'https://hooks.slack.com/services/disabled' }}
+      FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID || 'disabled' }}
+      FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET || 'disabled' }}
+      FEISHU_CHAT_ID: ${{ secrets.FEISHU_CHAT_ID || 'disabled' }}
+      BRIEFING_REPORT_URL_BASE: ${{ vars.BRIEFING_REPORT_URL_BASE || 'https://zhuxinfei.github.io/ai-daily-site/{{YEAR}}/{{YEARMONTH}}/{{DATE}}/' }}
+      PUBLISH_TARGET: test
+      BRIEFING_MODE: prod
+      BRIEFING_SKIP_IF_REPORT_EXISTS: '1'
     steps:
       - uses: actions/checkout@v4
-      - name: Run Daily Briefing
-        run: python3 scripts/gha_daily.py
+        with:
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        with:
+          repository: zhuxinfei/ai-daily-site
+          ref: main
+          path: site
+          token: ${{ secrets.AI_DAILY_SITE_PUSH_TOKEN }}
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pillow
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C site config user.name "github-actions[bot]"
+          git -C site config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Run pipeline
+        run: |
+          RUN_DATE=$(TZ=Asia/Shanghai date +%F)
+          echo "Date: $RUN_DATE"
+          export HEXTRA_SITE_DIR="$GITHUB_WORKSPACE/site"
+          go build -o ./bin/briefing ./cmd/briefing
+          ./bin/briefing migrate
+          ./bin/briefing seed
+          ./bin/briefing run --date "$RUN_DATE" --domain ai --target test
+
+      - name: Push site update
+        if: success()
+        working-directory: site
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "chore: daily briefing $(TZ=Asia/Shanghai date +%F)"
+          git push origin HEAD:main
