@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """AI Daily Briefing — GHA self-contained pipeline. RSS→LLM→push, ~30s."""
 
-import json, base64, urllib.request, ssl, re, os, datetime
+import json, base64, urllib.request, ssl, re, os, datetime, time
 
 API = "https://api.gjs.ink/v1/chat/completions"
 KEY = os.environ["OPENAI_API_KEY"]
@@ -29,11 +29,18 @@ def llm(system, user, max_tokens=6000):
         "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
         "temperature": 0.3, "max_tokens": max_tokens
     }).encode()
-    req = urllib.request.Request(API, data=body, headers={
-        "Content-Type": "application/json", "Authorization": f"Bearer {KEY}"
-    })
-    resp = urllib.request.urlopen(req, timeout=60, context=ctx)
-    return json.loads(resp.read())["choices"][0]["message"]["content"]
+    for attempt in range(3):
+        try:
+            req = urllib.request.Request(API, data=body, headers={
+                "Content-Type": "application/json", "Authorization": f"Bearer {KEY}"
+            })
+            resp = urllib.request.urlopen(req, timeout=120, context=ctx)
+            return json.loads(resp.read())["choices"][0]["message"]["content"]
+        except Exception as e:
+            print(f"  LLM attempt {attempt+1}/3 failed: {e}")
+            if attempt < 2:
+                time.sleep(10)
+    raise Exception("LLM failed after 3 attempts")
 
 today = datetime.date.today().isoformat()
 today_zh = datetime.datetime.now().strftime("%Y/%m/%d")
