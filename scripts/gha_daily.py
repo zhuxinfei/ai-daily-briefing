@@ -42,8 +42,10 @@ def llm(system, user, max_tokens=6000):
                 time.sleep(10)
     raise Exception("LLM failed after 3 attempts")
 
-today = datetime.date.today().isoformat()
-today_zh = datetime.datetime.now().strftime("%Y/%m/%d")
+tz_shanghai = datetime.timezone(datetime.timedelta(hours=8))
+now = datetime.datetime.now(tz_shanghai)
+today = now.date().isoformat()
+today_zh = now.strftime("%Y/%m/%d")
 print(f"[{today}] AI Daily Briefing")
 
 # Step 1: Fetch RSS
@@ -104,7 +106,7 @@ if insight:
 desc = body[:120].replace('"', '\\"').replace('\n', ' ')
 
 markdown = f"""---
-linkTitle: "{today_zh[5:]} AI资讯"
+linkTitle: "{now.strftime('%m-%d')} AI资讯"
 title: "AI资讯日报 {today_zh}"
 weight: {datetime.date.today().day}
 breadcrumbs: false
