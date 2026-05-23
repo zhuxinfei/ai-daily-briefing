@@ -91,6 +91,19 @@ jobs:
           git commit -m "chore: daily briefing $(TZ=Asia/Shanghai date +%F)"
           git push origin HEAD:main
 
+      - name: Notify Feishu
+        if: always()
+        env:
+          FEISHU_WEBHOOK: https://open.feishu.cn/open-apis/bot/v2/hook/b69fabf6-5922-4460-9055-c73322301316
+        run: |
+          RD=$(TZ=Asia/Shanghai date +%F)
+          FILE="${{ github.workspace }}/site/content/cn/${RD:0:4}/${RD:0:7}/${RD}.md"
+          if [ -f "$FILE" ]; then
+            python3 scripts/feishu_notify.py "$FILE"
+          else
+            echo "No file to notify: $FILE"
+          fi
+
       - name: Save state
         if: always()
         run: bash scripts/gha_save_state.sh
