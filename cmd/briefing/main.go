@@ -211,7 +211,7 @@ func main() {
 	case "run":
 		// #9: 全局 pipeline 超时 30 分钟, 防止 LLM hang / 网络卡死导致
 		// pipeline 无限等待. 只对 run 子命令生效.
-		runCtx, runCancel := context.WithTimeout(ctx, 30*time.Minute)
+		runCtx, runCancel := context.WithTimeout(ctx, 60*time.Minute)
 		err = runCommand(runCtx, cfg, date, gf)
 		runCancel()
 	case "repair":
