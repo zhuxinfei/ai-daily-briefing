@@ -150,27 +150,21 @@ func ValidateInsight(raw string) ValidationResult {
 
 	var reasons []string
 
-	if industryRaw == "" || ourRaw == "" {
-		reasons = append(reasons, "缺少\"行业洞察\"或\"对我们的启发\"模块")
+	if industryRaw == "" {
+		reasons = append(reasons, "缺少\"行业洞察\"模块")
 	}
 
 	industryCount := countNumberedItems(industryRaw)
-	ourCount := countNumberedItems(ourRaw)
 
 	if industryCount < 3 || industryCount > 4 {
 		reasons = append(reasons,
 			"行业洞察条数异常（当前 "+itoa(industryCount)+" 条）")
 	}
-	if ourCount < 2 || ourCount > 3 {
-		reasons = append(reasons,
-			"对我们的启发条数异常（当前 "+itoa(ourCount)+" 条）")
-	}
+
 	if !hasSequentialNumbering(industryRaw) {
 		reasons = append(reasons, "行业洞察编号不连续或未从 1 开始")
 	}
-	if !hasSequentialNumbering(ourRaw) {
-		reasons = append(reasons, "对我们的启发编号不连续或未从 1 开始")
-	}
+	
 	if industryCount > 0 && strings.Count(industryRaw, "【洞察】") < industryCount {
 		reasons = append(reasons, "行业洞察缺少对应的【洞察】判断行")
 	}
