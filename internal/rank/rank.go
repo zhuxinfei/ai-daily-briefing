@@ -702,7 +702,7 @@ func (r *llmRanker) chatComplete(parent context.Context, system, user string) (s
 		return "", fmt.Errorf("rank marshal: %w", err)
 	}
 
-	url := strings.TrimRight(r.cfg.BaseURL, "/") + "/v1/chat/completions"
+	url := chatCompletionsURL(r.cfg.BaseURL)
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(buf))
 	if err != nil {
 		return "", fmt.Errorf("rank new request: %w", err)
@@ -743,4 +743,12 @@ func (r *llmRanker) chatComplete(parent context.Context, system, user string) (s
 		return "", errors.New("rank openai: empty choices")
 	}
 	return cr.Choices[0].Message.Content, nil
+}
+
+func chatCompletionsURL(baseURL string) string {
+	base := strings.TrimRight(baseURL, "/")
+	if strings.HasSuffix(base, "/v1") {
+		return base + "/chat/completions"
+	}
+	return base + "/v1/chat/completions"
 }

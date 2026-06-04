@@ -3,7 +3,8 @@
 
 import json, base64, urllib.request, ssl, re, os, datetime, time
 
-API = "https://api.gjs.ink/v1/chat/completions"
+BASE_URL = os.environ["OPENAI_BASE_URL"].rstrip("/")
+API = BASE_URL + ("/chat/completions" if BASE_URL.endswith("/v1") else "/v1/chat/completions")
 KEY = os.environ["OPENAI_API_KEY"]
 MODEL = os.environ.get("OPENAI_MODEL", "gpt-5.4")
 GH_TOKEN = os.environ["AI_DAILY_SITE_PUSH_TOKEN"]

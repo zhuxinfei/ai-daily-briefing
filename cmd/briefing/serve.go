@@ -403,7 +403,7 @@ func loadIssueContext(dbPath, issueDate string) string {
 	return out
 }
 
-// callChatLLM does a single POST to {BaseURL}/v1/chat/completions
+// callChatLLM does a single POST to the configured chat/completions endpoint
 // with the pre-built messages slice. Returns the assistant reply text.
 func callChatLLM(parent context.Context, cfg *config.Config, messages []map[string]any) (string, error) {
 	reqBody := map[string]any{
@@ -420,7 +420,7 @@ func callChatLLM(parent context.Context, cfg *config.Config, messages []map[stri
 	ctx, cancel := context.WithTimeout(parent, 60*time.Second)
 	defer cancel()
 
-	apiURL := strings.TrimRight(cfg.LLM.BaseURL, "/") + "/v1/chat/completions"
+	apiURL := chatCompletionsURL(cfg.LLM.BaseURL)
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, apiURL, bytes.NewReader(buf))
 	if err != nil {
 		return "", fmt.Errorf("new request: %w", err)

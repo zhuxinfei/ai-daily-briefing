@@ -72,7 +72,7 @@ func ChatComplete(parent context.Context, hc *http.Client, cfg Config, system, u
 		return "", fmt.Errorf("marshal: %w", err)
 	}
 
-	apiURL := strings.TrimRight(cfg.BaseURL, "/") + "/v1/chat/completions"
+	apiURL := chatCompletionsURL(cfg.BaseURL)
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, apiURL, bytes.NewReader(buf))
 	if err != nil {
 		return "", fmt.Errorf("new request: %w", err)
@@ -108,4 +108,12 @@ func ChatComplete(parent context.Context, hc *http.Client, cfg Config, system, u
 		return "", fmt.Errorf("empty choices")
 	}
 	return parsed.Choices[0].Message.Content, nil
+}
+
+func chatCompletionsURL(baseURL string) string {
+	base := strings.TrimRight(baseURL, "/")
+	if strings.HasSuffix(base, "/v1") {
+		return base + "/chat/completions"
+	}
+	return base + "/v1/chat/completions"
 }

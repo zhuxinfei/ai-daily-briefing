@@ -421,7 +421,28 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 		}
 	}
 
-	// --- 6e. Persist FINAL classify result ------------------------------
+	// --- 6e. Open source coverage rescue --------------------------------
+	// ossinsight can return plenty of GitHub trending repos while the LLM
+	// ranker still drops all project items because the prompt is intentionally
+	// strict about stars_total / stars+. Do not publish an empty "开源TOP项目"
+	// heading when project candidates exist in the current window.
+	minOpenSource := 0
+	for _, sec := range cfg.Sections {
+		if sec.ID == store.SectionOpenSource {
+			minOpenSource = sec.MinItems
+			break
+		}
+	}
+	if minOpenSource > 0 {
+		if moved := backfillOpenSourceCoverageFromPool(sectioned, activeFiltered, minOpenSource, sourceCategories, sourcePriorities); moved > 0 {
+			stage(fmt.Sprintf("classify rescue: backfilled %d GitHub trending candidates into opensource", moved))
+			for secID, secItems := range sectioned {
+				stage(fmt.Sprintf("classify(final): %s → %d items", secID, len(secItems)))
+			}
+		}
+	}
+
+	// --- 6f. Persist FINAL classify result ------------------------------
 	// 必须在 extended window + rescue 之后再落盘, 否则 repair / status 读到的
 	// 会是扩窗前的旧分类结果, 跟最终 compose 输入不一致.
 	classifiedInserted := 0
@@ -2289,6 +2310,111 @@ func backfillProductCoverageFromPool(
 	return moved
 }
 
+func backfillOpenSourceCoverageFromPool(
+	sectioned map[string][]*store.RawItem,
+	pool []*store.RawItem,
+	minOpenSource int,
+	sourceCategories map[int64]string,
+	sourcePriorities map[int64]int,
+) int {
+	if minOpenSource <= 0 {
+		return 0
+	}
+	current := len(sectioned[store.SectionOpenSource])
+	if current >= minOpenSource {
+		return 0
+	}
+	selected := map[int64]bool{}
+	for _, secItems := range sectioned {
+		for _, it := range secItems {
+			if it != nil && it.ID != 0 {
+				selected[it.ID] = true
+			}
+		}
+	}
+	type candidate struct {
+		item       *store.RawItem
+		priority   int
+		rank       int
+		starsTotal int
+		starsDelta int
+	}
+	var candidates []candidate
+	for _, it := range pool {
+		if it == nil || it.ID == 0 || selected[it.ID] {
+			continue
+		}
+		cat := ""
+		if sourceCategories != nil {
+			cat = strings.ToLower(strings.TrimSpace(sourceCategories[it.SourceID]))
+		}
+		if cat != "project" {
+			continue
+		}
+		priority := 5
+		if sourcePriorities != nil {
+			if p, ok := sourcePriorities[it.SourceID]; ok {
+				priority = p
+			}
+		}
+		rank, starsTotal, starsDelta := repoMetadataSignals(it)
+		candidates = append(candidates, candidate{
+			item:       it,
+			priority:   priority,
+			rank:       rank,
+			starsTotal: starsTotal,
+			starsDelta: starsDelta,
+		})
+	}
+	sort.SliceStable(candidates, func(i, j int) bool {
+		// ossinsight rank is the primary signal; lower is better.
+		if candidates[i].rank != candidates[j].rank {
+			if candidates[i].rank == 0 {
+				return false
+			}
+			if candidates[j].rank == 0 {
+				return true
+			}
+			return candidates[i].rank < candidates[j].rank
+		}
+		if candidates[i].starsTotal != candidates[j].starsTotal {
+			return candidates[i].starsTotal > candidates[j].starsTotal
+		}
+		if candidates[i].starsDelta != candidates[j].starsDelta {
+			return candidates[i].starsDelta > candidates[j].starsDelta
+		}
+		if candidates[i].priority != candidates[j].priority {
+			return candidates[i].priority > candidates[j].priority
+		}
+		return candidates[i].item.ID < candidates[j].item.ID
+	})
+	needed := minOpenSource - current
+	moved := 0
+	for _, c := range candidates {
+		if needed <= 0 {
+			break
+		}
+		sectioned[store.SectionOpenSource] = append(sectioned[store.SectionOpenSource], c.item)
+		selected[c.item.ID] = true
+		needed--
+		moved++
+	}
+	return moved
+}
+
+func repoMetadataSignals(it *store.RawItem) (rank int, starsTotal int, starsDelta int) {
+	if it == nil || strings.TrimSpace(it.MetadataJSON) == "" {
+		return 0, 0, 0
+	}
+	var meta struct {
+		Rank       int `json:"rank"`
+		StarsTotal int `json:"stars_total"`
+		Stars      int `json:"stars"`
+	}
+	_ = json.Unmarshal([]byte(it.MetadataJSON), &meta)
+	return meta.Rank, meta.StarsTotal, meta.Stars
+}
+
 func productBackfillWeight(it *store.RawItem) int {
 	if it == nil {
 		return 0
@@ -2549,7 +2675,7 @@ Meta 首个前沿模型 Muse Spark 转闭源，Claude Sonnet 4.6 一天连发编
 	callCtx, cancel := context.WithTimeout(ctx, llmCfg.LLMTimeout())
 	defer cancel()
 
-	apiURL := strings.TrimRight(llmCfg.BaseURL, "/") + "/v1/chat/completions"
+	apiURL := chatCompletionsURL(llmCfg.BaseURL)
 	req, err := http.NewRequestWithContext(callCtx, http.MethodPost, apiURL, bytes.NewReader(buf))
 	if err != nil {
 		return "", fmt.Errorf("new summary request: %w", err)
@@ -2590,10 +2716,12 @@ Meta 首个前沿模型 Muse Spark 转闭源，Claude Sonnet 4.6 一天连发编
 		return "", errors.New("summary: empty choices")
 	}
 	out := strings.TrimSpace(parsed.Choices[0].Message.Content)
-	out = strings.ReplaceAll(out, "```", "")
 	var lines []string
 	for _, line := range strings.Split(out, "\n") {
 		line = strings.TrimSpace(line)
+		if strings.HasPrefix(line, "```") {
+			continue
+		}
 		if line == "" {
 			continue
 		}
@@ -2602,7 +2730,18 @@ Meta 首个前沿模型 Muse Spark 转闭源，Claude Sonnet 4.6 一天连发编
 	if len(lines) > 3 {
 		lines = lines[:3]
 	}
+	if len(lines) == 0 {
+		return "", errors.New("summary: empty content after cleanup")
+	}
 	return strings.Join(lines, "\n"), nil
+}
+
+func chatCompletionsURL(baseURL string) string {
+	base := strings.TrimRight(baseURL, "/")
+	if strings.HasSuffix(base, "/v1") {
+		return base + "/chat/completions"
+	}
+	return base + "/v1/chat/completions"
 }
 
 // postSlackPayload sends payload to webhookURL and returns a Delivery

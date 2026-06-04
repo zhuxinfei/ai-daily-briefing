@@ -231,7 +231,11 @@ llm_ping() {
         return 0
     fi
 
-    local url="${OPENAI_BASE_URL%/}/v1/chat/completions"
+    local base="${OPENAI_BASE_URL%/}"
+    local url="$base/v1/chat/completions"
+    if [[ "$base" == */v1 ]]; then
+        url="$base/chat/completions"
+    fi
     local model="${OPENAI_MODEL:-gpt-5.4}"
     local body_file="/tmp/claude_ping_body.txt"
     local body

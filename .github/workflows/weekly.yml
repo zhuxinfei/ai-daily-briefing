@@ -25,7 +25,7 @@ jobs:
     timeout-minutes: 45
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      OPENAI_BASE_URL: ${{ vars.OPENAI_BASE_URL || 'https://api.gjs.ink' }}
+      OPENAI_BASE_URL: ${{ vars.OPENAI_BASE_URL }}
       OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-5.4' }}
       AI_DAILY_SITE_PUSH_TOKEN: ${{ secrets.AI_DAILY_SITE_PUSH_TOKEN }}
       SLACK_TEST_WEBHOOK: ${{ secrets.SLACK_TEST_WEBHOOK || 'https://hooks.slack.com/services/disabled' }}
@@ -73,6 +73,23 @@ jobs:
 
       - name: Restore automation state
         run: bash scripts/gha_restore_state.sh
+
+      - name: Preflight LLM config
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "::error::OPENAI_API_KEY secret is not set"
+            exit 1
+          fi
+          if [ -z "$OPENAI_BASE_URL" ]; then
+            echo "::error::OPENAI_BASE_URL repository variable is not set"
+            exit 1
+          fi
+          case "$OPENAI_BASE_URL" in
+            *api.gjs.ink*)
+              echo "::error::api.gjs.ink is retired. Set vars.OPENAI_BASE_URL to a live OpenAI-compatible endpoint."
+              exit 1
+              ;;
+          esac
 
       - name: Run weekly pipeline
         env:

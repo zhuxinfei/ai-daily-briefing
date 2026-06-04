@@ -590,7 +590,7 @@ func (c *llmClassifier) chatComplete(parent context.Context, system, user string
 		return "", fmt.Errorf("classify marshal: %w", err)
 	}
 
-	url := strings.TrimRight(c.cfg.BaseURL, "/") + "/v1/chat/completions"
+	url := chatCompletionsURL(c.cfg.BaseURL)
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(buf))
 	if err != nil {
 		return "", fmt.Errorf("classify new request: %w", err)
@@ -628,4 +628,12 @@ func (c *llmClassifier) chatComplete(parent context.Context, system, user string
 		return "", errors.New("classify openai: empty choices")
 	}
 	return cr.Choices[0].Message.Content, nil
+}
+
+func chatCompletionsURL(baseURL string) string {
+	base := strings.TrimRight(baseURL, "/")
+	if strings.HasSuffix(base, "/v1") {
+		return base + "/chat/completions"
+	}
+	return base + "/v1/chat/completions"
 }

@@ -31,7 +31,7 @@ llm:
   base_url_env: OPENAI_BASE_URL
   api_key_env: OPENAI_API_KEY
   model_env: OPENAI_MODEL
-  default_base_url: "http://64.186.239.99:8080"
+  default_base_url: ""
   default_model: "gpt-5.4"
   temperature: 0.3
   max_tokens: 2000

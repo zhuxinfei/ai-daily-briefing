@@ -66,7 +66,7 @@ const finalStrictUserPromptTemplate = `前几次输出全部失败，失败原�
 //
 // All fields must be set via the caller (typically read from env by main.go):
 //
-//	BaseURL     - e.g. "http://64.186.239.99:8080"
+//	BaseURL     - e.g. "https://testvideo.site/v1"
 //	APIKey      - API key for the endpoint
 //	Model       - e.g. "gpt-5.4"
 //
@@ -476,7 +476,7 @@ func (g *openaiGenerator) promptForAttempt(
 	}
 }
 
-// chatComplete does a single POST to {BaseURL}/v1/chat/completions with a
+// chatComplete does a single POST to the configured chat/completions endpoint with a
 // per-request context timeout of g.cfg.Timeout. Returns the assistant text
 // on success or a non-nil error describing the transport / API failure.
 func (g *openaiGenerator) chatComplete(parent context.Context, system, user string, maxTokens int) (string, error) {
@@ -497,7 +497,7 @@ func (g *openaiGenerator) chatComplete(parent context.Context, system, user stri
 		return "", fmt.Errorf("marshal request: %w", err)
 	}
 
-	url := strings.TrimRight(g.cfg.BaseURL, "/") + "/v1/chat/completions"
+	url := chatCompletionsURL(g.cfg.BaseURL)
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(buf))
 	if err != nil {
 		return "", fmt.Errorf("new request: %w", err)
@@ -535,6 +535,14 @@ func (g *openaiGenerator) chatComplete(parent context.Context, system, user stri
 		return "", errors.New("openai: empty choices")
 	}
 	return cr.Choices[0].Message.Content, nil
+}
+
+func chatCompletionsURL(baseURL string) string {
+	base := strings.TrimRight(baseURL, "/")
+	if strings.HasSuffix(base, "/v1") {
+		return base + "/chat/completions"
+	}
+	return base + "/v1/chat/completions"
 }
 
 // composeDigestMarkdown joins all IssueItems into a single markdown document

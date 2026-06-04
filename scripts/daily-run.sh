@@ -11,8 +11,8 @@ export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
 export GOPROXY="https://goproxy.cn,direct"
 export GOTOOLCHAIN=auto
 
-export OPENAI_API_KEY="YOUR_OPENAI_API_KEY"
-export OPENAI_BASE_URL="https://api.gjs.ink"
+export OPENAI_API_KEY="${OPENAI_API_KEY:-YOUR_OPENAI_API_KEY}"
+export OPENAI_BASE_URL="${OPENAI_BASE_URL:-https://testvideo.site/v1}"
 export OPENAI_MODEL="gpt-5.4"
 export AI_DAILY_SITE_PUSH_TOKEN="YOUR_GITHUB_PAT"
 export BRIEFING_REPORT_URL_BASE="https://zhuxinfei.github.io/ai-daily-site/{{YEAR}}/{{YEARMONTH}}/{{DATE}}/"
