@@ -93,6 +93,7 @@ jobs:
           PUBLISH_TARGET: test
           BRIEFING_MODE: prod
           BRIEFING_SKIP_IF_REPORT_EXISTS: '1'
+          BRIEFING_PERSIST_DEDUP: '1'
         run: |
           RUN_DATE=$(TZ=Asia/Shanghai date +%F)
           ./bin/briefing run --date "$RUN_DATE" --domain ai --target test

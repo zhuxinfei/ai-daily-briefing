@@ -164,6 +164,15 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 	// briefing 中推送过的 URL. 这样即使同一天多次 run, 每次也都是全新内容.
 	// 实现 fail-soft: dedup 是优化项, 任何错误都不阻塞 pipeline.
 	sentURLs := loadSentURLs()
+	if siteDir := strings.TrimSpace(os.Getenv("HEXTRA_SITE_DIR")); siteDir != "" {
+		siteSentURLs := loadPublishedSiteURLs(siteDir)
+		if len(siteSentURLs) > 0 {
+			for u := range siteSentURLs {
+				sentURLs[u] = true
+			}
+			stage(fmt.Sprintf("dedup: loaded %d URLs from published site history", len(siteSentURLs)))
+		}
+	}
 	skipCrossRunDedup := rerunExistingIssue != nil
 	if skipCrossRunDedup {
 		stage("dedup: same-date rerun detected, skipping sent_urls / sent_titles history")
@@ -1102,7 +1111,7 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 	// 但不返回 error (推送已经成功, dedup 优化失败不影响本次结果).
 	// merge: HEAD 的 target=test 不污染 + codex 的 skipCrossRunDedup (same-date rerun)
 	// 两个条件都要满足才 persist; 否则按触发条件打不同 log.
-	shouldPersistDedup := !skipCrossRunDedup && gf.target != "test"
+	shouldPersistDedup := !skipCrossRunDedup && shouldPersistDedupForRun(gf)
 	if shouldPersistDedup {
 		if newSent := collectIssueItemSourceURLs(issueItems); len(newSent) > 0 {
 			appendSentURLs(newSent)
@@ -1790,11 +1799,35 @@ func loadSentURLs() map[string]bool {
 		return set
 	}
 	for _, line := range strings.Split(string(data), "\n") {
-		line = strings.TrimSpace(line)
-		if line != "" {
-			set[line] = true
+		if u := normalizeSentURL(line); u != "" {
+			set[u] = true
 		}
 	}
+	return set
+}
+
+func loadPublishedSiteURLs(siteDir string) map[string]bool {
+	set := map[string]bool{}
+	contentDir := filepath.Join(siteDir, "content", "cn")
+	linkRe := regexp.MustCompile(`https?://[^)\s<>"']+`)
+	_ = filepath.Walk(contentDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil || info == nil || info.IsDir() {
+			return nil
+		}
+		if !strings.HasSuffix(strings.ToLower(info.Name()), ".md") {
+			return nil
+		}
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return nil
+		}
+		for _, m := range linkRe.FindAllString(string(data), -1) {
+			if u := normalizeSentURL(m); u != "" {
+				set[u] = true
+			}
+		}
+		return nil
+	})
 	return set
 }
 
@@ -1815,7 +1848,7 @@ func appendSentURLs(urls []string) {
 	}
 	defer f.Close()
 	for _, u := range urls {
-		u = strings.TrimSpace(u)
+		u = normalizeSentURL(u)
 		if u == "" {
 			continue
 		}
@@ -1837,12 +1870,43 @@ func dedupRawItemsBySent(items []*store.RawItem, sent map[string]bool) []*store.
 		if it == nil {
 			continue
 		}
-		if sent[it.URL] {
+		if sent[normalizeSentURL(it.URL)] {
 			continue
 		}
 		out = append(out, it)
 	}
 	return out
+}
+
+func normalizeSentURL(raw string) string {
+	raw = strings.TrimSpace(raw)
+	raw = strings.TrimRight(raw, ".,;，。；")
+	if raw == "" {
+		return ""
+	}
+	u, err := url.Parse(raw)
+	if err != nil || u.Scheme == "" || u.Host == "" {
+		return raw
+	}
+	u.Fragment = ""
+	u.RawQuery = ""
+	u.Host = strings.ToLower(u.Host)
+	u.Path = strings.TrimRight(u.EscapedPath(), "/")
+	if strings.EqualFold(u.Host, "github.com") {
+		parts := strings.Split(strings.Trim(u.Path, "/"), "/")
+		if len(parts) >= 2 {
+			u.Path = "/" + strings.ToLower(parts[0]) + "/" + strings.ToLower(strings.TrimSuffix(parts[1], ".git"))
+		}
+	}
+	return u.String()
+}
+
+func shouldPersistDedupForRun(gf *globalFlags) bool {
+	if gf != nil && gf.target != "test" {
+		return true
+	}
+	flag := strings.ToLower(strings.TrimSpace(os.Getenv("BRIEFING_PERSIST_DEDUP")))
+	return flag == "1" || flag == "true" || flag == "yes"
 }
 
 // --- v1.0.1: title-based dedup ---
