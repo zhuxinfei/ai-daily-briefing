@@ -173,9 +173,12 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 			stage(fmt.Sprintf("dedup: loaded %d URLs from published site history", len(siteSentURLs)))
 		}
 	}
-	skipCrossRunDedup := rerunExistingIssue != nil
+	strictDedup := shouldPersistDedupForRun(gf)
+	skipCrossRunDedup := rerunExistingIssue != nil && !strictDedup
 	if skipCrossRunDedup {
 		stage("dedup: same-date rerun detected, skipping sent_urls / sent_titles history")
+	} else if rerunExistingIssue != nil {
+		stage("dedup: same-date rerun detected, strict history dedup remains enabled")
 	}
 	if !skipCrossRunDedup && len(sentURLs) > 0 {
 		beforeDedup := len(filtered)
