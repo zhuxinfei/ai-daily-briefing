@@ -706,3 +706,30 @@ Anthropic 提高 Claude 使用上限，并与 SpaceX 达成算力合作
 Learning the Integral of a Diffusion Model（学习扩散模型整体轨迹的方法）尝试让生成过程更可控
 vLLM（高性能大模型推理引擎）从 V0 到 V1，强调“Correctness Before Corrections（先保证答对，再谈后续修正）”在 RL（强化学习，让模型通过反馈不断调整）中的价值
 《The Trump administration's AI doomer moment》（特朗普政府的“AI 悲观派时刻”）折射出美国政策圈对 AI 风险的升温
+Microsoft 计划发布自研人工智能模型套件（由公司自己开发的一组模型）
+Ideogram 4.0（主打文字准确生成的图像模型）以开放权重模型（公开模型参数，方便外部使用和改造）发布
+xAI（马斯克旗下人工智能公司）将 Grok Imagine 1.5（图像与视频生成工具）升级到支持图生视频
+Transformer（当前大模型常用的基础结构）真的需要 QKV（三组注意力投影）吗？
+Gated Delta Networks（门控增量网络，一类更省算力的语言模型结构）探索大规模特征学习
+SAM 3D（从单张图片生成三维物体的模型）想把图片里的物体“一键立体化”
+AutoLab（评测前沿模型能否长期做研究和工程任务的基准）追问 AI 能不能真正“搞研发”
+LiftQuant（让大语言模型量化位宽更灵活的方法）试图填上部署鸿沟
+CodegenBench（评测大模型跨硬件写高效代码的基准）不只看代码能不能跑
+Open-Weight LLMs（开放权重大语言模型）的安全表现被发现会随领域变化
+RUBAS（基于评分规则的强化学习方法）瞄准 Agent 真实执行安全
+人工智能开始能“指导”业余病毒学爱好者，DNA 安全（基因信息与合成生物材料的安全管控）被推到国会面前
+Cloudflare（网站加速与安全服务商）认为网页未来会变成“付费抓取”
+Airbnb（全球短租民宿平台）计划成立新的人工智能实验室
+OpenAI 发布“智能时代生物防御”行动计划
+OpenAI 负责人 Sam Altman 认为“主动式人工智能”会接棒聊天机器人和 Agent（能自主拆解并执行任务的人工智能助手）
+Google 允许网站退出人工智能搜索结果，但多数网站可能别无选择
+ChatGPT 开始按工作、爱好和旅行偏好保存你的“叙事档案”
+mindfold-ai/Trellis（用于管理智能体运行的开源套件）主打更顺手的智能体操作台
+pewdiepie-archdaemon/odysseus（可自托管的人工智能工作空间）想把办公环境搬到自己服务器上
+run-llama/liteparse（快速开源文档解析器）瞄准“让机器读懂文件”这件事
+Anthropic 开源漏洞发现框架（用人工智能辅助找代码安全问题的工具）
+p-e-w/heretic（自动移除语言模型审查限制的工具）聚焦模型输出限制调整
+EveryInc/compound-engineering-plugin（面向多款编程助手的官方插件）接入 Claude Code、Codex、Cursor 等工具
+《Co-Intelligence（人机协同智能，强调人和 AI 一起思考与工作）》作者谈“共存”新阶段
+Anthropic 探讨 recursive self-improvement（递归式自我改进，AI 参与改进自身能力）的进展
+微软首席执行官 Satya Nadella 谈如何找到企业核心竞争力
