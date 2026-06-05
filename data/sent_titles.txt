@@ -733,3 +733,31 @@ EveryInc/compound-engineering-plugin（面向多款编程助手的官方插件�
 《Co-Intelligence（人机协同智能，强调人和 AI 一起思考与工作）》作者谈“共存”新阶段
 Anthropic 探讨 recursive self-improvement（递归式自我改进，AI 参与改进自身能力）的进展
 微软首席执行官 Satya Nadella 谈如何找到企业核心竞争力
+AI 皮肤病变诊断模型（用图片辅助判断皮肤异常的系统）不敌资深医生
+Google 将向 SpaceX（马斯克旗下航天公司）每月支付 9.2 亿美元购买算力
+加拿大推出 AI 战略，推进数字主权（关键数字能力不依赖外部的国家自主性）与企业采用
+TIDE（一种用模板迭代主动发现多个问题的研究框架）尝试让 AI 更主动地找问题
+Rethinking Continual Experience Internalization（反思智能体如何持续吸收经验）聚焦自我进化 Agent
+World-Language-Action Model（统一世界建模、语言推理和行动生成的模型）想把“理解世界”和“动手执行”合在一起
+ArcANE（评估角色扮演语言智能体何时该保持人设的研究）追问 AI 演角色是否演得“刚刚好”
+Personal AI Agent for Camera Roll VQA（面向手机相册视觉问答的个人 AI 助手）把相册变成可提问的记忆库
+LLMs Can Leak Training Data But Do They Want To?（大语言模型会泄露训练数据吗）用倾向感知方式评估记忆风险
+Code2LoRA（为代码模型自动生成低成本适配器的框架）面向不断变化的软件代码
+MLEvolve（自动发现机器学习算法的自我进化框架）让 AI 参与设计 AI
+Anthropic 呼吁给人工智能竞赛设置“暂停键”
+Microsoft MAI（微软自研人工智能模型系列）被曝使用未授权网页数据训练
+美国政府被曝与 OpenAI 讨论可能入股
+Anthropic 的 Mythos（Anthropic 的一个模型名）据称服务 NSA（美国国家安全局）进攻性网络行动
+佛罗里达州起诉 OpenAI 和 Altman（OpenAI 首席执行官），将 ChatGPT 视为缺陷产品和公共妨害
+Apollo（阿波罗全球管理，一家大型投资管理公司）完成 350 亿美元债务融资，用于为 Anthropic 购买人工智能芯片
+token（大模型处理文字的计费小单位）账单到期，行业开始控制失控成本
+lfnovo/open-notebook（开源笔记问答工具）想做更灵活的 Notebook LM（把资料变成可提问笔记库的工具）
+revfactory/harness（自动设计专业 Agent 团队的元技能工具）能生成领域专用智能体组合
+Open-LLM-VTuber（本地运行的语音虚拟主播对话工具）把大模型聊天做成免手操作
+supermemoryai/supermemory（面向人工智能应用的高速记忆引擎）主打可扩展记忆能力
+unicity-astrid/astrid（面向智能体的操作系统）试图给 Agent 搭一个运行底座
+tashfeenahmed/freellmapi（聚合免费模型额度的 OpenAI 兼容代理）适合个人实验
+Geoffrey Hinton（人工智能教父级研究者、诺奖得主）称人工智能“像我们一样是存在”
+Nvidia Nemotron 3.5 Content Safety（英伟达面向企业的多模态内容安全模型）主打可定制安全防护
+Google Gemma 4 QAT（通过量化感知训练压缩的轻量模型）优化手机与笔记本运行效率
+Stratechery（科技商业分析专栏）用《Power Shifts（权力转移）》观察行业力量变化
