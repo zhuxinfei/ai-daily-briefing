@@ -761,3 +761,27 @@ Geoffrey Hinton（人工智能教父级研究者、诺奖得主）称人工智�
 Nvidia Nemotron 3.5 Content Safety（英伟达面向企业的多模态内容安全模型）主打可定制安全防护
 Google Gemma 4 QAT（通过量化感知训练压缩的轻量模型）优化手机与笔记本运行效率
 Stratechery（科技商业分析专栏）用《Power Shifts（权力转移）》观察行业力量变化
+Florida Atlantic University（佛罗里达大西洋大学）将启动 AI engineering lab（人工智能工程实验室）
+A.I. Me（用人工智能模拟自己的数字分身）开始替人“出面聊天”
+OpenAI 推出 Lockdown Mode（锁定模式）应对数据外泄风险
+Learning Geometric Representations from Videos（一项让多模态大模型从视频学习空间几何表示的研究）关注“看懂空间”
+SABER（一套评测大模型编程 Agent 操作安全性的基准）开始盯上真实项目风险
+Unsupervised Skill Discovery for Agentic Data Analysis（一项让数据分析 Agent 自动发现技能的研究）提出轻量增强思路
+ForeSci（一套评估大模型 Agent 前瞻性科研判断的基准）瞄准 AI 科研眼光
+Towards One-to-Many Temporal Grounding（一项研究视频中“一段描述对应多个时间片段”的论文）扩展视频理解评测
+LLM Research Papers: The 2026 List（一份 2026 年 1-5 月大语言模型论文清单）整理研究阅读线索
+xAI（马斯克旗下人工智能公司）被曝曾用 Claude 输出训练编程模型
+美国数据中心阻力升温，人工智能团体称背后有中国因素
+Sakana AI（日本人工智能创业公司）押注“会自我改进的人工智能”打破算力军备竞赛
+特朗普政府或考虑持有 OpenAI 股权
+OpenAI 与特朗普政府据称正谈判政府入股人工智能初创公司
+SpaceX（马斯克旗下航天公司）据称与 Google 签下每月 9.2 亿美元芯片协议
+Agent-Reach（一款让 AI Agent（能自动执行任务的 AI 助手）看见全网内容的命令行工具）打通多平台搜索
+ian-xiaohei-illustrations（一套用 Codex 生成中文小黑怪诞配图的 Skill）专注正文插画
+copilot-sdk（一套把 GitHub Copilot Agent（GitHub 的自动化编程助手）接入应用的开发工具包）开放集成
+OpenSquilla（一款更省 token（AI 处理文字的小单位）的 AI Agent）主打同预算更高智能密度
+herdr（一款住在终端里的 Agent multiplexer（多 Agent 调度器））帮你统一调度 AI 助手
+CopilotKit（一套面向 Agent 和 Generative UI（可由 AI 动态生成的界面）的前端工具栈）支持 React 与 Angular
+S&P 500（标普500指数，美国重要股票指数）拒绝 SpaceX（马斯克旗下商业航天公司）快速入选，也挡住 OpenAI 和 Anthropic
+MicroPython（轻量级编程运行环境）和 WASM（让网页安全运行程序的通用格式）让沙盒运行代码更可控
+Meta 确认数千个 Instagram（图片和短视频社交平台）账号被滥用 AI 聊天机器人攻破
