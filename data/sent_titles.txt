@@ -785,3 +785,22 @@ CopilotKit（一套面向 Agent 和 Generative UI（可由 AI 动态生成的界
 S&P 500（标普500指数，美国重要股票指数）拒绝 SpaceX（马斯克旗下商业航天公司）快速入选，也挡住 OpenAI 和 Anthropic
 MicroPython（轻量级编程运行环境）和 WASM（让网页安全运行程序的通用格式）让沙盒运行代码更可控
 Meta 确认数千个 Instagram（图片和短视频社交平台）账号被滥用 AI 聊天机器人攻破
+OpenAI 筹划 ChatGPT 上线以来最大改版，重心转向 Agent（能自己拆解任务并连续执行的 AI 助手）
+Apple 借 WWDC（苹果全球开发者大会）争取 AI 版图“第二次上场机会”
+AdaPlanBench（用于评估大模型 Agent 自适应规划能力的测试基准）检验 AI 在现实约束下会不会“临场变通”
+Reinforcement Learning（强化学习，让 AI 通过奖励机制学会更优决策）被用于激发未见语言翻译的上下文学习能力
+VideoKR（面向高知识量与强推理需求的视频理解研究）想让 AI 不只“看见”，还要“看懂”
+RobotValues（评估家用机器人在人类价值冲突下如何决策的测试框架）关注“机器人该听谁的”难题
+LoomVideo（把多模态输入统一到视频生成与编辑中的模型）瞄准“一套系统吃下多种素材”
+Complexity-Balanced Diffusion Splitting（复杂度平衡的扩散拆分方法）探索更高效的生成式计算分工
+The Shadow Price of Reasoning（“推理影子价格”研究）用经济学视角讨论大模型该把算力花在哪
+Dream.exe（让视频生成模型“做梦”出可执行机器人操作的研究）尝试把“看起来会做”变成“真的能做”
+OpenAI 计划把 ChatGPT 改造成“超级应用”（把聊天、任务执行和更多服务装进一个入口），或成上线以来最大一次改版
+open-code-review（阿里开源的 AI 代码审查工具）把代码检查做到了“逐行点评”
+ai-job-search（用 Claude Code 驱动的求职自动化框架）想把“海投”变成流程化作业
+forkd（给 AI Agent 用的微型虚拟机调度工具）瞄准“批量分身”能力
+turbovec（基于 TurboQuant 的向量索引工具）把高效检索能力打包成了开源项目
+flowsint（面向网络安全调查的可视化图谱平台）强调“边看边查”的调查体验
+Lathe（用大模型带你“学会”而不是“代做”的学习工具）想把 AI 变成陪练老师
+《大模型正在侵蚀我的软件工程职业生涯》引发从业者焦虑
+《我现在用 Claude 设计的时间比 Figma 还多》展示 AI 正在改写设计流程
