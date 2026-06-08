@@ -804,3 +804,32 @@ flowsint（面向网络安全调查的可视化图谱平台）强调“边看边
 Lathe（用大模型带你“学会”而不是“代做”的学习工具）想把 AI 变成陪练老师
 《大模型正在侵蚀我的软件工程职业生涯》引发从业者焦虑
 《我现在用 Claude 设计的时间比 Figma 还多》展示 AI 正在改写设计流程
+Apple 联手 Google 和 Nvidia，瞄准“更先进的 AI 模型”
+Shippy（一款可深入分析海洋数据的 AI Agent）上线，Ai2 的 Skylight（AI 海洋观测项目）继续扩展
+University of Phoenix 发布 2026 年 C-Suite AI Impact Report（高管层 AI 影响报告），聚焦“如何把 AI 真正做出业务价值”
+GENEB（一套评估基因组模型是否真能公平比较的研究）指出：基因组模型其实很难“同台竞技”
+OpenSkill（一种让大模型 Agent 在开放环境中自我进化的研究）瞄准“越用越会做事”的 AI
+CORE（一种靠“对比式反思”快速提升推理能力的方法）想让模型学会复盘
+Distributional DAgger（一种利用更丰富反馈做强化学习的训练方法）试图让 AI 学得更细
+Decomposed Visual Proxies（一种把物体更自然插入画面的视觉方法）推动 3D 感知编辑再进一步
+On-Policy Distillation（一种更省数据的蒸馏训练方式）探索把自回归模型变成扩散语言模型
+SubtleMemory（一套检测 Agent 长程细粒度记忆能力的基准）专盯 AI 会不会“记混关系”
+Socratic-SWE（一种从执行轨迹里提炼技能、让编码 Agent 自我进化的方法）想让 AI 程序员越干越熟
+Applied Digital 签下 52 亿美元 AI 数据中心租约，超大规模云厂商继续豪赌算力
+Meta 披露 Instagram AI 聊天机器人漏洞，可能影响超 2 万个账号
+Apple 把 Shortcuts（苹果自动化快捷指令工具）升级成可用 prompt（文字指令）搭工作流的 AI 入口
+Apple 在 WWDC（苹果全球开发者大会）集中展示更“个人化”的 AI，Siri 和儿童安全成重点
+Apple 终于推进 Siri 的 AI 大改版，语音助手开始向“AI 伙伴”转型
+Apple 押注修复 Siri 短板，试图缩小自身 AI 差距
+Apple Photos（苹果相册应用）加入 AI 编辑，新功能可用 Reframe（智能重构画面）调整视角
+Apple 主打更个人、更易用的 AI，消费级产品路线愈发清晰
+supervision（一个可复用的计算机视觉工具库）帮开发者少造轮子
+goose（可扩展的开源 AI Agent）不只给建议，还能直接动手执行
+Huashu Design（面向 Claude Code 的 HTML 原生设计技能包）让 AI 直接产出高保真设计稿
+AiToEarn（用 AI 赚钱的开源项目集合）把“AI 变现”作为直接主题
+OpenAI 已向 SEC（美国证券交易委员会，负责监管上市与证券披露）提交保密版 S-1（企业申请上市时要交的核心招股文件）
+Apple 推出 Core AI（苹果面向开发者的 AI 应用框架，方便在自家设备里接入模型能力）
+Apple 预告 WWDC 2026（苹果全球开发者大会，集中发布系统与开发平台新能力）
+Google 向 SpaceX（马斯克旗下航天与卫星公司）购买算力，折射 AI 基础设施竞争继续升温
+Apple 强化 Siri 的 AI 能力，继续推进 Apple Intelligence（苹果自家的生成式 AI 功能集合）
+OpenEnv（面向 Agentic RL 的开源环境，帮 AI 智能体在可操作任务里训练决策能力）获得开源社区支持
