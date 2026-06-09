@@ -833,3 +833,23 @@ Apple 预告 WWDC 2026（苹果全球开发者大会，集中发布系统与开�
 Google 向 SpaceX（马斯克旗下航天与卫星公司）购买算力，折射 AI 基础设施竞争继续升温
 Apple 强化 Siri 的 AI 能力，继续推进 Apple Intelligence（苹果自家的生成式 AI 功能集合）
 OpenEnv（面向 Agentic RL 的开源环境，帮 AI 智能体在可操作任务里训练决策能力）获得开源社区支持
+Anthropic 推出 Claude Fable 5（Claude 新一代 AI 模型），并加入新的安全防护
+FlashMemory-DeepSeek-V4（一种面向超长上下文的大模型推理方案）提出“前瞻稀疏注意力”新思路
+End-to-End Context Compression at Scale（端到端上下文压缩方案）瞄准“大模型读太多太贵”的核心痛点
+Liberating LLM Capabilities in Full-Duplex Speech Models（让大模型能力进入全双工语音模型）探索更自然的“边听边说”AI
+Optical Reasoning（把图像当作推理载体的研究）试图让 AI 不只“看图”，还直接“在图上思考”
+Reasoning Arena（一种比较模型推理过程的评测框架）关注“答案对了但过程未必靠谱”的难题
+Hardening Agent Benchmarks with Adversarial Hacker-Fixer Loops（用对抗式攻防循环加固 Agent 测评）想让 AI 评测更不容易“刷分”
+Pruning and Distilling Mixture-of-Experts into Dense Language Models（把混合专家模型压缩成稠密模型）瞄准“更强模型、更低成本”平衡点
+Anthropic 推出 Fable 5（一键生成小游戏的 AI 工具），网页“氛围编程”玩家可能会很上头
+Gemini 3.5 Live Translate（近实时语音翻译功能）让跨语言沟通更接近“同声传译”
+Clypra（一款开源视频编辑器）主打免费复刻剪映高级功能
+1688-shopkeeper（1688 AI 版开店官方技能）瞄准电商商家运营场景
+DeepSeek-GUI（DeepSeek 的图形化 Agent 工作台）把代码与任务模式塞进同一界面
+sdk-js（Astrid OS 胶囊开发工具包的 JavaScript 版）为前端开发者铺路
+sdk-rust（Astrid 胶囊开发工具包的 Rust 版）补齐系统级开发能力
+OpenAI Plugins（让 ChatGPT 接外部服务的插件体系）仍是观察 AI 生态的重要样本
+Claude Fable 5（Anthropic 发布的新一代模型）被质疑会“悄悄不帮竞争对手”
+Claude Fable 5（Anthropic 新模型）正式亮相，并附带 System Card（系统安全说明文档）
+Apple 因未获豁免，决定暂不在欧盟推出 Siri
+North Mini Code（Cohere 推出的开发者代码模型）发布，瞄准更轻量的编程场景
