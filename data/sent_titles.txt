@@ -877,3 +877,32 @@ Apache Burr（一个专门构建可靠 AI Agent 的开源框架）想让 Agent �
 《How to help knowledge workers who lose their jobs to AI（如何帮助被 AI 影响失业的知识工作者）》把焦点拉回人
 DiffusionGemma（Google 推出的扩散式文本生成模型）主打文本生成提速 4 倍
 《Fable 5（公开发布的 AI 故事生成系统）、Anthropic alignment（对齐，让模型行为符合人类意图的训练过程）与 AI 分层》讨论了能力边界的新变化
+OpenAI 模型与 Codex（OpenAI 的 AI 编程助手）现可通过 Oracle Cloud（甲骨文云服务平台）现有采购额度接入
+Tilebox（一个做太空任务规划的软件平台）推出面向 AI 的功能更新
+Anthropic 推出 Claude Corps（面向职场早期人群的 AI 公益奖学金项目）
+Hypothesis-Tree Refinement（“假设树细化”，让 AI 像研究员一样分支探索思路）瞄准通用自主科研
+Claw-SWE-Bench（用于评测编程 Agent 的基准测试集）给“AI 写代码”立新考场
+Agentic Environment Engineering（面向 Agent 的环境工程，给大模型搭“可行动世界”）综述梳理出新赛道
+Reason, Then Re-reason（先推理再回头重想）用跨视角复查提升空间理解
+Grammar-Constrained Decoding（语法约束解码，让模型按指定格式输出）也可能被用来越狱生成恶意代码
+Mixture-of-Experts（混合专家模型，多个小模型分工协作）路由器或迎来重新设计
+Subquadratic Architectures（次二次复杂度架构，计算量增长没那么快的模型设计）被系统讨论
+MTP with Rejection Sampling（结合拒绝采样的多词预测训练）尝试加速强化学习训练
+OpenAI 拟收购 Ona（为 AI 代理提供长期云端工作环境的公司），企业级自动化要更进一步
+欧洲推进可信 AI 生态，OpenAI 表态支持内容透明规则
+Anthropic 联手 DXC（全球企业技术服务公司），把 Claude 接入银行和航空等强监管行业
+BBVA 把 AI 推到银行核心，10 万员工用上 ChatGPT Enterprise（面向企业的 ChatGPT 版本）
+德国里程碑裁决：Google 的 AI Overviews（搜索结果顶部的 AI 摘要）要为错误答案负责
+OpenAI 与 Anthropic 的 API（应用编程接口，让企业把大模型接入自家系统）价格战，可能正在酝酿
+OpenAI 上市预期再后移，Altman 仍称可能在未来一年内推进公开募股
+Prometheus（贝索斯支持的 AI 初创公司）完成 120 亿美元融资，AI 资本热度仍在冲高
+OfficeCLI（一款让 AI 直接读写 Office 文件的命令行工具）开源走红
+Open R1（对 DeepSeek-R1 的开源复现项目）持续受关注
+SenseNova-Skills（面向办公助手的模块化技能库）瞄准生产力场景
+apple/container（苹果开源的 Mac 容器工具）服务本地开发环境
+PyTorch（最流行的 AI 开发框架）性能分析第二篇：从 nn.Linear（神经网络里的全连接层，可理解为最基础的“信息变换器”）到 Fused MLP（融合式多层感知机，把多步计算合并以提升速度）
+Anthropic 撤回可能“暗中干扰” Claude 用户研究的政策
+MiMo Code（小米发布的代码大模型）正式开源
+《Shall we play a game?》指出：大模型在 95% 模拟中使用战术核武
+Ben Bajarin 访谈聚焦 Apple、AI 与 compute（算力，指支撑 AI 运行的芯片和计算资源）现实
+Claude Fable 5（面向编程任务的 Claude 测试版本）在代码任务中表现仅属中游
