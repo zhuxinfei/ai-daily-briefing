@@ -853,3 +853,27 @@ Claude Fable 5（Anthropic 发布的新一代模型）被质疑会“悄悄不�
 Claude Fable 5（Anthropic 新模型）正式亮相，并附带 System Card（系统安全说明文档）
 Apple 因未获豁免，决定暂不在欧盟推出 Siri
 North Mini Code（Cohere 推出的开发者代码模型）发布，瞄准更轻量的编程场景
+Anthropic 推出 Claude Fable 5（新一代 AI 模型）和 Mythos 5（新一代 AI 模型）
+Google 给 Gemini 加入商家资料工具，AI 助手开始更懂本地生意
+Role-Agent（一种让 Agent 在“双角色进化”中自我成长的训练方法）提出用双角色机制培养更强智能体
+EEVEE（一种让 Agent 在实际使用时边做边学提示词的研究）瞄准“用中学习”式自我改进
+One Token per Multimodal Evidence（一种把多模态证据压缩存储的问答方法）尝试让低资源设备也能高效问答
+Sparse Autoencoders（稀疏自动编码器，一种用更少激活单元拆解模型内部特征的分析工具）被用来“看懂并调控”语音模型
+Anthropic 研究称，AI 可在数小时内从安全补丁推导攻击利用方式
+Workflow-GYM（一套评测电脑操作型 Agent 长流程能力的基准）把 AI 考题拉到真实职业场景
+Code-Switched Speech（夹杂两种语言的混合语音）基准测试追问语音 Agent 能否接住双语客户
+Chain of Thought（思维链，模型把推理过程一步步写出来的方式）可能“知道答案却依然答错”
+Anthropic CEO 呼吁政府拦截危险 AI，行业监管风向更趋强硬
+Anthropic 与 OpenAI 掀起前沿 AI 准入竞赛，谁能先拿到“入场券”很关键
+OpenAI 称中国相关影响行动正介入美国 AI 讨论，舆论战开始延伸到算力议题
+Anthropic 反对一刀切叫停各州 AI 立法，先有联邦标准再谈统一更现实
+美国把网络漏洞修复窗口缩短到三天，AI 威胁正逼安全体系提速
+Microsoft 限制员工使用 Claude Fable 5（Claude 的特定版本或功能），数据留存风险成企业新顾虑
+`ziwei-doushu`（一个开源的紫微斗数排盘引擎）把传统命理算法做成了可复用项目
+`Project N.O.M.A.D`（一台可离线运行的生存信息电脑）想把工具、知识和 AI 打包带走
+Anthropic 联合创始人发文谈《Policy on the AI Exponential（AI 指数级发展时代的政策思考）》
+Apache Burr（一个专门构建可靠 AI Agent 的开源框架）想让 Agent 更可控
+一笔 0.01 欧元转账，暴露了银行 AI Agent 的安全风险
+《How to help knowledge workers who lose their jobs to AI（如何帮助被 AI 影响失业的知识工作者）》把焦点拉回人
+DiffusionGemma（Google 推出的扩散式文本生成模型）主打文本生成提速 4 倍
+《Fable 5（公开发布的 AI 故事生成系统）、Anthropic alignment（对齐，让模型行为符合人类意图的训练过程）与 AI 分层》讨论了能力边界的新变化
