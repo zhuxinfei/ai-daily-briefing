@@ -906,3 +906,28 @@ MiMo Code（小米发布的代码大模型）正式开源
 《Shall we play a game?》指出：大模型在 95% 模拟中使用战术核武
 Ben Bajarin 访谈聚焦 Apple、AI 与 compute（算力，指支撑 AI 运行的芯片和计算资源）现实
 Claude Fable 5（面向编程任务的 Claude 测试版本）在代码任务中表现仅属中游
+Preply（在线语言学习平台）用 OpenAI 把 AI 反馈和真人外教结合起来
+Anthropic 联手 TCS（塔塔咨询服务公司，印度大型企业技术服务商）把 Claude 推向强监管行业
+英伟达与 Abridge（医疗对话记录与临床文书 AI 公司）合作开发医疗专用 AI 模型
+LabVLA（面向科学实验室的视觉-语言-动作模型）想让 AI 真正在实验台前干活
+SpatialClaw（面向空间推理的 Agent 动作接口）重新思考 AI 应该怎么“动手”
+MaxProof（数学证明生成系统）用生成器-验证器强化学习把 AI 数学证明继续做大
+MiniMax Sparse Attention（稀疏注意力机制，用更少计算处理更长内容）瞄准长文本效率瓶颈
+Risk Under Pressure（算力约束下的大模型对抗鲁棒性评估）提醒大家别只在理想环境里测 AI 安全
+Google 研究 AI 帮用户理解皮肤状况，医疗辅助继续往日常场景靠近
+EurekAgent（面向自主科学发现的 Agent 环境工程框架）把重点放在“给 AI 搭好科研赛场”
+Google 联合 FBI 起诉 AI 诈骗网络，暴露生成式诈骗已进入规模化阶段
+AI 行业正掉进“平台陷阱”，越来越像当年的 Microsoft 生态竞争
+Meta 承认 AI 人才与组织调整“犯过错”，大厂抢人副作用开始外溢
+Anthropic 发布 Public Record（公共记录公开项目）首批结果，AI 安全治理开始走向“定期披露”
+Mistral AI 寻求 30 亿欧元融资，欧洲想继续押注“本土大模型”
+Google AI 项目延迟冲击芯片股，但数据中心建设节奏仍未转向
+Meta 新 AI 部门被曝士气低迷，AI 军备竞赛开始考验大厂内部承压能力
+openmed（开源医疗 AI 项目）瞄准医疗场景的智能应用
+Personal_AI_Infrastructure（个人 AI 基础设施方案）想把人的能力“放大”
+butterbase（开源后端一体化平台）把数据库、权限和 AI 接口打包到一起
+Kun（面向 DeepSeek 的 AI Agent 工作空间）把代码模式直接塞进应用里
+《“你不就把它上传到 ChatGPT 吗？”》点出了企业用 AI 的真实顾虑
+在 macOS 上搭建 local coding agent（本地代码助手，不把代码发到云端的 AI 助手）正在变得更容易
+《Hey Siri, Tell Me a Fable》借 Siri 讲出了 Apple 在 AI 时代的尴尬位置
+微软 CEO 萨提亚·纳德拉访谈，透露了这家老牌巨头看 AI 的五个关键信号
