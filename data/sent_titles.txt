@@ -931,3 +931,16 @@ Kun（面向 DeepSeek 的 AI Agent 工作空间）把代码模式直接塞进应
 在 macOS 上搭建 local coding agent（本地代码助手，不把代码发到云端的 AI 助手）正在变得更容易
 《Hey Siri, Tell Me a Fable》借 Siri 讲出了 Apple 在 AI 时代的尴尬位置
 微软 CEO 萨提亚·纳德拉访谈，透露了这家老牌巨头看 AI 的五个关键信号
+AI 本想取代的岗位，反而比以前更需要真人
+Nebius（提供 AI 算力和云基础设施的公司）跻身 Nasdaq-100，资本市场继续押注 AI 基建
+美国 AI 热潮，正在推高亚洲对外贸易顺差
+美国正认真讨论，如何避免 AI 走向“失控结局”
+AI oversight gap（AI 监管空白，指技术发展快于规则制定）可能留下长期后遗症
+Reasoning prompts（推理型提示词，引导模型分步骤思考）让多模态 AI 在双语眼科考题上表现更好
+Visa 计划把支付能力接入 OpenAI，AI Agent 离“自己下单付款”又近一步
+特朗普限制外国用户使用 Anthropic 最新 AI 技术，AI 出海开始更受地缘政治影响
+Odysseus（一款可自托管的 AI 工作空间）让团队把 AI 工具装进自己环境里
+last30days-skill（一种帮 AI 自动做近 30 天话题研究的技能模块）把全网信息汇总成可落地摘要
+为什么 Codex 还没出现 Codex Design（面向设计工作的 AI 生成产品）？
+路透：Amazon 曾对 Anthropic 模型表达担忧，美国随后加大审查
+Expedia 推出 AI 旅行工具，并更新平台功能
