@@ -944,3 +944,24 @@ last30days-skill（一种帮 AI 自动做近 30 天话题研究的技能模块�
 为什么 Codex 还没出现 Codex Design（面向设计工作的 AI 生成产品）？
 路透：Amazon 曾对 Anthropic 模型表达担忧，美国随后加大审查
 Expedia 推出 AI 旅行工具，并更新平台功能
+美国收紧海外访问 Anthropic 模型权限，Claude 部分高能力版本疑似被临时下线
+HYDRA-X（一种原生统一多模态模型）尝试把文字、图片等输入放进同一套理解框架
+MoVerse（一种实时视频世界建模系统）瞄准让 AI 更快理解动态场景
+TreeSeeker（一种树状深度搜索方法）想让 AI 在复杂任务里更会试错和回退
+Visual Para-Thinker++（面向视觉推理的多智能体框架）探索“一套策略管多个分工角色”
+《重新思考大模型心理测评》提出：AI 的“自我报告”有时真的能预测行为
+WEAVER（一种机器人操作世界模型）想让机械臂干活更快、更稳、更持久
+研究称 AI 编码 Agent 往往能找到正确文件，却抓不准真正关键的代码行
+Count Anything（一个“看到什么都能数”的视觉模型）把“数东西”这件小事做成了硬功夫
+KPMG 被曝在 AI 报告中虚构案例，营销叙事的可信度再受拷问
+美国要求限制 Anthropic 顶级模型全球访问，AI 出口管制开始外溢
+Anthropic 的 Fable（Anthropic 的一款顶级 AI 模型）风波升级，传六家公司曾触发政府介入
+Google DeepMind 支持多智能体安全倡议，AI 不再只是“单个助手”问题
+生成式 AI 与 Agent 型 AI 的成本治理，正成为企业落地成败关键
+google/skills（Google 开源的产品技能组件仓库）让 Agent 更容易调用 Google 生态能力
+Understand-Anything（一款把代码变成可交互知识图谱的开源工具）想让“读代码”变成“看地图”
+agentsview（一款面向编码 Agent 的本地优先分析工具）把 AI 编程过程也纳入“数据看板”
+knowledge-catalog（Google Cloud 的知识目录工具与示例集）瞄准企业知识资产整理
+frontend-slides（一款用前端方式生成网页幻灯片的开源项目）把做 PPT 变成“让 Agent 写页面”
+里约“自研”大模型争议：Nex-N2 issue（GitHub 议题页，用来公开讨论项目问题）指向模型可能是已有模型混合版本
+《Not everyone is using AI for everything》指出：并不是所有人都在把 AI 用到工作和生活的每个角落
