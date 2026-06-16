@@ -990,3 +990,30 @@ osiris（开源全球情报平台与实时 OSINT 看板）试图做成 Palantir 
 Omnigent（一层覆盖多种 AI Agent 的统一调度层）想把 Claude Code、Codex 等助手接到同一套体系里
 Anthropic 因高层人际冲突导致模型一度下线，引发外界对治理稳定性的担忧
 Anthropic 的“安全优势”被认为正成为它区别于同行的核心筹码
+Android 17 与 Wear OS 7 上线，Google 顺手把 Gemini 能力推到更多设备上
+DarcyIQ Anywhere（一款把多家大模型接入企业内部资料的工具）想把 Claude、ChatGPT 和 Amazon Quick 连进同一套企业上下文
+OpenAI 提出 Deployment Simulation（部署模拟，用真实对话提前演练模型上线后的表现）来预测模型发布前行为
+Tangram（一种让大模型“分层压缩记忆”的新方法）瞄准多轮对话的 KV Cache（模型保存上下文的临时记忆）压缩
+CODA-BENCH（专测代码 Agent 处理数据密集任务能力的基准）开始追问：会写代码，不等于真会干活
+VibeThinker-3B（一款 30 亿参数的小模型）探索“小模型也能可验证推理”的边界
+Nemotron 3 Ultra（英伟达推出的开源推理模型）用 MoE（混合专家模型）+ Mamba-Transformer（两种架构结合）冲击高效 Agent 推理
+JoyAI-VL-Interaction（一套实时视觉语言交互系统）瞄准“看得见也聊得动”的 AI 互动体验
+MVEB（大规模视频 embedding 评测基准）补上了视频理解领域的统一“考试卷”
+Artificial Intelligence Index Report 2026（2026 年人工智能指数报告）继续用数据盘点全球 AI 发展趋势
+Anthropic 撤回不受欢迎的计费改版，OpenAI 价格战阴影下先“刹车”
+Microsoft Copilot Cowork（微软面向团队协作的 AI 助手）改按使用量收费，并可能接入 DeepSeek
+ChatGPT 市占率首次跌破 50%，但仍是全球最受欢迎 AI 助手
+Anthropic 风波暴露特朗普政府 AI 监管口径混乱
+DeepSeek 首次引入外部融资，估值来到 500 亿美元
+美国司法部以“国家安全”为由，为 xAI 未获许可的燃气轮机辩护
+SpaceX 豪赌 Cursor，显示 AI 编程工具已成巨头追赶 OpenAI 和 Anthropic 的新抓手
+MasterDnsVPN（一款通过 DNS 隧道绕过网络封锁的开源 VPN）主打高丢包下也能稳定联网
+claude-bug-bounty（基于 Claude Code 的漏洞赏金自动化工具）把安全测试搬进终端
+desktop-cc-gui（一款给 Claude Code 提供图形界面的客户端）想把 VibeCoding（自然语言驱动的轻松编程方式）做得更顺手
+archify（一款帮 Agent 生成架构图的技能工具）让系统示意图也能自动出图
+Claude-BugHunter（一套面向漏洞挖掘与红队演练的 Claude Code 技能包）把安全攻防流程打包得很完整
+codebase-memory-mcp（一款把代码库建成知识图谱的 MCP 服务器）主打超快检索和大幅省 token
+GPT‑NL（荷兰正在建设的“主权大模型”，强调本国可控）瞄准欧洲本土 AI 自主
+《The Fable 5 Export Controls Harm US Cyber Defense》指出出口管制可能反伤美国网络防御
+SubQ 1.1 Small（轻量级大模型版本）发布技术报告，主打“小而能打”
+《Elon Musk Sold Investors The Future. Now SpaceX Has To Build It.》聚焦 SpaceX 如何把愿景兑现成现实
