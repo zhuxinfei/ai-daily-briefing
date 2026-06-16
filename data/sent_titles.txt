@@ -965,3 +965,28 @@ knowledge-catalog（Google Cloud 的知识目录工具与示例集）瞄准企�
 frontend-slides（一款用前端方式生成网页幻灯片的开源项目）把做 PPT 变成“让 Agent 写页面”
 里约“自研”大模型争议：Nex-N2 issue（GitHub 议题页，用来公开讨论项目问题）指向模型可能是已有模型混合版本
 《Not everyone is using AI for everything》指出：并不是所有人都在把 AI 用到工作和生活的每个角落
+OpenAI 推出 Partner Network（合作伙伴网络），砸 1.5 亿美元加速企业用 AI
+Pokémon Go（全球知名 AR 抓宠游戏）数据训练出的 AI，被曝已关联军用无人机
+Meta 推出 AI 搜索工具，分析师称年收入潜力可达 100 亿美元
+Hy-Embodied-0.5-VLA（一套把视觉、语言和动作打通的机器人学习系统）想把机器人真正带进现实世界
+HarnessX（一套可组合、可适应、可演化的 Agent 运行底座）瞄准更稳的智能体工程化
+Orchestra-o1（一种统筹多种输入输出的智能体编排方案）押注“全模态协同”
+ClinHallu（一套检测医疗多模态模型“幻觉”问题的评测基准）盯上 AI 医疗最敏感的风险点
+《从 Chatbot 到 Digital Colleague（数字同事, 能长期协作的自主 AI）》提出 AI 正从聊天工具转向常驻型助手
+μ_0（一种可扩展的 3D 世界模型）试图让 AI 更理解真实空间中的互动过程
+Jack Clark 在《Import AI 461（AI 行业观察专栏）》里提醒：Alignment（对齐，让 AI 行为符合人类意图）进展并不乐观
+美国政府限制 Anthropic 顶级模型出口，引发网络安全老兵公开反对
+“要求绝对防不住被攻击”的大模型，政府可能在提一个不可能完成的任务
+微软 CEO 纳德拉警告：少数 AI 系统可能吃走大部分经济回报
+Salesforce 36 亿美元收购 Fin（AI 客服平台），企业服务自动化继续升温
+英伟达加入“AI 借债潮”，发售 200 亿美元债券
+美国 5 月工厂产出持平，但 AI 投资仍在托住制造业
+微软因支出、云业务与 AI 相关问题遭股东起诉，资本市场开始更较真
+Kami（一款把网页内容排成“可打印纸张”风格的开源工具）让好内容更适合收藏和打印
+ponytail（一套让 AI Agent 像“资深程序员偷懒式思考”的开源框架）主打少写代码也能完成任务
+enableMacosAI（一键开启国行 Mac 上完整 Apple 智能的开源项目）瞄准端侧与云端能力解锁
+Horizon（一款用 AI 生成中英文日报的个人新闻雷达）把信息追踪做成了自动化
+osiris（开源全球情报平台与实时 OSINT 看板）试图做成 Palantir 的平替
+Omnigent（一层覆盖多种 AI Agent 的统一调度层）想把 Claude Code、Codex 等助手接到同一套体系里
+Anthropic 因高层人际冲突导致模型一度下线，引发外界对治理稳定性的担忧
+Anthropic 的“安全优势”被认为正成为它区别于同行的核心筹码
