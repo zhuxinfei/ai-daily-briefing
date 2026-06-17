@@ -1017,3 +1017,27 @@ GPT‑NL（荷兰正在建设的“主权大模型”，强调本国可控）瞄
 《The Fable 5 Export Controls Harm US Cyber Defense》指出出口管制可能反伤美国网络防御
 SubQ 1.1 Small（轻量级大模型版本）发布技术报告，主打“小而能打”
 《Elon Musk Sold Investors The Future. Now SpaceX Has To Build It.》聚焦 SpaceX 如何把愿景兑现成现实
+肿瘤评估 AI 模型帮助间皮瘤患者与医生更快看清病情
+Workforce Solutions 推出 AI 暑期项目，面向高中生提前补上未来职场能力
+Coinbase 推出 A.I. Advisor（AI 顾问功能），把加密平台服务再往智能化推一步
+OpenAI 研究人员想在模型上线前预测它会“翻车”多少次
+《The Price of Anarchy in Disaggregated Inference（分离式模型推理中的“无序代价”研究）》关注 AI 系统拆分运行后的效率损失
+Looped World Models（循环世界模型，用重复计算模拟未来变化的模型）试图兼顾长程预测与部署成本
+智谱 GLM-5.2 在编程马拉松式评测中逼近闭源头部模型
+近乎自主的 AI chemist（AI 化学家，能辅助设计和改进化学实验流程的系统）改善了一项高难度药物反应
+Google 研究称 AMIE（医疗对话 AI 系统）可帮助管理复杂健康问题
+《Verified Detection and Prevention of Concurrency Anomalies in Multi-Agent Large Language Model Systems（多 Agent 大模型系统中的并发异常验证与预防）》盯上了“多个 AI 同时干活”的隐患
+LoopCoder-v2（循环式代码模型第二代）想用“只循环一次”提升测试时计算效率
+Anthropic 在首尔设办公室，并扩大韩国 AI 生态合作
+Amazon、Nvidia 和 AMD 押注 3D world models（3D 世界模型，让 AI 理解并模拟真实空间）的创业公司
+Google DeepMind 用 AI-accelerated planning（AI 加速审批规划，用模型辅助更快做建设决策）切入英国住房审批
+effective-html（一套用简洁 HTML 生成方案图和页面草图的 Agent 技能）让 AI 更会“画方案”
+kage（一款把网站“去脚本化”后离线保存的工具）适合做网页留档
+improve（一种让强模型先审代码、再交给便宜模型执行的代码协作流程）想降低 AI 开发成本
+SkillSpector（英伟达推出的 AI Agent 技能安全扫描器）瞄准 Agent 安全风险
+GLM-5.2（智谱新一代开源权重模型）在 Artificial Analysis（第三方 AI 模型评测机构）排名登顶
+GLM-5.2（智谱新一代开源权重模型）主打 Long-Horizon Tasks（长链路任务, 需要连续多步规划和执行的复杂工作）
+OpenAI 被曝每年亏损数十亿美元，AI 竞赛的“烧钱现实”再次摊开
+美国暂缓将 DeepSeek 列入黑名单，另有 100 多家企业被认定存在安全风险
+MolmoMotion（一个用自然语言引导的 3D 动作预测模型）瞄准“看懂并预测接下来怎么动”
+《The State of Fable, The Jailbreak Problem, SpaceX Acquires Cursor》聚焦 Anthropic 的 Fable（相关项目名）争议与越狱风险
