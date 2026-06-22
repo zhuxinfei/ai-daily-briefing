@@ -1041,3 +1041,26 @@ OpenAI 被曝每年亏损数十亿美元，AI 竞赛的“烧钱现实”再次�
 美国暂缓将 DeepSeek 列入黑名单，另有 100 多家企业被认定存在安全风险
 MolmoMotion（一个用自然语言引导的 3D 动作预测模型）瞄准“看懂并预测接下来怎么动”
 《The State of Fable, The Jailbreak Problem, SpaceX Acquires Cursor》聚焦 Anthropic 的 Fable（相关项目名）争议与越狱风险
+Google Cloud 联手 Nokia（诺基亚的通信网络设备与服务业务）把 Gemini 用进电信网络管理
+中国推出新 AI，报道指其可与 Claude Mythos（Anthropic 相关模型名称）竞争
+Getty Images 与 OpenAI 达成多年展示合作，把授权内容带入 ChatGPT
+PerceptionDLM（并行区域感知的多模态扩散语言模型）尝试让 AI 一次看懂画面里多个区域
+SproutRAG（面向长文档检索增强生成的新方法）瞄准“超长资料里怎么更准地找答案”
+GateMem（多方共享记忆 Agent 的治理评测基准）把焦点放到 AI 该记住谁、又该替谁保密
+Multi-Turn Reflective Masking（多轮反思式遮罩）探索如何激发扩散模型的推理能力
+WorldLines（长时程具身智能体评测与建模项目）关注 AI 能否在持续变化的环境里长期做事
+MemSlides（带分层记忆的个性化 PPT 生成 Agent 框架）想让 AI 做演示文稿时更懂上下文
+MCompassRAG（把主题元数据当“语义指南针”的检索方法）提升段落级找资料的准确度
+BrainG3N（可控生成 3D 脑部 MRI 的双用途分词器）把医学影像生成做得更可控
+Anthropic 联手 Micron（美国存储芯片公司）想共研 AI 内存架构
+Groq（AI 芯片创业公司）确认融资 6.5 亿美元，押注自家 neocloud（面向 AI 的云算力服务）
+Google DeepMind 与 A24（美国独立电影公司）合作研究 AI 影视制作
+Microsoft 在得州建设 2 吉瓦级数据中心，并配套自有燃气电厂
+Getty Images 与 ChatGPT 搜索达成多年合作，把授权图片接入答案场景
+三星电子把 ChatGPT Enterprise（面向企业的 ChatGPT 版本）和 Codex 部署给全球员工
+雪佛龙与 Microsoft 签下 20 年供电协议，直指西得州数据中心用电需求
+Import AI 462（Anthropic 联合创始人 Jack Clark 的 AI 行业观察通讯）讨论“超级说服”、自我维持 AI 与通向 ASI 的路径
+Apple Intelligence（苹果的生成式 AI 功能套件）与欧盟监管拉扯，苹果提价信号也更清晰了
+Oak（一套为 Agent 打造的 Git 替代版版本控制系统）想重做 AI 时代的协作底座
+Flock（美国一家车牌识别监控公司）被曝卷入警务滥用，再次提醒 AI 监控不能少了授权边界
+Moebius（一款图像修补模型）用 0.2B 参数做出接近 10B 级效果，轻量化路线很吸睛
