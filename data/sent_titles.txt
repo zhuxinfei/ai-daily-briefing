@@ -1064,3 +1064,25 @@ Apple Intelligence（苹果的生成式 AI 功能套件）与欧盟监管拉扯�
 Oak（一套为 Agent 打造的 Git 替代版版本控制系统）想重做 AI 时代的协作底座
 Flock（美国一家车牌识别监控公司）被曝卷入警务滥用，再次提醒 AI 监控不能少了授权边界
 Moebius（一款图像修补模型）用 0.2B 参数做出接近 10B 级效果，轻量化路线很吸睛
+Anthropic 推出 Claude Tag（可在 Slack 里直接点名调用 Claude 的企业协作功能）
+OpenAI 称 GPT-5.5-Cyber（面向网络安全任务的专用模型）在安全测试中超过 Anthropic Mythos（Anthropic 的网络安全能力基准）
+Training Open Models for Agentic Phone Use（训练可自主操作手机的开源模型）瞄准“AI 代你点手机”
+PlanBench-XL（超大规模工具规划测试集）专门考 AI Agent 会不会“做长计划”
+DataClaw0（从原始数据流里自动整理多模态数据的智能体系统）想解决“好数据太难做”的老问题
+Robusto-2（自动驾驶视觉模型对比基准）把人类和 VLM 放到利马与纽约真实道路中同场考试
+When Agents Commit Too Soon（智能体过早下结论问题研究）点出 AI Agent 常见但容易被忽视的失误
+Sakana AI 的 Fugu（协调多个大模型分工协作的系统）号称追平 Anthropic 的 Fable 与 Mythos 基准
+Unlimited OCR Works（面向超长文档识别的光学字符识别研究）继续推动“让 AI 读万页文件”
+GPT-5 帮助免疫学家破解 3 年未解之谜
+OpenAI 参与构建高级 AI 共享标准，行业开始补“规则课”
+Anthropic 推出 Claude Tag（可在 Slack 内随时召唤的 AI 助手），瞄准企业知识中枢
+system_prompts_leaks（多家主流 AI 助手系统提示词泄露整理库）在 GitHub 走红
+zvec（阿里巴巴开源的轻量级向量数据库）主打快和轻
+Unlimited OCR（百度开源的长文档一次性识别解析方案）瞄准复杂文档处理
+QwenPaw（可自部署的个人 AI 助手项目）主打多聊天应用接入
+MiMo-Code（小米开源的模型与 Agent 共演化编码项目）探索更自主的写代码方式
+OpenMontage（号称首个开源 Agent 化视频制作系统）想把 AI 编程助手变成视频工作室
+《AI's Affordability Crisis》指出 AI 正陷入“用得起”危机
+Lift4D（一个把单视角视频还原成动态 3D 场景的研究项目）瞄准更自然的 4D 重建
+《Memory Chips and China, Microsoft and Chinese Models》讨论中国存储芯片与模型生态的连锁影响
+Claude Tag（Anthropic 推出的 Claude 内容标记方案）上线，AI 生成内容可识别性再进一步
