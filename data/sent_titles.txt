@@ -1086,3 +1086,27 @@ OpenMontage（号称首个开源 Agent 化视频制作系统）想把 AI 编程�
 Lift4D（一个把单视角视频还原成动态 3D 场景的研究项目）瞄准更自然的 4D 重建
 《Memory Chips and China, Microsoft and Chinese Models》讨论中国存储芯片与模型生态的连锁影响
 Claude Tag（Anthropic 推出的 Claude 内容标记方案）上线，AI 生成内容可识别性再进一步
+Anthropic 把 Claude Tag（Claude 标签功能）带进 Slack（企业聊天协作工具）
+Google 推迟 Gemini 3.5 Pro（谷歌新一代前沿大模型）发布到 7 月
+Abstract 推出 AI Workflow Agent（AI 工作流代理, 能自动串起多个步骤的助手）
+InSight：让 VLA（视觉语言动作模型）自己摸索新技能
+OpenThoughts-Agent：给 Agentic Models（智能体模型）准备的数据配方
+FlowR2A：把“奖励”转成驾驶规划动作分布
+InSight：让 VLA（视觉语言动作模型）摆脱“只会背示范”的限制
+ReMMD：用多语言、多图片的智能核验，查多模态谣言
+Mistral 传出新 OCR（光学字符识别）模型，在盲测中表现更强
+Holistic Data Scheduler：用多目标强化学习（让系统在多个目标间找平衡）安排 LLM 预训练数据
+FLUX3D：用扩散模型（逐步生成内容的模型）做高保真 3D Gaussian 生成
+Figma 在 Config 2026 强调“人来拍板”，但画布里的 AI 可能不是自家的
+OpenAI 说 ChatGPT Instant（即时模式，能更快给出回应的聊天模式）更懂用户真正想要什么
+ChatGPT 最常用模型又更新了，重点还是让它更懂日常提问
+Figma 新增代码图层、动画支持和更多 AI 功能，设计工具继续往“全能创作台”走
+KiloCode：一站式 AI 编程代理平台
+Epic Games 的 Lore：新一代开源版本控制系统
+GLM-5：从 Vibe Coding 到 Agentic Engineering
+Turso：兼容 SQLite 的进程内 SQL 数据库
+Penpot：面向设计与代码协作的开源设计工具
+科学代理技能库：把任意 AI 代理变成“AI 科学家”
+OpenAI 首款定制芯片由 Broadcom（博通）打造
+NVIDIA NeMo AutoModel（自动微调工具）让 Transformer（主流大模型架构）微调更快
+NVIDIA 用 45°C 冷却设计，把数据中心用水量压到接近零
