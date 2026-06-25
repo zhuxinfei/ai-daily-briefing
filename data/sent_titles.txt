@@ -1110,3 +1110,31 @@ Penpot：面向设计与代码协作的开源设计工具
 OpenAI 首款定制芯片由 Broadcom（博通）打造
 NVIDIA NeMo AutoModel（自动微调工具）让 Transformer（主流大模型架构）微调更快
 NVIDIA 用 45°C 冷却设计，把数据中心用水量压到接近零
+Meta 加速上线人工智能审核，员工担心节奏过快
+Google Finance（谷歌财经服务）升级，并推出安卓应用
+Holcomb（美国政界人士）发起 5 亿美元计划，帮助劳动力适应人工智能转型
+OpenAI 研究显示 Agent（能自动拆解并执行任务的智能助手）正在改变工作方式
+Improved Large Language Diffusion Models（改进型大语言扩散模型）探索新的文本生成路线
+What Intermediate Layers Know（中间层知道什么）用熵变化识别越狱攻击
+Thinking Tokens（思考标记）是否真的能提升模型安全性？
+Wan-Streamer v0.1（实时音视频交互基础模型）主打低延迟双向互动
+Causal-rCM（一套流式视频生成蒸馏方案）给互动世界模型提供开放配方
+Microsoft 用人工智能解释与实验来理解大脑
+Google 人工智能研究员持续流向竞争对手
+General Intuition（用游戏数据训练智能体的人工智能公司）押注游戏训练现实世界智能体
+Adobe（创意软件公司）收购 Topaz Labs（图像和视频增强工具厂商）
+Amazon 加码印度，新增 130 亿美元人工智能基础设施投资
+特朗普政府要求 OpenAI 错峰发布人工智能模型
+Claude 正在吸引更多付费消费者，挑战 ChatGPT 的优势市场
+Meta 招揽 Virtue AI（人工智能安全创业公司）创始人
+保险公司尝试用生成式人工智能做灾害建模，但幻觉和销售逻辑成阻碍
+PixelRAG（面向像素原生搜索的开源项目）想让搜索少依赖网页解析
+CodexPlusPlus（CodexApp 的增强工具）让 Codex 用起来更顺手
+Orca（并行 Agent 管理开发环境）主打同时调度一队编码助手
+Cognee（开源 AI 记忆平台）给 Agent 配上长期记忆
+Palmier Pro（面向 AI 的 macOS 视频编辑器）把视频剪辑和 AI 放到一起
+Loop Library（可复用 AI Agent 工作流库）沉淀工程、运营和设计流程
+HuggingFace（全球最大 AI 模型共享社区）博客：用一条命令在 HF Jobs（HuggingFace 的云端任务运行服务）跑起 vLLM（让大模型更快对外提供回答的推理引擎）服务器
+AI and Liability（AI 与责任归属）讨论：Google AI Overviews（Google 搜索里的 AI 摘要功能）可能要为输出承担更多责任
+Figma（面向设计师的在线协作设计工具）CEO Dylan Field 访谈：设计工作正在被 AI 重新塑形
+Herculaneum scroll（赫库兰尼姆古卷，火山灰中碳化保存的古罗马卷轴）首次被完整读出
