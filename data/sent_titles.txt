@@ -1138,3 +1138,27 @@ HuggingFace（全球最大 AI 模型共享社区）博客：用一条命令在 H
 AI and Liability（AI 与责任归属）讨论：Google AI Overviews（Google 搜索里的 AI 摘要功能）可能要为输出承担更多责任
 Figma（面向设计师的在线协作设计工具）CEO Dylan Field 访谈：设计工作正在被 AI 重新塑形
 Herculaneum scroll（赫库兰尼姆古卷，火山灰中碳化保存的古罗马卷轴）首次被完整读出
+智谱被指快速逼近美国头部大模型，Anthropic 和 OpenAI 受政策掣肘
+Anthropic 的 Mythos（面向美国机构开放的模型）获准向 100 多家美国机构发布
+Running the Gauntlet（重新评估 AI Agent 在陌生环境中的能力）指出：Agent 离“真通用”还差临门一脚
+EO-WM（用于地球观测预测的物理约束世界模型）探索让 AI 更懂“地球怎么运转”
+Confidence-Aware Tool Orchestration（带置信度判断的视频理解工具编排）想让 AI 看视频时少“瞎猜”
+Information-Aware KV Cache Compression（面向长推理的关键信息缓存压缩）瞄准大模型“又长又贵”的推理成本
+Hallucination in World Models is Predictable and Preventable（世界模型中的幻觉可预测也可预防）为“AI 脑补”问题提供新思路
+DanceOPD（在线策略生成场蒸馏方法）研究如何把高质量生成能力更稳地“教”给模型
+The Verification Horizon（代码 Agent 奖励机制的验证边界）提醒：给编程 Agent 设计奖励，没有万能解
+Co-Failure Ceiling（大模型组合的共同失误上限）论文：把 67 个前沿模型拼起来，也不一定更强
+Lindy（AI 自动化创业公司）全面弃用 Claude 转投 DeepSeek，成本压力开始改写模型选型
+OpenAI 的 GPT-5.6 发布需逐个客户获美国政府批准，先进模型开始进入“准许可制”
+Anthropic 称 AI 已不太需要初级工程师，并警告更多行业跟进后可能带来经济冲击
+Linux Foundation（Linux 基金会，维护大量开源基础项目的国际组织）联合 20 家科技巨头推出 Akrites（开源安全协作项目），提前修补 AI 时代的攻击入口
+Page Agent（阿里巴巴开源的网页操作 AI 助手）让自然语言直接操控网页界面
+Codex 橙皮书（面向 Codex 的非官方实战指南）把安装到案例全链路讲清了
+AI Berkshire（基于 Claude Code 的价值投资研究框架）把多人物方法论和多 Agent 研究结合起来
+reverse-skill（面向逆向与安全研究的 AI 技能路由包）想把工具选择和知识积累自动化
+agent-native（面向 Agent 原生应用的开发框架）瞄准“为智能体而生”的应用搭建方式
+2000 人围攻 AI 助手后，开发者总结出一堂“提示词攻防课”
+OpenAI 预览 GPT‑5.6 Sol（新一代旗舰模型），还同时放出 Terra 和 Luna 分层定位
+美国政府将审核谁能使用 GPT‑5.6，前沿模型开始走向“准入制”
+GPT‑5.6 Sol（OpenAI 新一代旗舰模型）正式预览，系统安全卡也同步公开
+HuggingFace 讨论 hybrid model（混合模型）到底更擅长预测哪些 token（AI 处理文字时切分的小单位）
