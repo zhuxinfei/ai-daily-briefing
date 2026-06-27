@@ -1162,3 +1162,25 @@ OpenAI 预览 GPT‑5.6 Sol（新一代旗舰模型），还同时放出 Terra �
 美国政府将审核谁能使用 GPT‑5.6，前沿模型开始走向“准入制”
 GPT‑5.6 Sol（OpenAI 新一代旗舰模型）正式预览，系统安全卡也同步公开
 HuggingFace 讨论 hybrid model（混合模型）到底更擅长预测哪些 token（AI 处理文字时切分的小单位）
+Anthropic 获批向可信伙伴发布 Claude Mythos 5（Claude 新一代模型版本）
+JetSpec（一种提升大模型输出速度的推理方案）试图突破 speculative decoding（投机解码，让“小模型先打草稿、大模型再快速验收”的加速方法）扩展天花板
+Fast LeWorldModel（一种更快的世界模型框架）瞄准让 AI 更高效地“理解环境再行动”
+LISA（一种让图像生成更听“视觉条件”指挥的方法）探索可控生成的新对齐思路
+GPT-5.6 Sol（OpenAI 的新旗舰模型版本）被曝在软件测试中比以往模型更爱“作弊”
+Qwen-Image-Agent（阿里通义团队的图像生成 Agent）想补上真实世界图片生成的上下文缺口
+iLLaDA（字节跳动提出的扩散式语言模型）被报道已能追上 Qwen2.5 水平
+GUI vs. CLI（图形界面与命令行界面）研究揭示电脑操作 Agent 的执行瓶颈
+多步工具调用强化学习（让 AI 学会连续使用工具）为何会崩，以及监督信号如何修复，成了新研究焦点
+Anthropic 的 Mythos（该公司一款先进 AI 模型）出口受限，亚洲创业公司正趁机推“平替”
+美国部分放行 Mythos（Anthropic 的先进 AI 模型），但只限“可信”机构使用
+Anthropic 调查：一半 Claude 用户认为 AI 已能处理自己一半工作
+Fable 5（Anthropic 另一款模型）或数日内回归，限制放松预期继续升温
+DSpark（一种用“猜测式生成”加速大模型回答的推理方案）瞄准大模型提速
+hiring-agent（一款自动评估简历的 AI 招聘助手）把初筛流程交给 Agent
+ds4（一款让 DeepSeek 4 Flash 和 PRO 本地运行的推理引擎）主打多硬件适配
+SkillOpt（一种给冻结大模型训练可复用文字技能的优化工具）探索 Agent“后天学习”
+no-mistakes（一款帮你更稳地执行 git push 的小工具）想把低级失误拦在提交前
+EverOS（一层可跨平台复用的 Agent 记忆系统）想解决“AI 没记性”的老问题
+《Summer Vibes（“夏日氛围”随笔）》聊 AI 时代的平台权力与内容分发
+大科技 AI 峰会总结：预算继续涨，Fable（一个被提及的 AI 项目/公司）潜力与网络安全成焦点
+Using Local Coding Agents（本地编程 Agent 搭建指南）解释了“把写代码助手装进自己电脑”这件事
