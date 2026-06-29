@@ -1206,3 +1206,23 @@ Ford（福特汽车）在人工智能表现不达预期后，重新聘用资深�
 Brown（布朗大学）教授公开指控考试出现大规模 AI（人工智能）作弊
 Jon Udell（被引用观点的作者）反思 Agent in the loop（让 AI 代理参与流程但由人保持主导）的边界
 GLM 5.2（智谱推出的大模型版本）在 benchmark（基准测试）中超过 Claude
+Nano Banana 2 Pro（AI 图片生成工具）发布，主打 Gemini 3.1 Flash Image（Google 的图像生成模型）能力
+亚马逊据报正在蒸馏 Anthropic 模型，以便在新 token（模型处理文本的小计量单位）计价前压低成本
+Claude 已全面登陆 Microsoft Azure（微软云计算平台），并由 NVIDIA Blackwell（英伟达新一代 AI 计算基础设施）提供底层支撑
+Google 的 Paper Assistant（论文评审辅助工具）探索“自动化审稿”
+Gist Tokens（关键信息压缩标记）让 Sparse Attention（稀疏注意力，只关注部分内容以降低计算量）更简单
+PhysisForcing（物理强化世界模拟器）瞄准机器人“动手能力”训练
+MultiHashFormer（基于哈希的生成式语言模型）尝试改写大模型算力结构
+ProMSA（渐进式多模态搜索 Agent）让 AI 回答“看图问答”前先主动查资料
+Formalizing Latent Thoughts（把“隐藏思维”形式化）提出大模型思考表示的四条公理
+Qwen-Image-2.0-RL（通义千问图像模型 2.0 强化学习版）技术报告公布后训练方案
+Meta 限制 Claude Code 和 Codex 使用，以防竞争对手拿走训练数据
+美国军方用 AI 挑出数千个目标，却漏看“这里是学校”的备注
+OpenAI 发布《欧洲 AI 劳动力地图》，直指哪些岗位会被重塑
+Anthropic 与加州政府达成协议，Claude 将以半价进入公共部门
+HP 与 OpenAI 扩大 Frontier（面向企业的深度合作计划）合作，把 AI 推进客户服务、研发和运营
+Ornith-1.0（一套可自我改进的开源代码 Agent 模型）发布
+Ornith-1.0（用于智能编程的开源大模型）尝试让 AI 自己给自己搭“脚手架”
+Qwen 3.6 27B（通义千问的一款 270 亿参数模型）被评价为本地开发的“甜点位”
+DiScoFormer（一种把两类生成能力合并到同一个 Transformer 里的模型）想用一个模型覆盖更多分布场景
+Import AI 463（Jack Clark 的 AI 周报）串起了自我改进机器人、中国万卡集群和“人类时代”随笔
