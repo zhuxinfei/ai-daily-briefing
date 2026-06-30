@@ -1226,3 +1226,22 @@ Ornith-1.0（用于智能编程的开源大模型）尝试让 AI 自己给自己
 Qwen 3.6 27B（通义千问的一款 270 亿参数模型）被评价为本地开发的“甜点位”
 DiScoFormer（一种把两类生成能力合并到同一个 Transformer 里的模型）想用一个模型覆盖更多分布场景
 Import AI 463（Jack Clark 的 AI 周报）串起了自我改进机器人、中国万卡集群和“人类时代”随笔
+Google 推出 Nano Banana 2 Lite（更快的 AI 图片生成模型）和 Gemini Omni Flash（面向视频生成的轻量模型）API
+Anthropic 发布 Claude Sonnet 5，主打更便宜的 Agent 运行成本
+Anthropic 启动 AI 药物发现项目，加入科技巨头押注医疗赛道
+OpenAI 推出 GeneBench-Pro（评测 AI 生物科研能力的新基准）
+ScarfBench（面向企业 Java 迁移的 AI Agent 评测集）瞄准企业级代码改造
+ReFreeKV（免阈值的 KV Cache 压缩方法）想让大模型更省资源
+A Gravitational Interpretation of Fine-Tuning Reversion（用“引力”视角解释微调后回退现象）探索模型为什么学了又像没学
+DreamForge-World 0.1 Preview（低算力实时可控世界模型预览版）瞄准更轻量的交互式 AI 模拟
+Cognitive Episodes in LLM Reasoning Traces（用大模型推理片段预测题目难度）让“AI 看懂人类答题难点”更可解释
+Beyond IID（跳出“数据同分布”前提）追问表格基础模型到底有多通用
+Google 英国经济影响报告称，英国要打造“AI 先行者国家”
+OpenAI 数据显示 ChatGPT 采用范围持续扩大
+DSpark（DeepSeek 推出的推理加速技术）在美国出口限制下把 AI 速度最高提升 85%
+Nano Banana 2 Lite（Google 的轻量级图像生成模型）上线，主打更快更省的出图体验
+The AI Compass（一个用“政治坐标测试”形式帮你看清 AI 立场的问答工具）火了
+Claude Science（Anthropic 面向科研场景的 AI 助手）发布，想把 Claude 推进实验室与研究流程
+Hugging Face（全球最大 AI 模型共享社区）把 Every Eval Ever（汇总各类模型测评结果的项目）接入模型页面
+Claude Sonnet 5（Anthropic 新一代 Claude Sonnet 模型）更新细节出炉，重点是能力继续打磨
+《The twilight of the chatbots》（一篇讨论“聊天机器人时代是否正在让位”的长文）提醒行业正在换挡
