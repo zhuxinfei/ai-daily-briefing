@@ -1267,3 +1267,27 @@ astryx（可定制且支持 Agent 的开源设计系统）瞄准 AI 时代的界
 重度 AI 采用与更多招聘相关，而不是裁员
 Fable 5（Claude 发布的短片系列新作）回归
 Hugging Face（全球最大 AI 模型共享社区）与 Cerebras（主打超高速 AI 芯片与推理服务的公司）把 Gemma 4（Google 推出的开源模型）带进实时语音 AI
+Anthropic 推出 Claude Science（面向科研场景的 Claude 产品/功能）
+Anthropic 发布 Claude Sonnet 5（Claude 的新模型版本）
+Anthropic 在美国出口管制解除后恢复 Claude Fable 5（Claude 的强力模型版本）
+Anthropic 为 Claude Code 精简 80% 系统提示词，称 Fable 5（Anthropic 提到的一组新模型代号）更偏好短指令
+The State-Prediction Separation Hypothesis（“状态”和“预测”应分开建模的研究假设）关注 AI 如何理解世界
+Valdi（价值扩散世界模型）把“价值判断”放进世界模型研究
+CausalMix（用因果推断指导数据配比的方法）探索语言模型训练该喂什么数据
+Are Performance-Optimization Benchmarks Reliably Measuring Coding Agents?（性能优化测试能否可靠评估编程 Agent）质疑现有评测
+Domain Arithmetic（一种环境迁移适配思路）研究 VLA（视觉-语言-动作模型）如何快速适应新场景
+DSPy（自动优化提示词的开发框架）被用于改进 Datasette Agent（面向数据查询的 AI 助手）的 SQL 提示词
+Seed2.0 Model Card（模型说明卡）瞄准真实世界复杂任务的智能前沿
+微软推出 Frontier Company（面向企业的人工智能落地公司），承诺投入 25 亿美元
+Anthropic 探索与三星定制芯片合作，但仍强调英伟达重要
+AI Agent（能代办任务的人工智能助手）开始触碰隐私法律红线
+英伟达推出面向人工智能创业公司的 revenue-sharing model（收入分成模式）
+browser-use/video-use（用编程 Agent 辅助剪视频的开源项目）让视频编辑也能“写指令”
+KittenML/KittenTTS（小于 25MB 的文字转语音模型）主打轻量高质量语音生成
+usestrix/strix（开源 AI 安全检查助手）帮应用找漏洞并尝试修复
+OmniRoute（免费 AI 网关，统一连接多家模型服务）想让开发者不断线写代码
+日本最高法院裁定 AI（人工智能）不能列为专利发明人
+科技行业追不上 AI（人工智能）反弹情绪
+llm-coding-agent（一款命令行 AI 编程助手）发布 0.1a0 版本
+美国持有 OpenAI 股权、Meta 转向 Neocloud（新型云算力服务商）等话题引发关注
+西班牙下令公私部门拉黑 Palantir（美国数据分析软件公司）
