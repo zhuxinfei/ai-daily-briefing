@@ -1291,3 +1291,28 @@ OmniRoute（免费 AI 网关，统一连接多家模型服务）想让开发者�
 llm-coding-agent（一款命令行 AI 编程助手）发布 0.1a0 版本
 美国持有 OpenAI 股权、Meta 转向 Neocloud（新型云算力服务商）等话题引发关注
 西班牙下令公私部门拉黑 Palantir（美国数据分析软件公司）
+AI 找漏洞带火安全报告，漏洞提交通道正被重新定义
+浏览器大战转向 AI 助手，Chrome 之外的新玩家开始抢入口
+SkillCoach（用于评估和提升 Agent 技能使用能力的研究框架）提出“会自我进化的评分标准”
+AnyGroundBench（面向视频定位任务的专业评测集）瞄准视觉语言模型的“看视频找目标”能力
+英国 AI Security Institute（英国人工智能安全研究机构）称常见基准测试低估了 Agent 真实能力
+AgenticSTS（测试长流程 Agent 的有限记忆实验平台）专门考模型“记不住太多时还能不能把事做完”
+EvoPolicyGym（评估自主策略进化能力的交互环境）把 Agent 拉进“边做边学”的考场
+Bridgewater（桥水基金，全球知名对冲基金）的金融测试让 GPT 和 Claude 集体失分，暴露“公开答案依赖症”
+Program-as-Weights（一种把“程序”当作模型权重来表达模糊函数的新范式）尝试改写模型表达方式
+PACE（用于评估 Agent 能力的代理指标）想先用“替身测试”快速判断 Agent 水平
+Tesla 限制员工 AI 支出：每周上限 200 美元
+Google DeepMind 与 A24（美国独立影视制作公司）启动研究合作
+AI 术语表走红，行业沟通门槛正在变成真实问题
+Claude Code 遭遇复杂的中国难题，跨境合规成了 AI 工具出海硬门槛
+Meta 的 Agent 推进慢于预期，AI 助手落地比想象中更难
+Kling（中国 AI 视频生成平台）融资 20 亿美元，冲刺香港上市
+Microsoft 升级 Copilot 与 AutoPilot agents（可自动执行多步骤任务的 AI 助手），加入 AI 超级应用竞赛
+OpenWiki（一款为代码库自动生成文档的命令行工具）想把“项目说明书”这件事交给 Agent
+Microsoft 的 AI-For-Beginners（面向零基础人群的 AI 入门课程）把 AI 教育做成了 12 周公开课
+pxpipe（一种把代码转成图片再交给模型识别的流程工具）号称把 Fable 成本砍掉 60%
+council-of-high-intelligence（多模型“圆桌议事”决策工具）想用 18 个 AI 角色帮你做难决定
+claude-obsidian（一套把笔记自动整理成知识网络的 AI 第二大脑方案）瞄准个人知识管理
+TabFM（Google Research 推出的表格数据基础模型项目）进入开源视野
+Fable's Judgement（Fable 团队总结的一套 AI 输出评估思路）值得做 AI 产品的人细看
+Open Source AI Gap Map（开源 AI 能力缺口地图）把“哪些基础能力还没人补上”画出来了
