@@ -1316,3 +1316,25 @@ claude-obsidian（一套把笔记自动整理成知识网络的 AI 第二大脑�
 TabFM（Google Research 推出的表格数据基础模型项目）进入开源视野
 Fable's Judgement（Fable 团队总结的一套 AI 输出评估思路）值得做 AI 产品的人细看
 Open Source AI Gap Map（开源 AI 能力缺口地图）把“哪些基础能力还没人补上”画出来了
+Anthropic 推出 Claude Science Beta（面向科学家的 Claude 科研工作台测试版）
+Learning to Move Before Learning to Do（先学会移动再学会做任务的 VLA 预训练研究）探索机器人先练“动作基本功”
+WARP（从模型权重反推训练数据组合的分析方法）试图揭开模型“吃过什么数据”
+Morphing into Hybrid Attention Models（把模型转变为混合注意力模型）关注大模型结构改造
+WorldDirector（可控世界模拟器研究）用持久动态记忆打造更稳定的虚拟世界
+AutoMem（自动学习记忆能力的研究）把“会记住”当成 AI 的认知技能来训练
+2.6 万名学生研究显示，AI（人工智能）的隐藏学习成本要两年才显现
+Multi-Resolution Flow Matching（多分辨率流匹配）用分阶段采样加速扩散模型
+InstanceControl（无需实例标注的复杂图像可控生成）降低精细控图门槛
+Midjourney（AI 图像生成工具）要求好莱坞片厂公开自己的 AI 使用细节
+Alibaba（阿里巴巴集团）据称将 Claude Code 列为高风险软件并限制员工使用
+Anthropic 启动自有药物发现项目，瞄准大药企认为不赚钱的疾病
+Anthropic 开发者分享 Fable 5（面向创作与提示测试的 AI 工具）提示技巧：先找自己的盲区
+GPT 5.4（OpenAI 新一代语言模型版本）登陆 ChatGPT，带来 5 项改进
+pxpipe（把文本藏进图片以降低模型费用的开源工具）可将 Claude Code 与 Fable 5 成本最多降 70%
+VulnClaw（用自然语言自动跑安全测试流程的开源工具）把漏洞排查做成一条龙
+pm-skills（产品经理智能体技能市场）收集 100+ 产品工作技能包
+BuilderIO/skills（面向编程智能体的技能包集合）服务代码协作场景
+book-to-skill（把技术书变成 Claude Code 技能包的工具）让书本知识进工作流
+AutoCVE（自动发现公开漏洞编号的源代码审计平台）瞄准漏洞验证和报告生成
+planning-with-files（用文件保存计划的 Claude Code 技能）复刻 Manus 风格工作流
+Better Models: Worse Tools（“模型更强、工具更差”的社媒讨论）提醒：AI 能力提升不等于体验变好
