@@ -1338,3 +1338,28 @@ book-to-skill（把技术书变成 Claude Code 技能包的工具）让书本知
 AutoCVE（自动发现公开漏洞编号的源代码审计平台）瞄准漏洞验证和报告生成
 planning-with-files（用文件保存计划的 Claude Code 技能）复刻 Manus 风格工作流
 Better Models: Worse Tools（“模型更强、工具更差”的社媒讨论）提醒：AI 能力提升不等于体验变好
+Mistral CEO 警告：专有模型可能让 AI 实验室坐上你业务流程的“前排座”
+Players 1st 推出高尔夫 AI Assistant（AI 助手），主打海量高尔夫数据分析
+券商加速上线 AI Trading Tools（AI 交易工具），自动化投资继续扩张
+百度 Unlimited OCR（可一次处理超长文档的文字识别方案）尝试用“像人会遗忘”的记忆机制突破页数限制
+DiscoBench（评测搜索型 Agent 何时该追问用户的基准）指出：AI 搜索不怕“不会搜”，更怕“一开始就问错”
+Distribution-wise Rewards（按整体分布给奖励的训练方法）瞄准视觉生成模型“单张看着好、整体不稳定”的老问题
+Logit-Contribution Scoring（一种分析模型内部“谁在出力”的方法）可识别非字面检索头
+Self-Flow（自流式训练框架）追问一个关键问题：这到底算数据增强，还是自监督学习？
+Representation Distribution Matching（表征分布匹配）探索一步式视觉生成，想把慢流程压缩成快出图
+Denser ≠ Better（更密集不等于更好）提醒业界：持续后训练不是把数据喂得越满越有效
+美国富裕家庭追捧 AI 私校，用个性化学习挑战传统教育
+Seedance 2.0（字节跳动推出的 AI 视频生成模型）让好莱坞又想禁又想用
+Amazon Mechanical Turk（亚马逊的众包人工标注平台）停止接收新客户，AI 数据外包老路走到拐点
+特朗普对私有 AI 模型设限，让开源路线再次升温
+GLAAD（关注 LGBTQ 群体权益的美国组织）梳理 AI 对 LGBTQ 人群的失误与修复方向
+Midjourney 在版权拉锯战中，反过来要求公开影视公司的 AI 使用情况
+Fable 5（一款用自然语言协助开发软件的 AI 编程工具）配合 Claude Code，几小时把 2003 年老游戏移植到 iOS
+box3d（一个给游戏做碰撞和运动效果的 3D 物理引擎）开源上线
+claude-video（让 Claude 能“看视频”的工具）把视频理解门槛降下来了
+seedance-2.0（围绕 Seedance 2.0 的 AI 影视制作流程包）瞄准“四模态”创作
+ai-goofish-monitor（用 AI 盯闲鱼商品的监控系统）把“捡漏”做成自动化
+T3MP3ST（一个自主化红队测试平台）把 AI 安全对抗做成多 Agent 协作
+Meetily（主打本地处理的 AI 会议助手）把转写、分人、总结都放到电脑本地
+新型 AI tutor（AI 辅导系统，能像助教一样陪学陪练）在达特茅斯课程中取得显著学习提升
+sqlite-utils（一个把 SQLite 数据库操作变简单的工具）4.0rc2 发布
