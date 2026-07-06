@@ -1363,3 +1363,29 @@ T3MP3ST（一个自主化红队测试平台）把 AI 安全对抗做成多 Agent
 Meetily（主打本地处理的 AI 会议助手）把转写、分人、总结都放到电脑本地
 新型 AI tutor（AI 辅导系统，能像助教一样陪学陪练）在达特茅斯课程中取得显著学习提升
 sqlite-utils（一个把 SQLite 数据库操作变简单的工具）4.0rc2 发布
+智谱 AI 推出 ZCode（AI 编程助手），想用更低价格挑战 Claude Code 和 Codex
+Google 隐私设置变动：你日常使用的数据，可能正在被拿去训练 AI
+CloudMasonry 推出 Claude 咨询服务，帮企业把 Anthropic 的 AI 更深接入业务
+VLA-Corrector（一种让机器人模型先检测再纠错的推理方案）提出自适应动作跨度思路
+Securing the AI Agent（面向智能体安全的统一框架）主打多层红队测试
+MultAttnAttrib（一种无需额外训练的多模态溯源方法）瞄准长文档问答可解释性
+Measuring the Gap Between Human and LLM Research Ideas（衡量人类与大模型科研想法差距）尝试把“创意差异”量化
+Monotonic Inference Policies（单调推理策略，让模型回答阶段更稳定的策略）被论文认为比训练期策略更关键
+Embodied.cpp（一套让机器人模型跨设备运行的推理运行时）想解决异构机器人适配难题
+OrbitQuant（一种无需依赖数据的量化方法）试图压缩图像与视频生成模型
+DataComp-VLM（面向视觉语言模型的开放数据集改进项目）继续补数据底座
+Microsoft 近 5000 人裁员，Xbox 与商业销售成重灾区
+中国要求头部 AI 平台下线“拟人化聊天角色”，监管开始卡住情感陪伴边界
+阿里巴巴因“蒸馏攻击”指控禁用 Anthropic，企业 AI 使用开始卷入安全与合规
+Nvidia 的 Kyber NVL144（新一代 AI 服务器系统）被曝推迟超一年，算力军备竞赛也会“卡壳”
+JADEPUFFER（首个“代理式”勒索软件组织）出现，AI 攻击开始像员工一样自主干活
+阿尔伯塔省政府用 Claude 排查并修复网络安全漏洞，AI 开始进入政府基础运维
+GPT-4 曾统治一年，如今顶级模型平均“保鲜期”只剩七周
+Amazon 关闭 Mechanical Turk（最早的人力众包标注平台），“人工假装智能”的时代谢幕
+cs249r_book（哈佛开源的《机器学习系统》课程书）帮你系统理解 AI 是怎么真正跑起来的
+dotnet/skills（微软 .NET 生态的 AI 编码助手技能库）想让代码 Agent 更懂企业开发
+Anthropic 提出 Global Workspace（“全局工作空间”，研究大模型内部是否会集中整合信息的机制）
+自动化让世界杯变糟？一篇文章点出 Automation（自动化）时代的矛盾
+Photoroom（AI 修图公司）公开 PRX（其内部训练项目）第四部分：数据策略
+HuggingFace 更新 Kernels（在线运行代码与模型的计算环境），面向开发体验做大改版
+sqlite-utils（一款把 SQLite 数据库操作变简单的工具）发布 4.0rc3 候选版
