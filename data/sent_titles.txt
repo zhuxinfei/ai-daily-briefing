@@ -1389,3 +1389,29 @@ Anthropic 提出 Global Workspace（“全局工作空间”，研究大模型�
 Photoroom（AI 修图公司）公开 PRX（其内部训练项目）第四部分：数据策略
 HuggingFace 更新 Kernels（在线运行代码与模型的计算环境），面向开发体验做大改版
 sqlite-utils（一款把 SQLite 数据库操作变简单的工具）发布 4.0rc3 候选版
+美国企业转向中国 AI 模型，因 OpenAI 和 Anthropic 成本持续走高
+Cohere Transcribe Arabic（Cohere 推出的阿拉伯语语音转文字模型）开源，专攻高难度转写场景
+CCST（加州科学与技术委员会）启动 California AI Science Residency Program（加州 AI 科学驻留项目），聚焦前沿 AI 安全
+LLM-as-a-Verifier（一种让大模型充当“审稿人/裁判”的通用校验框架）提出更通用的验证思路
+Unified Audio Intelligence（一体化音频智能模型）尝试兼顾声音能力与文本能力
+Multiplayer Interactive World Models（多人互动世界模型，可模拟多人环境变化的 AI 模型）探索更复杂的虚拟交互
+KVpop（一种压缩大模型缓存的新方法）瞄准更省资源的模型推理
+Wan-Streamer v0.2（一种流式 AI 视频生成方案）在相同时延下冲更高分辨率
+Safety Testing LLM Agents at Scale（大规模测试 Agent 安全性的框架）强调从发现风险到证据化验证
+dOPSD（一种用于扩散语言模型的自蒸馏训练方法）探索更高效的模型学习
+EdgeBench（一套研究真实环境学习规律的基准）试图揭示“越学越强”的边界条件
+DeepSeek 被曝自研 AI 芯片，开始往更底层的算力环节走
+Meta 推出 Muse（新的 AI 图片生成器），瞄准广告主和付费用户需求
+Google 扩展 Gemini API 的 Managed Agents（托管式智能体能力），让企业更容易把 AI 任务放到后台持续运行
+Cloudflare 改用更细颗粒度的 AI 爬虫管理，网站与内容方开始争夺“被谁拿去喂模型”的控制权
+Claude Cowork（Claude 的办公协作助手）扩展到手机和网页，AI 助手开始从“写代码”走向“全天候办公搭子”
+edgeone-makers-tools（腾讯 EdgeOne 的建站与部署工具集合）帮助个人开发者更快把网站上线
+Wand-Enhancer（Wand 应用的体验增强扩展）主打更好的交互和兼容能力
+zero（可按你规则运行的代码 Agent）把模型选择权和控制权交还给开发者
+ctx（开源 Agentic Development Environment，面向代码 Agent 的桌面工作台）想做可改造的 AI 编程环境
+Kokoro（一款可本地运行的 AI 语音合成工具）让高质量 TTS（文本转语音，把文字直接变成自然语音）也能轻松跑在 CPU（中央处理器，不用高端显卡也能运行）上
+LeRobot v0.6.0（HuggingFace 推出的机器人 AI 开发项目）更新，主打“想象、评估、改进”闭环
+HuggingFace（全球最大 AI 模型共享社区）支持一键进入 Amazon SageMaker Studio（亚马逊的机器学习工作台，用来训练和管理 AI 项目）
+HuggingFace 模型接入 Foundry Managed Compute（微软托管算力服务，把算力和运行环境提前配好）
+SkyPilot（跨云资源调度工具，帮团队在不同云平台之间统一跑 AI 任务）打通 HuggingFace 存储，主推 zero-egress storage（零出口流量存储，减少跨平台传数据费用）
+《A Script for Mark Zuckerberg》讨论 Meta 当下 AI 叙事该怎么讲，矛头直指战略表达
