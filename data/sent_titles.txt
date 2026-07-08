@@ -1415,3 +1415,27 @@ HuggingFace（全球最大 AI 模型共享社区）支持一键进入 Amazon Sag
 HuggingFace 模型接入 Foundry Managed Compute（微软托管算力服务，把算力和运行环境提前配好）
 SkyPilot（跨云资源调度工具，帮团队在不同云平台之间统一跑 AI 任务）打通 HuggingFace 存储，主推 zero-egress storage（零出口流量存储，减少跨平台传数据费用）
 《A Script for Mark Zuckerberg》讨论 Meta 当下 AI 叙事该怎么讲，矛头直指战略表达
+SpaceXAI 推出 Grok 4.5，主打更便宜的高性能模型
+ZML 发布 ZML/LLMD（帮助多种 AI 芯片更快跑模型的软件），瞄准更低推理成本
+OpenAI 发布新语音模型，实时对话更自然
+TurnOPD（一种让 Agent 训练更关注“回合过程”的蒸馏方法）提升长流程任务训练效率
+Harrison.Rad 1.5（一种面向放射科的医学影像基础模型）可根据影像与病史起草报告
+Gemma 4（Google 的新一代开放模型技术报告）发布
+CanvasAgent（一种可协调多种视觉工具的图片创作 Agent）瞄准复杂图像生成与编辑
+PluraMath（一套把数学推理评测扩展到更多语言的基准）补上低资源语言空白
+KAT-Coder-V2.5（一种能在真实代码仓库里自主行动的编程 Agent 模型）发布技术报告
+CGGS（一种用于第一人称 3D 场景生成的新方法）提升视角一致性
+Meta 在加拿大建设首个大型数据中心，AI 基建扩张正式“跨境”
+OpenAI 帮助 K–12（从幼儿园到高中阶段）教师建立实用 AI 能力
+Meta 的 AI 眼镜隐私防护升级了，但数据采集争议并没消失
+Meta AI 新工具可修改公开 Instagram 照片，社交平台内容边界再起争议
+Meta 测试常开型 AI 眼镜，试图记录用户“整天发生了什么”
+Meta AI 可用公开 Instagram 照片生成 deepfake（AI 伪造内容），且不要求明确同意
+emilkowalski/skills（面向设计工程师的案例与技能库）值得当成灵感手册收藏
+usestrix/strix（开源 AI 安全助手，用来发现并修复应用漏洞）瞄准开发安全自动化
+Data for Agents（面向 AI 智能体的开放数据计划）发布
+SWE-1.7（Cognition 推出的软件工程大模型）能力逼近 GPT 5.5 与 Opus
+Flint（一种让 AI 智能体更稳定生成图表的可视化语言）由 Microsoft 发布
+Vibe coding（随手说需求、让 AI 边写边改的编程方式）正在走出终端
+Grok 4.5（xAI 新一代大模型版本）正式发布
+GPT‑Live（OpenAI 的实时交互式 AI 体验）亮相
