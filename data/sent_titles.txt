@@ -1439,3 +1439,24 @@ Flint（一种让 AI 智能体更稳定生成图表的可视化语言）由 Micr
 Vibe coding（随手说需求、让 AI 边写边改的编程方式）正在走出终端
 Grok 4.5（xAI 新一代大模型版本）正式发布
 GPT‑Live（OpenAI 的实时交互式 AI 体验）亮相
+Anthropic 推出 Claude Reflect（用于追踪个人 AI 使用习惯的测试功能）Beta 版
+OpenAI 发布 GPT-5.6 Sol（OpenAI 新一代旗舰大模型）
+OpenAI 随 GPT-5.6 一同推出 ChatGPT Work（可处理完整工作流程的 AI 助手）
+Single-Rollout Asynchronous Optimization（单次轨迹异步优化）想让 Agent 强化学习训练更高效
+RoboDojo（通用机器人操作能力评测基准）想把机器人“模拟+现实”测试拉到同一张考卷上
+OpenAI 的 AI 在 AtCoder（知名编程竞赛平台）上击败全部人类选手
+OpenAI 发现约三成热门 AI 编码测试存在问题，行业评测可能没大家想得那么准
+Sparse Delta Memory（稀疏增量记忆机制）探索让 Linear RNN（线性循环神经网络）更擅长处理长上下文
+AgentLens（代码 Agent 评测框架）想把“是否做对”升级为“过程到底好不好”
+Meta 用 Muse Spark 1.1（Meta 推出的 AI 模型接口服务）低价出招，AI 价格战继续升温
+Meta 进军 AI 编程市场，正面追赶 Anthropic 和 OpenAI
+OpenAI 发布 GPT-5.6，并强调“每个 token（模型处理文字时切分的小单位）带来更多智能”
+OpenAI 推出 ChatGPT Work（面向工作的 ChatGPT 新方案），企业级 AI 正在加速成型
+CodexBar（一款查看 OpenAI Codex 与 Claude Code 使用数据的菜单栏工具）让你不登录也能看额度
+knockoff（一款帮你过滤亚马逊山寨杂牌商品的 Chrome 扩展）想替网购决策“排雷”
+ChatGPT Work（OpenAI 面向高强度办公场景的企业工作方案）发布
+Muse Spark 1.1（Meta 推出的模型服务版本）亮相，强调 API 能力与评测结果
+GLM 5.2（智谱新一代大模型）在记账准确率测试中接近人工账务人员
+Hy3（腾讯混元推出的 3D 生成研究项目）发布
+GPT-5.6（OpenAI 新模型版本）上线，并同步放出安全与开发文档
+Meta CTO Andrew Bosworth（Meta 首席技术官安德鲁·博斯沃思）谈 Meta 重回 AI 相关性的路径
