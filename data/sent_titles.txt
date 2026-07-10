@@ -1460,3 +1460,28 @@ GLM 5.2（智谱新一代大模型）在记账准确率测试中接近人工账�
 Hy3（腾讯混元推出的 3D 生成研究项目）发布
 GPT-5.6（OpenAI 新模型版本）上线，并同步放出安全与开发文档
 Meta CTO Andrew Bosworth（Meta 首席技术官安德鲁·博斯沃思）谈 Meta 重回 AI 相关性的路径
+Google 梳理 Gemini、Veo、Nano Banana（Google 旗下不同用途的 AI 模型与工具）产品线
+OpenAI 推出 ChatGPT Work（能接管整段工作流的 Agent），并配合 GPT-5.6 公开上线
+Meta 用 Muse Spark 1.1（Meta 新推出的模型接口服务）API 定价继续加码价格战
+GPT-5.6 Sol（OpenAI 的新一代推理模型）综合基准几乎追平 Fable 5（另一款前沿大模型），成本却只要三分之一
+GPT-5.6 Sol（OpenAI 的新一代推理模型）还能自主后训练 Luna（更小体量的模型），只靠一个相当模糊的提示词
+CausalDS（面向数据科学 Agent 的因果推理评测集）补上了“会分析数据”不等于“懂因果”的关键空白
+Vidu S1（可实时互动的 AI 视频生成模型）瞄准“边生成边交互”的下一代视频体验
+Linear Attention Architectures（线性注意力架构，用更省算力的方式处理长文本）系统梳理了长上下文模型的取舍
+Jet-Long（长上下文扩展方案）用 Dynamic Bifocal RoPE（动态双焦点位置编码，让模型更稳地理解远近信息）提升长文本处理效率
+ARDY（用于人物动作生成的模型）把 autoregressive diffusion（自回归扩散，分步骤生成且逐步细化结果）带进可交互的人体动作生成
+腾讯拟收购 Manus（AI 智能体公司）多数股权，Meta 的 20 亿美元交易被北京叫停后局势生变
+Bun（一个主打高性能的 JavaScript 运行工具）借助 Claude Fable 5（Claude 参与的大规模代码生成项目）11 天改写超百万行代码
+Apple 起诉 OpenAI，指控前员工泄露机密并涉及商业秘密盗用
+Deutsche Telekom（德国电信，欧洲大型通信运营商）正用 OpenAI 把自己改造成 AI 原生运营商
+OpenAI 表示 ChatGPT 正从聊天工具走向“高难度工作搭档”
+pocket-tts（一款可在普通 CPU 上运行的文本转语音工具）主打“轻量到能装进口袋”
+RedKnot（一套提升长上下文大模型服务效率的推理方案）瞄准“更长对话、更省资源”
+claude-design-system-prompt（一套把 Claude 调成设计协作搭档的提示词与技能库）走红
+testsprite-cli（一款在命令行里做自动化测试的 AI 工具）把测试流程往前再推一步
+OpenAI 大发布背后又现高层离职风波
+GPT-5.6 Sol Ultra（OpenAI 的高阶推理模型）给出 Cycle Double Cover Conjecture（图论里一个长期未解的数学猜想）证明
+PyTorch（最流行的 AI 开发框架）性能剖析新文聚焦 Attention（让模型判断“该重点看哪部分信息”的核心机制）
+OpenAI 被曝规划 ChatGPT Superapp（超级应用，想把多种功能装进一个入口）
+Apple 起诉 OpenAI，指控前员工带走商业机密
+报告称 Boko Haram（尼日利亚极端组织）正在利用 frontier AI（前沿 AI，能力最强的一批新模型）
