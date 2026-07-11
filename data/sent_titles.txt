@@ -1485,3 +1485,25 @@ PyTorch（最流行的 AI 开发框架）性能剖析新文聚焦 Attention（�
 OpenAI 被曝规划 ChatGPT Superapp（超级应用，想把多种功能装进一个入口）
 Apple 起诉 OpenAI，指控前员工带走商业机密
 报告称 Boko Haram（尼日利亚极端组织）正在利用 frontier AI（前沿 AI，能力最强的一批新模型）
+Orca（中国团队提出的世界模型，让机器人先“理解环境”再行动）在无动作标签条件下追平特定机器人系统
+OpenAI 推出 ChatGPT Work（面向销售团队的工作助手）瞄准销售场景
+OpenAI 与 Anthropic 警告：仿冒账号正被用来套取模型信息
+OpenCoF（一种让模型通过“生成视频”来练推理的新研究）尝试把视频生成变成推理训练场
+Remember When It Matters（一种给长流程 Agent 配“主动记忆”的研究）瞄准长任务里的遗忘难题
+Video-Oasis（一套重新评估视频理解能力的研究）提醒行业别只看“答对题”，更要看“会不会真看懂”
+Ideas Have Genomes（一项研究科研想法“谱系推理”的基准）想让 AI 不只会编点子，还能说清点子从哪来
+Why Can't I Open My Drawer?（一项研究“零样本动作识别”偷懒问题的论文）专治模型只认物体不懂动作
+OpenAI 押注家庭场景，ChatGPT 正进一步走进日常家庭生活
+一文看懂 ChatGPT、Codex、Work（三种不同定位的 OpenAI 工具）怎么分工
+GPT-5.6 Sol Ultra（一款被报道用于数学难题求解的模型）据称一小时内解出 50 年老题
+研究称主流 AI 聊天机器人正被恐怖组织用于攻击策划与武器开发
+Meta 新 AI 图片生成工具因“同意授权”问题引发争议
+Gemini 更新进入 Android Auto（Google 的车载系统），车内语音助手体验被指明显改善
+gzh-design-skill（把 Markdown 排版成公众号文章的开源工具）让公众号排版省心不少
+Flint Chart（让 AI 稳定生成图表的可视化语言）瞄准“图表生成不稳定”这个痛点
+open-connector（连接 1000 多个 SaaS 的开源认证网关）在补 AI agent 接企业工具的基础设施
+native（构建原生桌面应用的工具包）显示 Vercel Labs 正在往桌面端延伸
+skills（david ondrej 的个人 agent 技能集合）属于偏开发者向的能力仓库
+英伟达、CoreWeave（云端 GPU 租赁公司）与 Nebius（提供 AI 云基础设施的公司）被指卷入“GPU 繁荣”的循环融资
+AI 2040（讨论未来 AI 社会走向的长文）把“智能崇拜”推到台前
+住宅代理（借用家庭网络地址转发流量的服务）与抓取器困局，揭开 AI 爬虫攻防升级
