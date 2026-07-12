@@ -1507,3 +1507,29 @@ skills（david ondrej 的个人 agent 技能集合）属于偏开发者向的能
 英伟达、CoreWeave（云端 GPU 租赁公司）与 Nebius（提供 AI 云基础设施的公司）被指卷入“GPU 繁荣”的循环融资
 AI 2040（讨论未来 AI 社会走向的长文）把“智能崇拜”推到台前
 住宅代理（借用家庭网络地址转发流量的服务）与抓取器困局，揭开 AI 爬虫攻防升级
+OpenAI、Meta 与 SpaceXAI 围绕更省钱的 AI 模型展开竞争
+Fable（Anthropic 旗下的一类模型系列）下线时间再次顺延
+Anthropic 将通过云端提供 Claude Cowork（让 Claude 像同事一样协作的功能）
+AI Agent 在《Slay the Spire 2》（一款卡牌构筑 roguelike 游戏，每局都要临场决策）中靠结构化记忆打出更好成绩
+DrugGen 2（面向药物发现的疾病感知语言模型）想让 AI 找药更懂“病”而不只会“拼分子”
+CineMobile（可在手机等设备本地运行的图生视频系统）瞄准“端侧视频生成”
+LongE2V（面向长时段事件相机视频重建的模型）把重建、预测、补帧三件事打通了
+PhyMRI-SR（结合成像物理知识的 MRI 超分辨率方法）想把医学图像放大得更靠谱
+Geometric-aware Pretraining（几何感知预训练）提升了上下文全景图生成
+布朗大学教授禁用 AI 后，考试成绩从 96% 跌到 48%，AI 依赖问题被直接放大
+LinkedIn 被研究指为长篇 AI 灌水内容重灾区，平台内容质量问题更值得警惕
+Anthropic：Claude Cowork（Claude 的协作办公功能）最先跑通的，竟是没人想接手的琐碎办公室活
+S&P Global（国际评级机构标普全球）下调 Oracle 评级，OpenAI 被点名为关键信用风险
+Altman 改口：现在“相当确定”AI 最终会净创造就业，而非净减少岗位
+Insilico（用 AI 做药物研发的公司）预计利润和营收大增，AI 研发候选药推进到 Phase III（临床三期，大规模验证疗效和安全性阶段）
+中国通报 Claude code（Claude 的编程助手功能）存在安全漏洞，AI 编码工具的风险再次被放大
+Meta 下线 Muse Image（可生成 Instagram 用户 AI 照片的功能），无同意生成他人形象引发反弹
+Meta 计划 9 月量产 AI 芯片，并寻求把计算能力翻倍
+TencentDB-Agent-Memory（腾讯云推出的 Agent 长期记忆组件）主打本地化长时记忆
+pgrust（用 Rust 重写的 Postgres 数据库）通过全部回归测试
+hunk（面向 AI 编码助手的终端差异审查工具）强调先审后改
+《What xAI's Grok build CLI（Grok 构建命令行工具） sends to xAI》拆解了命令行工具传了什么
+shepherd（把 Agent 执行过程变成可回放轨迹的运行时系统）瞄准可观察与可撤销
+dramaclaw（通用 AIGC 视频引擎）想把“剧本到成片”串成一条流水线
+Claude Code 首次读提示前就发送 3.3 万 tokens（模型处理文本的基本计数单位），OpenCode（开源 AI 编程助手）约 7000
+《I love LLMs, I hate hype》：喜欢大模型，不代表要接受夸张叙事
