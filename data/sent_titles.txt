@@ -1533,3 +1533,26 @@ shepherd（把 Agent 执行过程变成可回放轨迹的运行时系统）瞄�
 dramaclaw（通用 AIGC 视频引擎）想把“剧本到成片”串成一条流水线
 Claude Code 首次读提示前就发送 3.3 万 tokens（模型处理文本的基本计数单位），OpenCode（开源 AI 编程助手）约 7000
 《I love LLMs, I hate hype》：喜欢大模型，不代表要接受夸张叙事
+TechRadar 对比 Meta AI、ChatGPT 与 Nano Banana 2（AI 图像生成工具），结果出现意外赢家
+OpenAI 推出 ChatGPT Work（面向工作的企业版功能），并引入 GPT-5.6（新一代模型家族）
+Planadviser 汇总 7 月 13 日 AI Product & Service Launches（AI 产品与服务发布）动态
+Long-Horizon-Terminal-Bench（面向长流程终端任务的 Agent 测试基准）用更细颗粒度评分，专门考验 AI 能不能把复杂任务一路做到底
+Self-Guided Test-Time Training（自引导测试时训练，让模型在使用时边做边调）瞄准长上下文大模型的“临场学习”能力
+Google 的 SensorFM（把可穿戴设备杂乱传感器数据变成健康理解能力的 AI 模型）想做通用健康智能底座
+A Sovereign, Open-Source Foundation Model for German and English（面向德语与英语的主权开源基础模型）主打本地语言与自主可控
+Video Generation Models are General-Purpose Vision Learners（视频生成模型也是通用视觉学习器）提出一个很重要的判断：会“生成视频”的模型，未必只会做视频
+Scalable Visual Pretraining for Language Intelligence（可扩展视觉预训练提升语言智能）探索“先看图，再变聪明”的新路线
+图灵奖得主 Rich Sutton 创办 Oak Lab（聚焦“自我学习”Agent 的新公司）
+Anthropic 在印度推进 Claude 本地定价，AI 订阅开始更像“大众服务”而不是“美元特供”
+纳德拉点名批评“蒸馏”限制，AI 数据与规则公平性争议再升温
+诺奖经济学家与 AI 领袖警告：留给社会准备 AI 冲击的时间不多了
+Anthropic 延长 Fable 5（其面向订阅用户开放的模型服务）免费使用，AI 价格战继续加码
+ResearchStudio（微软开源的 AI 科研写作助手）想把研究工作一路带到论文发表
+Mellea（一个用来编写生成式程序的开发库）瞄准更可控的内容生成
+仓颉 Skill（把长内容蒸馏成可执行能力包的 Agent 技能库）主打“内容直接变动作”
+agent-scripts（给 Agent 复用的脚本集合）体现出 AI 工作流正在模块化
+Skills（面向设计师和构建者的 Agent 技能包）把 Codex、Claude、Cursor 的协作经验打包开源
+Apple 起诉 OpenAI 背后，真正暴露的是自家 AI 困局
+Apple 的 SpeechAnalyzer（语音分析接口，帮助应用把语音转成文字并做理解）API 跑分，对上 Whisper（OpenAI 的开源语音识别模型）和前代产品
+Samsung Health（三星的健康管理应用）被曝：若拒绝 AI 训练，用户可能面临数据删除提示
+同样的 TypeScript（微软推出的编程语言，常用于网页和应用开发）任务，在 Claude 上比在 GPT 上更贵
