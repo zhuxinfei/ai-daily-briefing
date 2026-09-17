@@ -65,6 +65,34 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 		return fmt.Errorf("open store: %w", err)
 	}
 	defer s.Close()
+
+	// Bound the state DB on EVERY exit path, not just the successful one.
+	//
+	// Deferred rather than called inline because the runs that most need it are
+	// the ones that return early. The state push runs with `if: always()`, and
+	// daily.yml sets BRIEFING_SKIP_IF_REPORT_EXISTS — so a run that no-ops
+	// because another publisher already shipped the day still pushes this file,
+	// as does one that dies at compose or gate. Inline at the end, a single
+	// skipped run left the file over the push limit.
+	//
+	// Deferring also keeps it LAST, which is load-bearing in the other
+	// direction. InsertRawItems does INSERT OR IGNORE and reads the surviving
+	// row id back, so an item whose (source_id, external_id) is already in the
+	// table inherits the OLD row — old fetched_at, old content. Pruning before
+	// the classify rows are written therefore deletes a row whose id this run
+	// is still holding, and InsertClassifiedItems then fails its foreign key,
+	// which the caller swallows as "N skipped (FK / zero-id)" on a run that
+	// still exits 0. Running last means every raw_item this run published is
+	// already referenced by classified_items and spared.
+	defer func() {
+		// Detached from ctx deliberately: the usual way to arrive here early is
+		// that the parent context ran out, which is exactly when the file still
+		// needs bounding before it is pushed.
+		cleanupCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 3*time.Minute)
+		defer cancel()
+		pruneRawItemsForRetention(cleanupCtx, s, cfg, stage)
+	}()
+
 	if err := s.Migrate(ctx); err != nil {
 		return fmt.Errorf("migrate: %w", err)
 	}
@@ -1142,32 +1170,15 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 		stage("title-dedup: target=test, skipping persist to avoid polluting sent set")
 	}
 
-	// --- 19. Bound the state DB -----------------------------------------
-	// Ordering is load-bearing — do NOT move this earlier, however tempting
-	// (it looks like it belongs next to InsertRawItems, and putting it there
-	// was a real bug):
-	//
-	// InsertRawItems does INSERT OR IGNORE and then reads the surviving row id
-	// back, so an item whose (source_id, external_id) is already in the table
-	// inherits the OLD row — old fetched_at, old content. A repo that trends
-	// today and last trended more than the retention window ago is exactly
-	// that case. Pruning before the classify rows are written therefore
-	// deletes a row whose id this run is still holding, and step 6f's
-	// InsertClassifiedItems then fails its foreign key — which run.go swallows
-	// as "N skipped (FK / zero-id)" and the run still exits 0.
-	//
-	// Running last means every raw_item this run published is already
-	// referenced by classified_items, so it is spared; nothing downstream
-	// writes those ids again.
-	pruneRawItemsForRetention(ctx, s, cfg, stage)
-
 	stage("pipeline complete: issue published")
 	return nil
 }
 
 // pruneRawItemsForRetention applies cfg.Retention to the store and hands the
-// freed pages back to the filesystem. Must run after the classify rows are
-// persisted — see the call site for why.
+// freed pages back to the filesystem.
+//
+// Called from a defer high in runPipeline for two ordering reasons that pull
+// in opposite directions; see that defer's comment before moving it.
 //
 // Logging-only on error: this is housekeeping on a file that is already
 // correct, and losing a day's prune is recoverable — the next run does it
