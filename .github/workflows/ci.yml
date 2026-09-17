@@ -16,8 +16,14 @@ on:
   # these branches landed by pushing straight to main — so a PR-only trigger
   # would be inert the moment that habit slips, and the gate would stop
   # existing without saying so. Same silence that let both failures below
-  # happen. Scoped to main so the automation-state branch's daily state push
-  # (and the site repo) don't trigger it.
+  # happen.
+  #
+  # Scoped to main because two other push paths must not fire it: the daily job
+  # pushes the state branch (scripts/gha_save_state.sh → HEAD:automation-state)
+  # and the site repo (daily.yml / weekly.yml), neither of which is this repo's
+  # main. Note that scripts/systemd/briefing-post-run.sh on the self-hosted host
+  # DOES push this repo's main directly — those runs are intended to be checked
+  # too, so expect CI there.
   push:
     branches: [main]
   workflow_dispatch:
@@ -47,7 +53,14 @@ jobs:
       # fix, so there is no reason to make anyone wait for a compile first.
       - name: Check formatting
         run: |
-          unformatted="$(gofmt -l .)"
+          # The exit code is checked, not just the output: when gofmt cannot
+          # parse a file it reports that on stderr and exits non-zero, leaving
+          # stdout empty — so testing stdout alone would quietly pass on a file
+          # it could not read.
+          if ! unformatted="$(gofmt -l .)"; then
+            echo "::error::gofmt failed to run — a file may not parse. See stderr above."
+            exit 1
+          fi
           if [ -n "$unformatted" ]; then
             echo "::error::gofmt found unformatted files. Run 'gofmt -w .' and commit the result:"
             echo "$unformatted"
