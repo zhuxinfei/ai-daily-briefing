@@ -415,6 +415,79 @@ func (s *sqliteStore) UpdateRawItemContent(ctx context.Context, id int64, conten
 	return nil
 }
 
+// -------- Retention --------
+
+// PruneRawItems deletes raw_items fetched before the cutoff.
+//
+// Why this exists: raw_items is the one table that grows without bound — every
+// run appends the full extracted body of every article it fetched, and nothing
+// ever removed them. It reached ~84 MiB by mid-2026, which put the state DB
+// over the 100 MiB per-file limit GitHub enforces on the automation-state
+// branch. Every daily state push was rejected from 2026-07 onward, so the
+// dedup/issue history on that branch silently stopped advancing (only the
+// weekly run, which ingests nothing new, still squeezed under the limit).
+//
+// Two classes of row are deliberately spared:
+//
+//   - anything classified_items points at. Its raw_item_id is a NOT NULL
+//     foreign key (005_schema_versioning.sql), so deleting a referenced row
+//     would abort the whole statement with a constraint failure rather than
+//     skip it. Only ~1.4k rows are ever referenced, so excluding them still
+//     prunes >96% of the table.
+//   - anything inside the retention window, which is what keeps the most
+//     recent issues regenerable.
+//
+// The rest is safe to drop: the only reader, ListRecentRawItems, is called from
+// tests alone, and publication dedup runs off data/sent_urls.txt and
+// data/sent_titles.txt, which are separate files and unaffected.
+func (s *sqliteStore) PruneRawItems(ctx context.Context, before time.Time) (int64, error) {
+	const q = `
+		DELETE FROM raw_items
+		WHERE fetched_at < ?
+		  AND id NOT IN (SELECT raw_item_id FROM classified_items WHERE raw_item_id IS NOT NULL)
+	`
+	res, err := s.db.ExecContext(ctx, q, before.UTC())
+	if err != nil {
+		return 0, fmt.Errorf("prune raw_items before %s: %w", before.UTC().Format(time.RFC3339), err)
+	}
+	n, err := res.RowsAffected()
+	if err != nil {
+		// The delete succeeded; not every driver reports a count.
+		return 0, nil
+	}
+	return n, nil
+}
+
+// Compact checkpoints the WAL and rewrites the database, returning the space
+// PruneRawItems freed to the filesystem — DELETE on its own only marks pages
+// reusable inside an unchanged file.
+//
+// The checkpoint matters beyond tidiness: gha_save_state.sh copies
+// data/briefing.db by itself, without the -wal sidecar, so anything still
+// sitting in the WAL would never reach the state branch.
+func (s *sqliteStore) Compact(ctx context.Context) error {
+	// VACUUM cannot run inside a transaction and needs to be the only writer;
+	// drop the pool's idle connections first so none is holding a read lock.
+	s.db.SetMaxIdleConns(0)
+
+	rows, err := s.db.QueryContext(ctx, `PRAGMA wal_checkpoint(TRUNCATE)`)
+	if err != nil {
+		return fmt.Errorf("wal_checkpoint: %w", err)
+	}
+	for rows.Next() { // drain the single (busy, log, checkpointed) row
+	}
+	rowErr := rows.Err()
+	_ = rows.Close()
+	if rowErr != nil {
+		return fmt.Errorf("wal_checkpoint: %w", rowErr)
+	}
+
+	if _, err := s.db.ExecContext(ctx, `VACUUM`); err != nil {
+		return fmt.Errorf("vacuum: %w", err)
+	}
+	return nil
+}
+
 // -------- Issue --------
 
 func (s *sqliteStore) UpsertIssue(ctx context.Context, issue *Issue) (int64, error) {

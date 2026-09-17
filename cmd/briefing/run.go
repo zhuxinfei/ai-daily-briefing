@@ -1144,8 +1144,43 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 		stage("title-dedup: target=test, skipping persist to avoid polluting sent set")
 	}
 
+	// --- 19. Bound the state DB ----------------------------------------
+	// data/briefing.db rides along on the automation-state branch, where
+	// GitHub refuses any file over 100 MiB. It sat right on that line for
+	// months, so every daily state push was rejected and the branch's history
+	// stopped advancing. fail-soft: the issue is already published, and a
+	// housekeeping failure must not fail the run.
+	pruneRawItemsForRetention(ctx, s, cfg, stage)
+
 	stage("pipeline complete: issue published")
 	return nil
+}
+
+// pruneRawItemsForRetention applies cfg.Retention to the store and then hands
+// the freed pages back to the filesystem. Logging-only on error, matching the
+// other end-of-run housekeeping (dedup persistence), because by this point the
+// briefing has already been published.
+func pruneRawItemsForRetention(ctx context.Context, s store.Store, cfg *config.Config, stage func(string)) {
+	days := cfg.Retention.RawItemsDays
+	if days <= 0 {
+		return
+	}
+	cutoff := time.Now().UTC().AddDate(0, 0, -days)
+	n, err := s.PruneRawItems(ctx, cutoff)
+	if err != nil {
+		stage(fmt.Sprintf("[WARN] retention: prune raw_items: %v", err))
+		return
+	}
+	stage(fmt.Sprintf("retention: pruned %d raw_items fetched before %s (keep %d days)",
+		n, cutoff.Format("2006-01-02"), days))
+
+	if err := s.Compact(ctx); err != nil {
+		// The rows are gone either way; without the compaction the file just
+		// stays large until a run where it succeeds.
+		stage(fmt.Sprintf("[WARN] retention: compact: %v", err))
+		return
+	}
+	stage("retention: compacted state db")
 }
 
 // ingestStats summarises a single ingest pass.

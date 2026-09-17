@@ -286,3 +286,31 @@ func TestCalculateCrossMentions(t *testing.T) {
 		}
 	}
 }
+
+// TestCalculateCrossMentions_GitHubTrendingSource covers the source swap: when
+// the ossinsight trends endpoint was retired (2026-09) the feed moved to the
+// github_trending adapter, and this signal was gated on the "ossinsight"
+// literal alone. Keying it on one provider meant the hotness signal silently
+// switched off for every item the new source produced — no error, just a
+// CrossMentionCount of 0 forever.
+func TestCalculateCrossMentions_GitHubTrendingSource(t *testing.T) {
+	items := []*store.RawItem{
+		// trending (source_id=100) — supplied by the github_trending adapter
+		{ID: 1, SourceID: 100, Title: "anthropics/claude-cookbook", Content: "Recipes"},
+		// news (source_id=200)
+		{ID: 10, SourceID: 200, Title: "claude-cookbook updated", Content: "The claude-cookbook repo gained recipes"},
+	}
+	sourceTypes := map[int64]string{
+		100: "github_trending",
+		200: "rss",
+	}
+	CalculateCrossMentions(items, sourceTypes)
+
+	if items[0].CrossMentionCount == 0 {
+		t.Errorf("github_trending item got CrossMentionCount=0; the trending signal must not be " +
+			"keyed on the retired ossinsight provider alone")
+	}
+	if items[1].CrossMentionCount != 0 {
+		t.Errorf("non-trending item should have 0 mentions, got %d", items[1].CrossMentionCount)
+	}
+}
