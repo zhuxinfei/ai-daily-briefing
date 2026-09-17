@@ -344,9 +344,9 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 		if !skipCrossRunDedup && len(sentTitles) > 0 {
 			filtered2 = dedupRawItemsByTitle(filtered2, sentTitles)
 		}
-			if len(filtered2) > len(filtered) {
-				stage(fmt.Sprintf("extended filter: %d items in %dh (vs %d in %dh)",
-					len(filtered2), cfg.Window.ExtendedHours, len(filtered), cfg.Window.LookbackHours))
+		if len(filtered2) > len(filtered) {
+			stage(fmt.Sprintf("extended filter: %d items in %dh (vs %d in %dh)",
+				len(filtered2), cfg.Window.ExtendedHours, len(filtered), cfg.Window.LookbackHours))
 			// v1.0.1 Phase 4.2: extended path 也要算 signal_strength, 否则
 			// filtered2 里 item.SignalStrength 还是 0 (拿不到共振加权).
 			_ = ingest.CalculateSignalStrength(filtered2)
@@ -361,14 +361,14 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 						rankedRaws2 = append(rankedRaws2, r.Item)
 					}
 				}
-					if sectioned2, cerr := classifier.Classify(ctx, rankedRaws2, sourceCategories); cerr != nil {
-						stage(fmt.Sprintf("extended classify: failed (%v) — keeping original", cerr))
-					} else {
-						// 整体替换, compose+insight 都用新数据
-						sectioned = sectioned2
-						rankedRaws = rankedRaws2
-						activeFiltered = filtered2
-						stage("extended window: switched to extended result")
+				if sectioned2, cerr := classifier.Classify(ctx, rankedRaws2, sourceCategories); cerr != nil {
+					stage(fmt.Sprintf("extended classify: failed (%v) — keeping original", cerr))
+				} else {
+					// 整体替换, compose+insight 都用新数据
+					sectioned = sectioned2
+					rankedRaws = rankedRaws2
+					activeFiltered = filtered2
+					stage("extended window: switched to extended result")
 					for secID, secItems := range sectioned {
 						stage(fmt.Sprintf("classify(ext): %s → %d items", secID, len(secItems)))
 					}
@@ -1144,8 +1144,43 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 		stage("title-dedup: target=test, skipping persist to avoid polluting sent set")
 	}
 
+	// --- 19. Bound the state DB ----------------------------------------
+	// data/briefing.db rides along on the automation-state branch, where
+	// GitHub refuses any file over 100 MiB. It sat right on that line for
+	// months, so every daily state push was rejected and the branch's history
+	// stopped advancing. fail-soft: the issue is already published, and a
+	// housekeeping failure must not fail the run.
+	pruneRawItemsForRetention(ctx, s, cfg, stage)
+
 	stage("pipeline complete: issue published")
 	return nil
+}
+
+// pruneRawItemsForRetention applies cfg.Retention to the store and then hands
+// the freed pages back to the filesystem. Logging-only on error, matching the
+// other end-of-run housekeeping (dedup persistence), because by this point the
+// briefing has already been published.
+func pruneRawItemsForRetention(ctx context.Context, s store.Store, cfg *config.Config, stage func(string)) {
+	days := cfg.Retention.RawItemsDays
+	if days <= 0 {
+		return
+	}
+	cutoff := time.Now().UTC().AddDate(0, 0, -days)
+	n, err := s.PruneRawItems(ctx, cutoff)
+	if err != nil {
+		stage(fmt.Sprintf("[WARN] retention: prune raw_items: %v", err))
+		return
+	}
+	stage(fmt.Sprintf("retention: pruned %d raw_items fetched before %s (keep %d days)",
+		n, cutoff.Format("2006-01-02"), days))
+
+	if err := s.Compact(ctx); err != nil {
+		// The rows are gone either way; without the compaction the file just
+		// stays large until a run where it succeeds.
+		stage(fmt.Sprintf("[WARN] retention: compact: %v", err))
+		return
+	}
+	stage("retention: compacted state db")
 }
 
 // ingestStats summarises a single ingest pass.

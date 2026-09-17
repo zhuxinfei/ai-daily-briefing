@@ -31,6 +31,17 @@ type Store interface {
 	ListRecentRawItems(ctx context.Context, domainID string, since time.Time) ([]*RawItem, error)
 	UpdateRawItemContent(ctx context.Context, id int64, content string) error
 
+	// Retention
+	// PruneRawItems deletes raw_items fetched before the cutoff, returning the
+	// number of rows removed. raw_items is the only unbounded table here — it
+	// stores the full body of every article ever fetched — and the state DB is
+	// pushed to a git branch that rejects files over 100 MiB.
+	PruneRawItems(ctx context.Context, before time.Time) (int64, error)
+	// Compact checkpoints the WAL and rewrites the database so the space freed
+	// by PruneRawItems is actually returned to the filesystem. DELETE alone only
+	// frees pages inside the file.
+	Compact(ctx context.Context) error
+
 	// Issue
 	// UpsertIssue inserts or updates an issue for (domain_id, issue_date),
 	// returning the resulting id.

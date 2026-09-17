@@ -12,15 +12,28 @@ import (
 
 // Config is the full briefing-v3 configuration loaded from YAML.
 type Config struct {
-	Domain   DomainConfig    `yaml:"domain"`
-	Window   WindowConfig    `yaml:"window"`
-	LLM      LLMConfig       `yaml:"llm"`
-	Rank     RankConfig      `yaml:"rank"`
-	Gate     GateConfig      `yaml:"gate"`
-	Slack    SlackConfig     `yaml:"slack"`
-	Image    ImageConfig     `yaml:"image"`
-	Sections []SectionConfig `yaml:"sections"`
-	Sources  []SourceConfig  `yaml:"sources"`
+	Domain    DomainConfig    `yaml:"domain"`
+	Window    WindowConfig    `yaml:"window"`
+	LLM       LLMConfig       `yaml:"llm"`
+	Rank      RankConfig      `yaml:"rank"`
+	Gate      GateConfig      `yaml:"gate"`
+	Slack     SlackConfig     `yaml:"slack"`
+	Image     ImageConfig     `yaml:"image"`
+	Retention RetentionConfig `yaml:"retention"`
+	Sections  []SectionConfig `yaml:"sections"`
+	Sources   []SourceConfig  `yaml:"sources"`
+}
+
+// RetentionConfig bounds the history kept in the state DB.
+//
+// The DB is pushed to the automation-state branch, and GitHub rejects any
+// single file over 100 MiB. raw_items was the table that broke that ceiling
+// (see store.PruneRawItems), so it is the one with a knob.
+type RetentionConfig struct {
+	// RawItemsDays is how many days of fetched raw_items to keep, by
+	// fetched_at. Zero or negative disables pruning — which lets the state DB
+	// grow back over the push limit, so the shipped config sets it.
+	RawItemsDays int `yaml:"raw_items_days"`
 }
 
 // RankConfig mirrors the `rank:` block in config/ai.yaml. Currently only

@@ -229,7 +229,7 @@ func TestCountMentionsWordBoundary(t *testing.T) {
 		hay, needle string
 		want        int
 	}{
-		{"hermes is great, hermes-agent rocks", "hermes", 2}, // 2 次: 单独 + hermes-agent 里的 hermes (两边都是非字母)
+		{"hermes is great, hermes-agent rocks", "hermes", 2},  // 2 次: 单独 + hermes-agent 里的 hermes (两边都是非字母)
 		{"Agent framework and agents everywhere", "agent", 1}, // "Agent " 匹配, "agents" 不匹配 (右边是 s)
 		{"no match here", "xyz", 0},
 		{"repeated VibeVoice VibeVoice VibeVoice end", "vibevoice", 3},
@@ -251,8 +251,8 @@ func TestCalculateCrossMentions(t *testing.T) {
 		{ID: 2, SourceID: 100, Title: "google/magika", Content: "AI file type detector"},
 		{ID: 3, SourceID: 100, Title: "microsoft/VibeVoice", Content: "Voice AI"},
 		// news (source_id=200) — 注意: 为了测试 full "owner/repo" 和 dashed short name
-	// 都能匹配, news 里需含这些形式. v1.0.1 Phase 4.6 修正后不再匹配 "Hermes" brand.
-	{ID: 10, SourceID: 200, Title: "NousResearch/hermes-agent adds voice", Content: "The hermes-agent repo is now trending"},
+		// 都能匹配, news 里需含这些形式. v1.0.1 Phase 4.6 修正后不再匹配 "Hermes" brand.
+		{ID: 10, SourceID: 200, Title: "NousResearch/hermes-agent adds voice", Content: "The hermes-agent repo is now trending"},
 		{ID: 11, SourceID: 200, Title: "Best AI tools", Content: "Notable: hermes-agent, VibeVoice, magika"},
 		{ID: 12, SourceID: 200, Title: "magika goes viral", Content: "magika can detect file types quickly"},
 	}
@@ -284,5 +284,33 @@ func TestCalculateCrossMentions(t *testing.T) {
 		if it.SourceID == 200 && it.CrossMentionCount != 0 {
 			t.Errorf("non-ossinsight item id=%d should have 0 mentions, got %d", it.ID, it.CrossMentionCount)
 		}
+	}
+}
+
+// TestCalculateCrossMentions_GitHubTrendingSource covers the source swap: when
+// the ossinsight trends endpoint was retired (2026-09) the feed moved to the
+// github_trending adapter, and this signal was gated on the "ossinsight"
+// literal alone. Keying it on one provider meant the hotness signal silently
+// switched off for every item the new source produced — no error, just a
+// CrossMentionCount of 0 forever.
+func TestCalculateCrossMentions_GitHubTrendingSource(t *testing.T) {
+	items := []*store.RawItem{
+		// trending (source_id=100) — supplied by the github_trending adapter
+		{ID: 1, SourceID: 100, Title: "anthropics/claude-cookbook", Content: "Recipes"},
+		// news (source_id=200)
+		{ID: 10, SourceID: 200, Title: "claude-cookbook updated", Content: "The claude-cookbook repo gained recipes"},
+	}
+	sourceTypes := map[int64]string{
+		100: "github_trending",
+		200: "rss",
+	}
+	CalculateCrossMentions(items, sourceTypes)
+
+	if items[0].CrossMentionCount == 0 {
+		t.Errorf("github_trending item got CrossMentionCount=0; the trending signal must not be " +
+			"keyed on the retired ossinsight provider alone")
+	}
+	if items[1].CrossMentionCount != 0 {
+		t.Errorf("non-trending item should have 0 mentions, got %d", items[1].CrossMentionCount)
 	}
 }

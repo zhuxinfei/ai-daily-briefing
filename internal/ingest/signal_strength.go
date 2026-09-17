@@ -195,9 +195,21 @@ func CalculateSignalStrength(items []*store.RawItem) map[int]int {
 
 // ---- Cross-mention count (v1.0.1 Phase 4.6) --------------------------
 
-// ossinsightSourceType is the adapter type that represents GitHub trending
-// repos. Items from this source get a CrossMentionCount computed below.
-const ossinsightSourceType = "ossinsight"
+// trendingSourceTypes are the adapter types whose items represent a GitHub
+// trending list; those get a CrossMentionCount computed below.
+//
+// The concept outlived any single provider, so this is a set rather than one
+// literal: ossinsight proxied the ranking until its trends endpoint was retired
+// (2026-09), and github_trending now scrapes the official page. A trending repo
+// earns cross-mention credit because of what it is, not because of who
+// supplied it — keying this on one provider would have silently switched the
+// signal off the moment the feed was swapped.
+var trendingSourceTypes = map[string]bool{
+	"ossinsight":      true,
+	"github_trending": true,
+}
+
+func isTrendingSourceType(t string) bool { return trendingSourceTypes[t] }
 
 // commonRepoWords are repo name tokens too generic to match on — matching
 // them in other sources' content would produce too many false positives.
@@ -257,14 +269,14 @@ func CalculateCrossMentions(items []*store.RawItem, sourceTypes map[int64]string
 	if len(items) == 0 || len(sourceTypes) == 0 {
 		return
 	}
-	// Build one big haystack from all non-ossinsight items.
+	// Build one big haystack from all non-trending items.
 	var haystack strings.Builder
 	for _, it := range items {
 		if it == nil {
 			continue
 		}
-		if sourceTypes[it.SourceID] == ossinsightSourceType {
-			continue // skip ossinsight's own items
+		if isTrendingSourceType(sourceTypes[it.SourceID]) {
+			continue // skip trending sources' own items
 		}
 		haystack.WriteString(strings.ToLower(it.Title))
 		haystack.WriteByte('\n')
@@ -276,9 +288,9 @@ func CalculateCrossMentions(items []*store.RawItem, sourceTypes map[int64]string
 		return
 	}
 
-	// For each ossinsight item, count matches.
+	// For each trending item, count matches.
 	for _, it := range items {
-		if it == nil || sourceTypes[it.SourceID] != ossinsightSourceType {
+		if it == nil || !isTrendingSourceType(sourceTypes[it.SourceID]) {
 			continue
 		}
 		terms := extractRepoMatchTerms(it.Title)

@@ -25,6 +25,15 @@ window:
   lookback_hours: 24
   extended_hours: 0
 
+# 状态库保留期. data/briefing.db 会随 automation-state 分支回传, 而 GitHub
+# 拒绝任何超过 100 MiB 的单个文件 — raw_items 曾经把库顶到 104.5 MB, 导致
+# 从 2026-07 中旬起每天的 "Save state" 推送全被拒 (只有不新增 raw_items 的
+# 周报能擦着 99.68 MiB 过线), 状态分支里的历史因此一直停在 2026-07-13.
+# 按 fetched_at 保留近 N 天, 并 VACUUM 回收空间.
+# 发布去重走 data/sent_urls.txt + data/sent_titles.txt, 与这里无关, 不受影响.
+retention:
+  raw_items_days: 30
+
 # LLM client config. All values can be overridden via environment variables
 # listed in the *_env fields.
 llm:
@@ -130,7 +139,10 @@ sections:
 #   huggingface_papers - HF daily papers HTML (hf_papers.go)
 #   anthropic_news  - anthropic.com/news HTML (anthropic.go)
 #   google_news     - Google News RSS search (gnews.go)
-#   ossinsight      - ossinsight.io GitHub trending API (ossinsight.go)
+#   github_trending - github.com/trending HTML, or a topone-style JSON proxy
+#                     (github_trending.go)
+#   ossinsight      - ossinsight.io GitHub trending API (ossinsight.go).
+#                     ⚠️ 该接口已于 2026-09 停用, 见下方 gh-trending 注释.
 sources:
   # === AI news (English) ===
   - id: smol-ai
@@ -284,16 +296,41 @@ sources:
     priority: 9
 
   # === Open source (GitHub trending) ===
+  #
+  # 这是 opensource 板块 (开源TOP项目) 唯一的数据源, 也是 category=project
+  # 的唯一来源 — run.go 的 opensource 兜底只从 category=project 的候选里捞人,
+  # 所以这一条断掉 = 整个板块空 (2026-09-01~09-17 的实际故障).
+  #
+  # 2026-09-17 换源: ossinsight 已停用 /v1/trends/repos 排行接口, 现在恒定
+  # 返回空 rowset 并附 data_quality.status=unavailable (其 GitHub 事件采集
+  # 跌到基线的 0.3%, 排序已无意义; 官方说明 ossinsight.io/docs/data-quality).
+  # 最后一次正常抓取是 2026-08-31 (100 items), 09-01 起每轮
+  # "[WARN] ossinsight: no rows in response" → classify opensource → 0 items.
+  #
+  # 改用官方 trending 页: 无需 key、无需第三方代理, 语义和原来一致 —
+  # 看的是"当下最热", 不限 repo 创建时间, 所以 Seedance 2.0 这类
+  # "老项目 + 大版本 → 冲榜"照样会出现.
+  # since 选项: daily / weekly / monthly.
   - id: gh-trending
+    type: github_trending
+    category: project
+    name: "GitHub Trending"
+    url: "https://github.com/trending"
+    since: daily
+    enabled: true
+    priority: 10
+
+  # 保留但停用: ossinsight 若恢复该接口, 把 enabled 改回 true 即可 (adapter
+  # 未删除). 在恢复之前留着只会每轮刷一条 WARN, 故默认关闭.
+  - id: gh-trending-ossinsight
     type: ossinsight
     category: project
     name: "GitHub Trending (via ossinsight)"
     url: "https://api.ossinsight.io/v1/trends/repos"
-    # v1.0.1 Phase 4.5 (T3): period 控制时间窗口 — 用户原则 "看人气和影响力,
-    # 不只看创建时间". past_week 收 7 天涨星最快, 让 Seedance 2.0 这种"老项
-    # 目+大版本→trending"自然出现. 选项: past_24_hours / past_week / past_month.
+    # v1.0.1 Phase 4.5 (T3): period 控制时间窗口. 选项:
+    # past_24_hours / past_week / past_month.
     period: past_week
-    enabled: true
+    enabled: false
     priority: 10
 
   # === v1.0.1 Phase 3.1 — 海外 AI 厂商官博 (5 个) ===
