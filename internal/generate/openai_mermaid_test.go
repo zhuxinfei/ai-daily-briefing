@@ -17,12 +17,12 @@ func TestMermaidLabelFrom(t *testing.T) {
 		in   string
 		want string
 	}{
-		{"Anthropic 连发 Claude Code routines 和电脑控制", "Anthropi"},   // 前 8 rune (Anthropic 9 字, 截 8)
-		{"1. **Claude 会点屏**", "Claude 会"},                          // "Claude 会点屏" = 10 rune, 截前 8
-		{"教育部把 AI 列为必修课，力推", "教育部把 AI "},                           // "，" 切到 "教育部把 AI 列为必修课", 前 8 rune
+		{"Anthropic 连发 Claude Code routines 和电脑控制", "Anthropi"}, // 前 8 rune (Anthropic 9 字, 截 8)
+		{"1. **Claude 会点屏**", "Claude 会"},                       // "Claude 会点屏" = 10 rune, 截前 8
+		{"教育部把 AI 列为必修课，力推", "教育部把 AI "},                        // "，" 切到 "教育部把 AI 列为必修课", 前 8 rune
 		{"  ", ""},
 		{"", ""},
-		{"OpenAI 扩展 Trusted", "OpenAI 扩"},                         // 前 8 rune
+		{"OpenAI 扩展 Trusted", "OpenAI 扩"}, // 前 8 rune
 	}
 	for _, tc := range cases {
 		got := mermaidLabelFrom(tc.in)

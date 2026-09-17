@@ -344,9 +344,9 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 		if !skipCrossRunDedup && len(sentTitles) > 0 {
 			filtered2 = dedupRawItemsByTitle(filtered2, sentTitles)
 		}
-			if len(filtered2) > len(filtered) {
-				stage(fmt.Sprintf("extended filter: %d items in %dh (vs %d in %dh)",
-					len(filtered2), cfg.Window.ExtendedHours, len(filtered), cfg.Window.LookbackHours))
+		if len(filtered2) > len(filtered) {
+			stage(fmt.Sprintf("extended filter: %d items in %dh (vs %d in %dh)",
+				len(filtered2), cfg.Window.ExtendedHours, len(filtered), cfg.Window.LookbackHours))
 			// v1.0.1 Phase 4.2: extended path 也要算 signal_strength, 否则
 			// filtered2 里 item.SignalStrength 还是 0 (拿不到共振加权).
 			_ = ingest.CalculateSignalStrength(filtered2)
@@ -361,14 +361,14 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 						rankedRaws2 = append(rankedRaws2, r.Item)
 					}
 				}
-					if sectioned2, cerr := classifier.Classify(ctx, rankedRaws2, sourceCategories); cerr != nil {
-						stage(fmt.Sprintf("extended classify: failed (%v) — keeping original", cerr))
-					} else {
-						// 整体替换, compose+insight 都用新数据
-						sectioned = sectioned2
-						rankedRaws = rankedRaws2
-						activeFiltered = filtered2
-						stage("extended window: switched to extended result")
+				if sectioned2, cerr := classifier.Classify(ctx, rankedRaws2, sourceCategories); cerr != nil {
+					stage(fmt.Sprintf("extended classify: failed (%v) — keeping original", cerr))
+				} else {
+					// 整体替换, compose+insight 都用新数据
+					sectioned = sectioned2
+					rankedRaws = rankedRaws2
+					activeFiltered = filtered2
+					stage("extended window: switched to extended result")
 					for secID, secItems := range sectioned {
 						stage(fmt.Sprintf("classify(ext): %s → %d items", secID, len(secItems)))
 					}

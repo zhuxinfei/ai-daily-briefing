@@ -3,30 +3,30 @@
 // This file bridges briefing-v3's canonical markdown output (markdown.go)
 // and the Hextra content tree at $HEXTRA_SITE_DIR. v1.0.0 enforces:
 //
-//   1. Three-level sidebar tree under content/cn/{year}/{yearMonth}/{date}.md
-//      so Hextra renders a foldable 年 → 月 → 日 archive (otherwise the
-//      sidebar runs off-screen after a few weeks).
-//   2. Mandatory hero "新闻大字报" image at the top of every issue page.
-//      Reads {workDir}/data/images/cards/{date}/header.png if present,
-//      copies it into the Hextra static tree, and prepends a markdown
-//      image reference. Missing header is logged but does not block the
-//      write — the daily run is still published with text-only fallback.
-//   3. Image scrub + relocate. The body produced by RenderMarkdown may
-//      contain inline ![alt](url) references injected upstream by
-//      infocard (item-N.png) and mediaextract (og:image hotlinks). We:
-//        - VERIFY every external http(s) URL via HEAD: status 200 +
-//          Content-Length in up to 50 MB. mediaextract has its own
-//          blacklist + multi-candidate scan to filter logos/banners,
-//          and the HEAD check is a "minimum viable" guard so we never
-//          publish a 404 / timeout / favicon-sized icon. Verified URLs
-//          are kept verbatim so real article images, GitHub README
-//          screenshots, arXiv figures, etc. survive end to end;
-//        - COPY local PNGs from briefing-v3/data/images/cards/... into
-//          {siteDir}/static/images/cards/{date}/ and rewrite the
-//          markdown reference to a Hugo-friendly absolute path
-//          /images/cards/{date}/<basename>;
-//        - DELETE any reference whose target file does not exist (no
-//          broken image icons leak through to the published page).
+//  1. Three-level sidebar tree under content/cn/{year}/{yearMonth}/{date}.md
+//     so Hextra renders a foldable 年 → 月 → 日 archive (otherwise the
+//     sidebar runs off-screen after a few weeks).
+//  2. Mandatory hero "新闻大字报" image at the top of every issue page.
+//     Reads {workDir}/data/images/cards/{date}/header.png if present,
+//     copies it into the Hextra static tree, and prepends a markdown
+//     image reference. Missing header is logged but does not block the
+//     write — the daily run is still published with text-only fallback.
+//  3. Image scrub + relocate. The body produced by RenderMarkdown may
+//     contain inline ![alt](url) references injected upstream by
+//     infocard (item-N.png) and mediaextract (og:image hotlinks). We:
+//     - VERIFY every external http(s) URL via HEAD: status 200 +
+//     Content-Length in up to 50 MB. mediaextract has its own
+//     blacklist + multi-candidate scan to filter logos/banners,
+//     and the HEAD check is a "minimum viable" guard so we never
+//     publish a 404 / timeout / favicon-sized icon. Verified URLs
+//     are kept verbatim so real article images, GitHub README
+//     screenshots, arXiv figures, etc. survive end to end;
+//     - COPY local PNGs from briefing-v3/data/images/cards/... into
+//     {siteDir}/static/images/cards/{date}/ and rewrite the
+//     markdown reference to a Hugo-friendly absolute path
+//     /images/cards/{date}/<basename>;
+//     - DELETE any reference whose target file does not exist (no
+//     broken image icons leak through to the published page).
 //
 // All Hugo concerns live here. run.go / mediaextract / infocard / publish
 // stay untouched.
@@ -215,7 +215,7 @@ var imageRefRe = regexp.MustCompile(`!\[([^\]]*)\]\(([^)]+)\)`)
 //   - http(s)://... external image  → DROP (avoid logo/banner noise)
 //   - already /images/...           → KEEP (Hugo absolute path)
 //   - local PNG that exists on disk → COPY into siteDir/static/images/cards/{date}/
-//                                     and rewrite to /images/cards/{date}/<base>
+//     and rewrite to /images/cards/{date}/<base>
 //   - local PNG that does NOT exist → DROP (no broken image icons)
 //
 // All scrub decisions happen in a single pass so the body never carries

@@ -287,22 +287,22 @@ type sectionTemplateData struct {
 }
 
 type issueTemplateData struct {
-	Title           string
-	DateZH          string
-	DateStr         string
-	Subtitle        string
-	HeadlineImg     string
-	SummaryLines    []string
-	Sections        []sectionTemplateData
-	IndustryHTML    template.HTML
-	TakeawayHTML    template.HTML
-	IndustryCount   int
-	TakeawayCount   int
-	HasHeadlineImg  bool
-	HasInsight      bool
-	BuildTime       string
-	SidebarYears    []sidebarYear
-	CurrentMonth    string // "2026-04", used by sidebar JS to auto-expand
+	Title          string
+	DateZH         string
+	DateStr        string
+	Subtitle       string
+	HeadlineImg    string
+	SummaryLines   []string
+	Sections       []sectionTemplateData
+	IndustryHTML   template.HTML
+	TakeawayHTML   template.HTML
+	IndustryCount  int
+	TakeawayCount  int
+	HasHeadlineImg bool
+	HasInsight     bool
+	BuildTime      string
+	SidebarYears   []sidebarYear
+	CurrentMonth   string // "2026-04", used by sidebar JS to auto-expand
 }
 
 func buildIssueTemplateData(in *IssueHTMLInput, sidebarYears []sidebarYear) issueTemplateData {

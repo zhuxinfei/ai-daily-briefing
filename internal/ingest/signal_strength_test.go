@@ -229,7 +229,7 @@ func TestCountMentionsWordBoundary(t *testing.T) {
 		hay, needle string
 		want        int
 	}{
-		{"hermes is great, hermes-agent rocks", "hermes", 2}, // 2 次: 单独 + hermes-agent 里的 hermes (两边都是非字母)
+		{"hermes is great, hermes-agent rocks", "hermes", 2},  // 2 次: 单独 + hermes-agent 里的 hermes (两边都是非字母)
 		{"Agent framework and agents everywhere", "agent", 1}, // "Agent " 匹配, "agents" 不匹配 (右边是 s)
 		{"no match here", "xyz", 0},
 		{"repeated VibeVoice VibeVoice VibeVoice end", "vibevoice", 3},
@@ -251,8 +251,8 @@ func TestCalculateCrossMentions(t *testing.T) {
 		{ID: 2, SourceID: 100, Title: "google/magika", Content: "AI file type detector"},
 		{ID: 3, SourceID: 100, Title: "microsoft/VibeVoice", Content: "Voice AI"},
 		// news (source_id=200) — 注意: 为了测试 full "owner/repo" 和 dashed short name
-	// 都能匹配, news 里需含这些形式. v1.0.1 Phase 4.6 修正后不再匹配 "Hermes" brand.
-	{ID: 10, SourceID: 200, Title: "NousResearch/hermes-agent adds voice", Content: "The hermes-agent repo is now trending"},
+		// 都能匹配, news 里需含这些形式. v1.0.1 Phase 4.6 修正后不再匹配 "Hermes" brand.
+		{ID: 10, SourceID: 200, Title: "NousResearch/hermes-agent adds voice", Content: "The hermes-agent repo is now trending"},
 		{ID: 11, SourceID: 200, Title: "Best AI tools", Content: "Notable: hermes-agent, VibeVoice, magika"},
 		{ID: 12, SourceID: 200, Title: "magika goes viral", Content: "magika can detect file types quickly"},
 	}

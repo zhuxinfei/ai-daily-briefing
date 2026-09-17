@@ -107,23 +107,23 @@ func weeklyCommand(ctx context.Context, cfg *config.Config, date time.Time, gf *
 	issueIDsJSON, _ := json.Marshal(issueIDs)
 	now := time.Now()
 	weekly := &store.WeeklyIssue{
-		DomainID:      gf.domain,
-		Year:          isoYear,
-		Week:          isoWeek,
-		StartDate:     startDate,
-		EndDate:       endDate,
-		Title:         title,
-		FocusMD:       result.FocusMD,
-		SignalsMD:     result.SignalsMD,
-		TrendsMD:      result.TrendsMD,
+		DomainID:            gf.domain,
+		Year:                isoYear,
+		Week:                isoWeek,
+		StartDate:           startDate,
+		EndDate:             endDate,
+		Title:               title,
+		FocusMD:             result.FocusMD,
+		SignalsMD:           result.SignalsMD,
+		TrendsMD:            result.TrendsMD,
 		TrendsDiagram:       result.TrendsDiagram,
 		TrendsDiagramDetail: result.TrendsDiagramDetail,
 		TakeawaysMD:         result.TakeawaysMD,
-		PonderMD:      result.PonderMD,
-		FullMD:        "",
-		DailyIssueIDs: string(issueIDsJSON),
-		Status:        store.IssueStatusGenerated,
-		GeneratedAt:   &now,
+		PonderMD:            result.PonderMD,
+		FullMD:              "",
+		DailyIssueIDs:       string(issueIDsJSON),
+		Status:              store.IssueStatusGenerated,
+		GeneratedAt:         &now,
 	}
 
 	weeklyID, err := s.UpsertWeeklyIssue(ctx, weekly)
