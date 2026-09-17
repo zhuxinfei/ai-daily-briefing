@@ -157,104 +157,104 @@ func regenCommand(ctx context.Context, cfg *config.Config, date time.Time, gf *g
 			fmt.Printf("[WARN] replace issue items after media-only: %v\n", err)
 		}
 	} else {
-	stage("infocard: calling LLM to re-distill cards")
-	icGen, icErr := infocard.New(infocard.Config{
-		BaseURL:    cfg.LLM.BaseURL,
-		APIKey:     cfg.LLM.APIKey,
-		Model:      cfg.LLM.Model,
-		MaxRetries: 3,
-		Timeout:    cfg.LLM.LLMTimeout(),
-	})
-	if icErr != nil {
-		return fmt.Errorf("infocard new: %w", icErr)
-	}
-
-	// Shadow-remap seqs to globally-unique UIDs to avoid per-section
-	// collisions clobbering each other's PNG files.
-	shadowItems := make([]*store.IssueItem, 0, len(issueItems))
-	uidToItem := make(map[int]*store.IssueItem, len(issueItems))
-	for i, it := range issueItems {
-		if it == nil {
-			continue
+		stage("infocard: calling LLM to re-distill cards")
+		icGen, icErr := infocard.New(infocard.Config{
+			BaseURL:    cfg.LLM.BaseURL,
+			APIKey:     cfg.LLM.APIKey,
+			Model:      cfg.LLM.Model,
+			MaxRetries: 3,
+			Timeout:    cfg.LLM.LLMTimeout(),
+		})
+		if icErr != nil {
+			return fmt.Errorf("infocard new: %w", icErr)
 		}
-		shadow := *it
-		shadow.Seq = i + 1
-		shadowItems = append(shadowItems, &shadow)
-		uidToItem[shadow.Seq] = it
-	}
 
-	header, cards, err := icGen.Generate(ctx, shadowItems, summary)
-	if err != nil {
-		return fmt.Errorf("infocard generate: %w", err)
-	}
-	stage(fmt.Sprintf("infocard: got header + %d cards", len(cards)))
-	header.IssueDate = date.Format("2006-01-02")
-
-	cardDir := filepath.Join("data", "images", "cards", date.Format("2006-01-02"))
-	if err := os.MkdirAll(cardDir, 0o755); err != nil {
-		return fmt.Errorf("mkdir cards: %w", err)
-	}
-	// Clear any stale PNGs so broken/renamed files cannot leak through.
-	if entries, _ := os.ReadDir(cardDir); entries != nil {
-		for _, e := range entries {
-			if strings.HasSuffix(e.Name(), ".png") {
-				_ = os.Remove(filepath.Join(cardDir, e.Name()))
+		// Shadow-remap seqs to globally-unique UIDs to avoid per-section
+		// collisions clobbering each other's PNG files.
+		shadowItems := make([]*store.IssueItem, 0, len(issueItems))
+		uidToItem := make(map[int]*store.IssueItem, len(issueItems))
+		for i, it := range issueItems {
+			if it == nil {
+				continue
 			}
+			shadow := *it
+			shadow.Seq = i + 1
+			shadowItems = append(shadowItems, &shadow)
+			uidToItem[shadow.Seq] = it
 		}
-	}
 
-	// Header card PNG (非阻断).
-	headerPath := filepath.Join(cardDir, "header.png")
-	if err := renderInfoCardPNG(ctx, "header", header, headerPath); err != nil {
-		fmt.Printf("[WARN] infocard header render: %v\n", err)
-	} else {
-		headerCardPNGRel = fmt.Sprintf("../data/images/cards/%s/header.png", date.Format("2006-01-02"))
-		stage(fmt.Sprintf("infocard: header PNG → %s", headerPath))
-	}
+		header, cards, err := icGen.Generate(ctx, shadowItems, summary)
+		if err != nil {
+			return fmt.Errorf("infocard generate: %w", err)
+		}
+		stage(fmt.Sprintf("infocard: got header + %d cards", len(cards)))
+		header.IssueDate = date.Format("2006-01-02")
 
-	// Item cards, each inside recover() so a single failure cannot
-	// take down the regen.
-	renderedCount := 0
-	for _, c := range cards {
-		if c == nil {
-			continue
+		cardDir := filepath.Join("data", "images", "cards", date.Format("2006-01-02"))
+		if err := os.MkdirAll(cardDir, 0o755); err != nil {
+			return fmt.Errorf("mkdir cards: %w", err)
 		}
-		it := uidToItem[c.ItemSeq]
-		if it == nil {
-			fmt.Printf("[WARN] infocard: card uid=%d has no matching item, skip\n", c.ItemSeq)
-			continue
-		}
-		func() {
-			defer func() {
-				if r := recover(); r != nil {
-					fmt.Printf("[WARN] infocard uid=%d panic: %v\n", c.ItemSeq, r)
+		// Clear any stale PNGs so broken/renamed files cannot leak through.
+		if entries, _ := os.ReadDir(cardDir); entries != nil {
+			for _, e := range entries {
+				if strings.HasSuffix(e.Name(), ".png") {
+					_ = os.Remove(filepath.Join(cardDir, e.Name()))
 				}
-			}()
-			outPath := filepath.Join(cardDir, fmt.Sprintf("item-%d.png", c.ItemSeq))
-			if err := renderInfoCardPNG(ctx, "item", c, outPath); err != nil {
-				fmt.Printf("[WARN] infocard item uid=%d render: %v\n", c.ItemSeq, err)
-				return
 			}
-			renderedCount++
-			relPath := fmt.Sprintf("../data/images/cards/%s/item-%d.png", date.Format("2006-01-02"), c.ItemSeq)
-			alt := strings.TrimSpace(c.MainTitle)
-			if alt == "" {
-				alt = strings.TrimSpace(it.Title)
-			}
-			for _, ch := range []string{"[", "]", "(", ")"} {
-				alt = strings.ReplaceAll(alt, ch, " ")
-			}
-			alt = strings.TrimSpace(alt)
-			imgLine := fmt.Sprintf("![%s](%s)\n\n", alt, relPath)
-			it.BodyMD = imgLine + strings.TrimLeft(it.BodyMD, "\n")
-		}()
-	}
-	stage(fmt.Sprintf("infocard: rendered %d/%d item PNGs", renderedCount, len(cards)))
+		}
 
-	// Persist mutated BodyMD back to SQLite. v1.0.1: per-section upsert.
-	if err := s.ReplaceIssueItemsBySections(ctx, issue.ID, issueItems); err != nil {
-		fmt.Printf("[WARN] replace issue items: %v\n", err)
-	}
+		// Header card PNG (非阻断).
+		headerPath := filepath.Join(cardDir, "header.png")
+		if err := renderInfoCardPNG(ctx, "header", header, headerPath); err != nil {
+			fmt.Printf("[WARN] infocard header render: %v\n", err)
+		} else {
+			headerCardPNGRel = fmt.Sprintf("../data/images/cards/%s/header.png", date.Format("2006-01-02"))
+			stage(fmt.Sprintf("infocard: header PNG → %s", headerPath))
+		}
+
+		// Item cards, each inside recover() so a single failure cannot
+		// take down the regen.
+		renderedCount := 0
+		for _, c := range cards {
+			if c == nil {
+				continue
+			}
+			it := uidToItem[c.ItemSeq]
+			if it == nil {
+				fmt.Printf("[WARN] infocard: card uid=%d has no matching item, skip\n", c.ItemSeq)
+				continue
+			}
+			func() {
+				defer func() {
+					if r := recover(); r != nil {
+						fmt.Printf("[WARN] infocard uid=%d panic: %v\n", c.ItemSeq, r)
+					}
+				}()
+				outPath := filepath.Join(cardDir, fmt.Sprintf("item-%d.png", c.ItemSeq))
+				if err := renderInfoCardPNG(ctx, "item", c, outPath); err != nil {
+					fmt.Printf("[WARN] infocard item uid=%d render: %v\n", c.ItemSeq, err)
+					return
+				}
+				renderedCount++
+				relPath := fmt.Sprintf("../data/images/cards/%s/item-%d.png", date.Format("2006-01-02"), c.ItemSeq)
+				alt := strings.TrimSpace(c.MainTitle)
+				if alt == "" {
+					alt = strings.TrimSpace(it.Title)
+				}
+				for _, ch := range []string{"[", "]", "(", ")"} {
+					alt = strings.ReplaceAll(alt, ch, " ")
+				}
+				alt = strings.TrimSpace(alt)
+				imgLine := fmt.Sprintf("![%s](%s)\n\n", alt, relPath)
+				it.BodyMD = imgLine + strings.TrimLeft(it.BodyMD, "\n")
+			}()
+		}
+		stage(fmt.Sprintf("infocard: rendered %d/%d item PNGs", renderedCount, len(cards)))
+
+		// Persist mutated BodyMD back to SQLite. v1.0.1: per-section upsert.
+		if err := s.ReplaceIssueItemsBySections(ctx, issue.ID, issueItems); err != nil {
+			fmt.Printf("[WARN] replace issue items: %v\n", err)
+		}
 	} // end of: if gf.mediaOnly { ... } else { ... }
 
 	// --- 3. Render markdown + HTML -----------------------------------

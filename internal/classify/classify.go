@@ -5,13 +5,13 @@
 //
 // v1.0.0 strategy — rules first, LLM second:
 //
-//	1. Look up the item's source category (paper/project/community/blog/news).
-//	2. If the category has a confident rule mapping (paper → research,
-//	   project → opensource, community|blog → social), bucket directly.
-//	3. Only news-category items fall through to an LLM batch call that
-//	   decides product_update vs industry.
-//	4. Anything the LLM misses lands in fallbackSection, which now uses
-//	   URL host heuristics instead of dumping everything into social.
+//  1. Look up the item's source category (paper/project/community/blog/news).
+//  2. If the category has a confident rule mapping (paper → research,
+//     project → opensource, community|blog → social), bucket directly.
+//  3. Only news-category items fall through to an LLM batch call that
+//     decides product_update vs industry.
+//  4. Anything the LLM misses lands in fallbackSection, which now uses
+//     URL host heuristics instead of dumping everything into social.
 //
 // The old 70% research skew came from the LLM being asked to classify
 // every item into one of five sections when papers dominated the input —

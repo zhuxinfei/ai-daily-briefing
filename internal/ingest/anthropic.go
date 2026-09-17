@@ -35,13 +35,13 @@ type anthropicSource struct {
 // anthropicNavSlugs are /news/* paths that appear on the site as navigation
 // chrome rather than real posts. They must be filtered out.
 var anthropicNavSlugs = map[string]bool{
-	"":          true,
+	"":              true,
 	"announcements": true,
-	"product":      true,
-	"research":     true,
-	"policy":       true,
-	"society":      true,
-	"press":        true,
+	"product":       true,
+	"research":      true,
+	"policy":        true,
+	"society":       true,
+	"press":         true,
 }
 
 func newAnthropicSource(row *store.Source) (Source, error) {

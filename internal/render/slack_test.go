@@ -14,7 +14,7 @@ func TestStripMermaidBlocks_RemovesHeading(t *testing.T) {
 		notContains []string
 	}{
 		{
-			name: "heading_with_mermaid",
+			name:  "heading_with_mermaid",
 			input: "💭 启发\n\n1. xxx\n\n🗺️ 今日关系图\n\n```mermaid\ngraph LR\nA-->B\n```\n",
 			notContains: []string{
 				"🗺️", "今日关系图", "mermaid", "graph LR",

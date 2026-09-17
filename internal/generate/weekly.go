@@ -202,14 +202,14 @@ func parseWeeklyJSON(raw string) (*WeeklyResult, error) {
 	}
 
 	var parsed struct {
-		TitleKeywords string `json:"title_keywords"`
-		Focus         string `json:"focus"`
-		Signals       string `json:"signals"`
-		Trends        string `json:"trends"`
+		TitleKeywords       string `json:"title_keywords"`
+		Focus               string `json:"focus"`
+		Signals             string `json:"signals"`
+		Trends              string `json:"trends"`
 		TrendsDiagram       string `json:"trends_diagram"`
 		TrendsDiagramDetail string `json:"trends_diagram_detail"`
 		Takeaways           string `json:"takeaways"`
-		Ponder        string `json:"ponder"`
+		Ponder              string `json:"ponder"`
 	}
 	if err := json.Unmarshal([]byte(raw), &parsed); err != nil {
 		return nil, fmt.Errorf("weekly: parse json: %w", err)
@@ -224,14 +224,13 @@ func parseWeeklyJSON(raw string) (*WeeklyResult, error) {
 		return strings.ReplaceAll(s, `\n`, "\n")
 	}
 	return &WeeklyResult{
-		TitleKeywords:  parsed.TitleKeywords,
-		FocusMD:        fix(parsed.Focus),
-		SignalsMD:      fix(parsed.Signals),
-		TrendsMD:       fix(parsed.Trends),
+		TitleKeywords:       parsed.TitleKeywords,
+		FocusMD:             fix(parsed.Focus),
+		SignalsMD:           fix(parsed.Signals),
+		TrendsMD:            fix(parsed.Trends),
 		TrendsDiagram:       fix(parsed.TrendsDiagram),
 		TrendsDiagramDetail: fix(parsed.TrendsDiagramDetail),
 		TakeawaysMD:         fix(parsed.Takeaways),
-		PonderMD:       fix(parsed.Ponder),
+		PonderMD:            fix(parsed.Ponder),
 	}, nil
 }
-

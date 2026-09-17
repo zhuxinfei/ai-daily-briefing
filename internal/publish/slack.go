@@ -222,9 +222,9 @@ func buildSlackPayload(r *RenderedIssue) map[string]any {
 // ------- markdown helpers ported from slack-notify.js -------
 
 var (
-	slackBoldRe = regexp.MustCompile(`\*\*(.+?)\*\*`)
-	slackLinkRe = regexp.MustCompile(`\[([^\]]+)\]\(([^)]+)\)`)
-	numberedRe  = regexp.MustCompile(`(?m)^\d+\.`)
+	slackBoldRe  = regexp.MustCompile(`\*\*(.+?)\*\*`)
+	slackLinkRe  = regexp.MustCompile(`\[([^\]]+)\]\(([^)]+)\)`)
+	numberedRe   = regexp.MustCompile(`(?m)^\d+\.`)
 	leadingNumRe = regexp.MustCompile(`^\d+\.\s`)
 )
 

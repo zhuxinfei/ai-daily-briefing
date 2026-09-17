@@ -12,7 +12,7 @@ func TestCheckWeekly(t *testing.T) {
 	good := &store.WeeklyIssue{
 		Year: 2026, Week: 16,
 		Title:       "第16周 AI周报：算力军备",
-		FocusMD:     strings.Repeat("本周聚焦内容丰富. ", 30),    // > 200 字
+		FocusMD:     strings.Repeat("本周聚焦内容丰富. ", 30), // > 200 字
 		SignalsMD:   "信号 1. 信号 2.",
 		TrendsMD:    "趋势分析正常.",
 		TakeawaysMD: strings.Repeat("启发深度要充足. ", 15), // > 100 字

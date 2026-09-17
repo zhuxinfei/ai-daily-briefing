@@ -49,17 +49,17 @@ func (c *Config) fillDefaults() {
 // optional — the renderer handles empty values gracefully, but the
 // LLM prompt asks it to fill them all.
 type Card struct {
-	ItemSeq        int      `json:"item_seq"`
-	MainTitle      string   `json:"main_title"`
-	Subtitle       string   `json:"subtitle"`
-	Intro          string   `json:"intro"`
-	HeroNumber     string   `json:"hero_number"`
-	HeroLabel      string   `json:"hero_label"`
-	StatNumbers    []Stat   `json:"stat_numbers"`
-	KeyPoints      []Point  `json:"key_points"`
-	FooterSummary  string   `json:"footer_summary"`
-	BrandTag       string   `json:"brand_tag"`
-	CategoryTag    string   `json:"category_tag"`
+	ItemSeq       int     `json:"item_seq"`
+	MainTitle     string  `json:"main_title"`
+	Subtitle      string  `json:"subtitle"`
+	Intro         string  `json:"intro"`
+	HeroNumber    string  `json:"hero_number"`
+	HeroLabel     string  `json:"hero_label"`
+	StatNumbers   []Stat  `json:"stat_numbers"`
+	KeyPoints     []Point `json:"key_points"`
+	FooterSummary string  `json:"footer_summary"`
+	BrandTag      string  `json:"brand_tag"`
+	CategoryTag   string  `json:"category_tag"`
 }
 
 type Stat struct {
@@ -83,7 +83,7 @@ type Point struct {
 // 解决"大字报内容太空泛 + 大量留白"的视觉问题。
 type HeaderCard struct {
 	IssueDate     string     `json:"issue_date"`
-	Edition       string     `json:"edition"`        // 新：期号 / 短文 (例 "v1.0.0 · 第 1 期")
+	Edition       string     `json:"edition"` // 新：期号 / 短文 (例 "v1.0.0 · 第 1 期")
 	MainHeadline  string     `json:"main_headline"`
 	SubHeadline   string     `json:"sub_headline"`
 	LeadParagraph string     `json:"lead_paragraph"` // 新：导语段 100-160 字

@@ -539,6 +539,7 @@ func sleepBackoff(ctx context.Context, attempt, maxAttempts int, backoffs []int,
 //   - stars 增长数 (来自 metadata_json.stars)
 //   - trending 排名 (来自 metadata_json.rank)
 //   - 跨源讨论次数 (CrossMentionCount, 圈内讨论热度)
+//
 // rank LLM 看到这些硬数字后能更准地判断"该入选哪些 repo"
 // (Hermes 类 trending + 广受讨论的项目不会被描述普通的 repo 挤掉).
 func formatItemsForRank(batch []*store.RawItem) string {

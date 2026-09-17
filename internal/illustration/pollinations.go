@@ -2,9 +2,9 @@
 // IssueItem. v1.0.0 uses the free public Pollinations.ai HTTP endpoint
 // (no API key, no auth, no quota cap) with a multi-layer fallback:
 //
-//	1. Pollinations default model → image/png
-//	2. Pollinations turbo model    → image/png (faster, slightly worse)
-//	3. Picsum random seeded image  → placeholder if both fail
+//  1. Pollinations default model → image/png
+//  2. Pollinations turbo model    → image/png (faster, slightly worse)
+//  3. Picsum random seeded image  → placeholder if both fail
 //
 // Each image is downloaded once, stored under data/images/items/<date>/
 // item-<N>.jpg and referenced from HTML by a relative path
@@ -40,13 +40,13 @@ import (
 // against the current working directory at call time; pass absolute
 // paths if the caller expects a specific location.
 type Config struct {
-	OutputDir    string        // e.g. "data/images/items"
-	Timeout      time.Duration // per-request timeout, default 40s
-	Concurrency  int           // max parallel downloads, default 4
-	Width        int           // default 800
-	Height       int           // default 450
-	PreferTurbo  bool          // use ?model=turbo first (faster)
-	PicsumSeed   string        // base seed for picsum fallback, default "briefing"
+	OutputDir   string        // e.g. "data/images/items"
+	Timeout     time.Duration // per-request timeout, default 40s
+	Concurrency int           // max parallel downloads, default 4
+	Width       int           // default 800
+	Height      int           // default 450
+	PreferTurbo bool          // use ?model=turbo first (faster)
+	PicsumSeed  string        // base seed for picsum fallback, default "briefing"
 }
 
 func (c *Config) fillDefaults() {

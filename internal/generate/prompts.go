@@ -40,6 +40,7 @@ const systemPrompt = `你是一位资深AI行业分析师，同时也是一个�
 //   - {{.SnippetCount}}: the number of source snippets attached
 //   - {{.Markdown}}: today's daily report markdown
 //   - {{.SourceContext}}: fetched source snippets, joined
+//
 // Rendered via fmt.Sprintf in openai.go.
 const userPromptTemplate = `以下是今日AI行业日报全文和%d篇源链接原文。请输出：
 
@@ -108,6 +109,7 @@ const repairSystemPrompt = `你是一个严谨的内容编辑。你的职责是�
 //   - %s: the previous raw insight
 //   - %s: today's daily report markdown
 //   - %s: source context
+//
 // Rendered via fmt.Sprintf in openai.go.
 const repairUserPromptTemplate = `下面这版输出不合格，原因是：%s。
 
