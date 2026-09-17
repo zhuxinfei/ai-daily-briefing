@@ -195,21 +195,18 @@ func CalculateSignalStrength(items []*store.RawItem) map[int]int {
 
 // ---- Cross-mention count (v1.0.1 Phase 4.6) --------------------------
 
-// trendingSourceTypes are the adapter types whose items represent a GitHub
-// trending list; those get a CrossMentionCount computed below.
+// isProjectSource reports whether a source is a GitHub-project feed, judged by
+// its configured category rather than by its adapter type.
 //
-// The concept outlived any single provider, so this is a set rather than one
-// literal: ossinsight proxied the ranking until its trends endpoint was retired
-// (2026-09), and github_trending now scrapes the official page. A trending repo
-// earns cross-mention credit because of what it is, not because of who
-// supplied it — keying this on one provider would have silently switched the
-// signal off the moment the feed was swapped.
-var trendingSourceTypes = map[string]bool{
-	"ossinsight":      true,
-	"github_trending": true,
+// The distinction matters: this signal used to be keyed on the adapter type
+// "ossinsight", so retiring that provider switched it off silently, and keying
+// it on a set of types would only postpone the same failure to the next feed
+// swap. "project" is the axis the rest of the pipeline already uses for "this
+// is a GitHub project" — classify maps it to the opensource section and the
+// opensource rescue filters on it — so the three agree by construction.
+func isProjectSource(sourceCategories map[int64]string, sourceID int64) bool {
+	return strings.EqualFold(strings.TrimSpace(sourceCategories[sourceID]), "project")
 }
-
-func isTrendingSourceType(t string) bool { return trendingSourceTypes[t] }
 
 // commonRepoWords are repo name tokens too generic to match on — matching
 // them in other sources' content would produce too many false positives.
@@ -254,29 +251,29 @@ func extractRepoMatchTerms(title string) []string {
 	return out
 }
 
-// CalculateCrossMentions 给每个 ossinsight (GitHub trending) item 计算
-// CrossMentionCount: 这个 repo 名在非 ossinsight 源的 title+content 中被
+// CalculateCrossMentions 给每个 category=project (GitHub trending repo) item
+// 计算 CrossMentionCount: 这个 repo 名在非 project 源的 title+content 中被
 // 提到的次数 (大小写不敏感, word-boundary).
 //
 // 用意: 让 rank 阶段能综合 (a) star 增长 (b) 圈内讨论热度 两个信号.
 // Hermes / VibeVoice 这类"GitHub 新星 + 科技媒体热议"的 repo 分数上浮.
 //
-// 性能: 合并 non-ossinsight items 文本成一个大 haystack, 每个 repo 只
+// 性能: 合并 non-project items 文本成一个大 haystack, 每个 repo 只
 // 搜索一次 → 100 次 Contains, 毫秒级.
 //
 // In-memory only, 直接写回 items[i].CrossMentionCount.
-func CalculateCrossMentions(items []*store.RawItem, sourceTypes map[int64]string) {
-	if len(items) == 0 || len(sourceTypes) == 0 {
+func CalculateCrossMentions(items []*store.RawItem, sourceCategories map[int64]string) {
+	if len(items) == 0 || len(sourceCategories) == 0 {
 		return
 	}
-	// Build one big haystack from all non-trending items.
+	// Build one big haystack from everything that is not a project feed.
 	var haystack strings.Builder
 	for _, it := range items {
 		if it == nil {
 			continue
 		}
-		if isTrendingSourceType(sourceTypes[it.SourceID]) {
-			continue // skip trending sources' own items
+		if isProjectSource(sourceCategories, it.SourceID) {
+			continue // skip the project feeds' own items
 		}
 		haystack.WriteString(strings.ToLower(it.Title))
 		haystack.WriteByte('\n')
@@ -288,9 +285,9 @@ func CalculateCrossMentions(items []*store.RawItem, sourceTypes map[int64]string
 		return
 	}
 
-	// For each trending item, count matches.
+	// For each project item, count matches.
 	for _, it := range items {
-		if it == nil || !isTrendingSourceType(sourceTypes[it.SourceID]) {
+		if it == nil || !isProjectSource(sourceCategories, it.SourceID) {
 			continue
 		}
 		terms := extractRepoMatchTerms(it.Title)

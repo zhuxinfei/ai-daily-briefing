@@ -19,6 +19,26 @@ import (
 // the real shape rather than a hand-written approximation of it.
 const fixtureTrendingHTML = "testdata/trending_github.html"
 
+// newTrendingFixtureServer serves that capture. onRequest, when non-nil, sees
+// every request — the tests that assert on the query string the adapter builds
+// use it, and the rest pass nil.
+func newTrendingFixtureServer(t *testing.T, onRequest func(*http.Request)) *httptest.Server {
+	t.Helper()
+	fixture, err := os.ReadFile(fixtureTrendingHTML)
+	if err != nil {
+		t.Fatalf("read fixture: %v", err)
+	}
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if onRequest != nil {
+			onRequest(r)
+		}
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		_, _ = w.Write(fixture)
+	}))
+	t.Cleanup(srv.Close)
+	return srv
+}
+
 func newTrendingTestSource(t *testing.T, configJSON string) *githubTrendingSource {
 	t.Helper()
 	row := &store.Source{
@@ -37,17 +57,9 @@ func newTrendingTestSource(t *testing.T, configJSON string) *githubTrendingSourc
 // trending 页必须解析出 repo 名/描述/语言/总星/涨星/排名, 且 rank 与
 // stars_total 要写进 metadata — run.go 的排序与 opensource 兜底都读这两个键.
 func TestGitHubTrendingSource_ParsesTrendingHTML(t *testing.T) {
-	fixture, err := os.ReadFile(fixtureTrendingHTML)
-	if err != nil {
-		t.Fatalf("read fixture: %v", err)
-	}
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		_, _ = w.Write(fixture)
-	}))
-	defer srv.Close()
-
+	srv := newTrendingFixtureServer(t, nil)
 	src := newTrendingTestSource(t, `{"url":"`+srv.URL+`/trending"}`)
+
 	items, err := src.Fetch(context.Background())
 	if err != nil {
 		t.Fatalf("Fetch: %v", err)
@@ -116,16 +128,9 @@ func TestGitHubTrendingSource_ParsesTrendingHTML(t *testing.T) {
 // 是几年前的, 只有把 published_at 打成本次抓取时间, 它才不会被 24h 窗口
 // 当成陈旧内容丢掉 (这正是本节长期空白的第二个隐患).
 func TestGitHubTrendingSource_StampsFetchTime(t *testing.T) {
-	fixture, err := os.ReadFile(fixtureTrendingHTML)
-	if err != nil {
-		t.Fatalf("read fixture: %v", err)
-	}
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		_, _ = w.Write(fixture)
-	}))
-	defer srv.Close()
-
+	srv := newTrendingFixtureServer(t, nil)
 	before := time.Now().UTC().Add(-time.Minute)
+
 	src := newTrendingTestSource(t, `{"url":"`+srv.URL+`/trending"}`)
 	items, err := src.Fetch(context.Background())
 	if err != nil {
@@ -138,66 +143,59 @@ func TestGitHubTrendingSource_StampsFetchTime(t *testing.T) {
 	}
 }
 
-// TestGitHubTrendingSource_AppendsSince 验证 ?since= 只拼给官方页面,
-// JSON 代理不该被塞进它不认识的参数.
-func TestGitHubTrendingSource_AppendsSince(t *testing.T) {
-	fixture, err := os.ReadFile(fixtureTrendingHTML)
-	if err != nil {
-		t.Fatalf("read fixture: %v", err)
+// TestGitHubTrendingSource_SinceQuery 验证 since 被拼进请求, 且省略时不拼.
+func TestGitHubTrendingSource_SinceQuery(t *testing.T) {
+	cases := []struct {
+		name       string
+		since      string
+		wantTarget string
+	}{
+		{"configured", "weekly", "/trending?since=weekly"},
+		{"omitted leaves GitHub's own default", "", "/trending"},
 	}
-	var got string
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		got = r.URL.RequestURI()
-		_, _ = w.Write(fixture)
-	}))
-	defer srv.Close()
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			var gotURI string
+			srv := newTrendingFixtureServer(t, func(r *http.Request) { gotURI = r.URL.RequestURI() })
 
-	// httptest 的 host 是 127.0.0.1, 不满足 isGitHubTrendingPage, 因此这里
-	// 直接验证判定函数本身, 而不是绕过它.
-	if isGitHubTrendingPage(srv.URL + "/trending") {
-		t.Errorf("isGitHubTrendingPage should be false for a non-github.com host")
-	}
-	_ = got
-
-	src := newTrendingTestSource(t, `{"url":"https://github.com/trending","since":"daily"}`)
-	if !isGitHubTrendingPage(src.cfg.URL) {
-		t.Fatalf("isGitHubTrendingPage(%q) = false, want true", src.cfg.URL)
-	}
-	if url := withQueryParam(src.cfg.URL, "since", src.cfg.Since); url != "https://github.com/trending?since=daily" {
-		t.Errorf("withQueryParam = %q", url)
-	}
-	if url := withQueryParam("https://github.com/trending?x=1", "since", "weekly"); url != "https://github.com/trending?x=1&since=weekly" {
-		t.Errorf("withQueryParam with existing query = %q", url)
+			cfg := `{"url":"` + srv.URL + `/trending"`
+			if tc.since != "" {
+				cfg += `,"since":"` + tc.since + `"`
+			}
+			cfg += `}`
+			if _, err := newTrendingTestSource(t, cfg).Fetch(context.Background()); err != nil {
+				t.Fatalf("Fetch: %v", err)
+			}
+			if gotURI != tc.wantTarget {
+				t.Errorf("request URI = %q, want %q", gotURI, tc.wantTarget)
+			}
+		})
 	}
 }
 
-// TestGitHubTrendingSource_JSONProxyStillWorks 确认这次改动没有砸掉原有的
-// JSON 代理路径.
-func TestGitHubTrendingSource_JSONProxyStillWorks(t *testing.T) {
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		_, _ = w.Write([]byte(`{"repos":[
-			{"full_name":"acme/one","description":"first","language":"Go","stars":4200,"forks":12,"currentPeriodStars":300}
-		]}`))
-	}))
-	defer srv.Close()
-
-	src := newTrendingTestSource(t, `{"url":"`+srv.URL+`/topone"}`)
-	items, err := src.Fetch(context.Background())
-	if err != nil {
-		t.Fatalf("Fetch: %v", err)
+// TestWithQueryParam 覆盖分隔符选择 (已有 query string 时用 & 而不是再一个 ?)
+// 以及取值转义. 两个 adapter 共用它, 所以这里把两种用法都钉住.
+func TestWithQueryParam(t *testing.T) {
+	cases := []struct {
+		name  string
+		raw   string
+		key   string
+		value string
+		want  string
+	}{
+		{"no existing query", "https://github.com/trending", "since", "daily",
+			"https://github.com/trending?since=daily"},
+		{"existing query uses &", "https://github.com/trending?x=1", "since", "daily",
+			"https://github.com/trending?x=1&since=daily"},
+		{"value is escaped", "https://api.example.com/repos", "period", "past week",
+			"https://api.example.com/repos?period=past+week"},
 	}
-	if len(items) != 1 {
-		t.Fatalf("expected 1 repo, got %d", len(items))
-	}
-	if items[0].Title != "acme/one" {
-		t.Errorf("Title = %q", items[0].Title)
-	}
-	if !strings.Contains(items[0].MetadataJSON, `"stars_total":4200`) {
-		t.Errorf("metadata = %s, want stars_total 4200", items[0].MetadataJSON)
-	}
-	if !strings.Contains(items[0].MetadataJSON, `"stars":300`) {
-		t.Errorf("metadata = %s, want stars 300", items[0].MetadataJSON)
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := withQueryParam(tc.raw, tc.key, tc.value); got != tc.want {
+				t.Errorf("withQueryParam(%q, %q, %q) = %q, want %q", tc.raw, tc.key, tc.value, got, tc.want)
+			}
+		})
 	}
 }
 
@@ -217,6 +215,17 @@ func TestParseCount(t *testing.T) {
 		if got := parseCount(in); got != want {
 			t.Errorf("parseCount(%q) = %d, want %d", in, got, want)
 		}
+	}
+}
+
+// TestParseTrendingHTML_RejectsUnparseable 确认解析不出内容是错误而不是
+// 0 条 — 上游返回空页时必须让 pipeline 记 WARN, 而不是安静地发一个空板块.
+func TestParseTrendingHTML_RejectsUnparseable(t *testing.T) {
+	if _, err := parseTrendingHTML(nil); err == nil {
+		t.Error("expected an error for an empty body")
+	}
+	if _, err := parseTrendingHTML([]byte("<html><body>no repos here</body></html>")); err == nil {
+		t.Error("expected an error when the HTML contains no trending repos")
 	}
 }
 
@@ -256,18 +265,4 @@ func TestGitHubTrendingSource_LivePage(t *testing.T) {
 		}
 	}
 	t.Logf("live page parsed %d repos; top: %s (%s)", len(items), items[0].Title, items[0].MetadataJSON)
-}
-
-// TestParseTrendingPayload_RejectsEmpty 确认空响应是错误而不是 0 条 —
-// 上游返回空时必须让 pipeline 记 WARN, 而不是安静地发一个空板块.
-func TestParseTrendingPayload_RejectsEmpty(t *testing.T) {
-	if _, err := parseTrendingPayload([]byte("   ")); err == nil {
-		t.Error("expected an error for an empty body")
-	}
-	if _, err := parseTrendingPayload([]byte("<html><body>no repos here</body></html>")); err == nil {
-		t.Error("expected an error when the HTML contains no trending repos")
-	}
-	if _, err := parseTrendingPayload([]byte(`{"data":{"rows":[]}}`)); err == nil {
-		t.Error("expected an error for a JSON envelope with no repos")
-	}
 }

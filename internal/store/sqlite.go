@@ -35,6 +35,9 @@ var schemaVersioningSchema string
 //go:embed migrations/006_source_health.sql
 var sourceHealthSchema string
 
+//go:embed migrations/007_classified_items_raw_item_index.sql
+var classifiedItemsRawItemIndexSchema string
+
 // migration is one logical step in the schema evolution. `version` is
 // monotonically increasing and forms the primary key of the
 // schema_migrations audit table. `sql` is the SQL blob to execute.
@@ -60,6 +63,7 @@ func allMigrations() []migration {
 		{4, "004_weekly_diagram_detail", weeklyDiagramDetailSchema, true},
 		{5, "005_schema_versioning", schemaVersioningSchema, true},
 		{6, "006_source_health", sourceHealthSchema, true},
+		{7, "007_classified_items_raw_item_index", classifiedItemsRawItemIndexSchema, false},
 	}
 }
 
@@ -437,9 +441,19 @@ func (s *sqliteStore) UpdateRawItemContent(ctx context.Context, id int64, conten
 //   - anything inside the retention window, which is what keeps the most
 //     recent issues regenerable.
 //
+// The spared set grows by roughly one row per published item per day, and each
+// spared row carries a full article body — so the file is bounded, not fixed.
+// At ~30 items/day that is on the order of a few MB a year against a 100 MiB
+// ceiling, which is why it is left alone rather than pruned by lineage (which
+// would mean deleting classified_items by issue age first, in FK order).
+//
 // The rest is safe to drop: the only reader, ListRecentRawItems, is called from
 // tests alone, and publication dedup runs off data/sent_urls.txt and
 // data/sent_titles.txt, which are separate files and unaffected.
+//
+// The delete is indexed on classified_items(raw_item_id) as of migration 007;
+// without that index the FK check full-scans the child table once per deleted
+// parent row (see that migration's comment for the measurements).
 func (s *sqliteStore) PruneRawItems(ctx context.Context, before time.Time) (int64, error) {
 	const q = `
 		DELETE FROM raw_items
@@ -462,9 +476,12 @@ func (s *sqliteStore) PruneRawItems(ctx context.Context, before time.Time) (int6
 // PruneRawItems freed to the filesystem — DELETE on its own only marks pages
 // reusable inside an unchanged file.
 //
-// The checkpoint matters beyond tidiness: gha_save_state.sh copies
-// data/briefing.db by itself, without the -wal sidecar, so anything still
-// sitting in the WAL would never reach the state branch.
+// The checkpoint is belt-and-braces rather than load-bearing: gha_save_state.sh
+// copies data/briefing.db without the -wal sidecar, but closing the store
+// checkpoints the WAL and removes it — verified by a probe which found only
+// t.db left after Close(). It is here because the cost is a single PRAGMA and
+// the failure mode it guards (a state DB silently missing its newest writes)
+// is exactly the kind this code exists to prevent.
 func (s *sqliteStore) Compact(ctx context.Context) error {
 	// VACUUM cannot run inside a transaction and needs to be the only writer;
 	// drop the pool's idle connections first so none is holding a read lock.
