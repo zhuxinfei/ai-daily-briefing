@@ -86,15 +86,11 @@ func (s *ossinsightSource) Name() string { return s.row.Name }
 
 func (s *ossinsightSource) Fetch(ctx context.Context) ([]*store.RawItem, error) {
 	// v1.0.1 Phase 4.5 (T3): 用 ossinsight 服务端 period 参数控制时间窗口.
-	url := s.cfg.URL
+	target := s.cfg.URL
 	if s.cfg.Period != "" {
-		sep := "?"
-		if strings.Contains(url, "?") {
-			sep = "&"
-		}
-		url += sep + "period=" + s.cfg.Period
+		target = withQueryParam(target, "period", s.cfg.Period)
 	}
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, target, nil)
 	if err != nil {
 		return nil, fmt.Errorf("ossinsight: new request: %w", err)
 	}

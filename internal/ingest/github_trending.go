@@ -20,59 +20,18 @@ import (
 // githubTrendingConfig is the JSON shape stored in Source.ConfigJSON for
 // type "github_trending".
 //
-// Two upstream shapes are served by the same adapter, picked by sniffing the
-// response body rather than by configuration:
-//
-//   - the official HTML page https://github.com/trending — no key, no rate
-//     limit, and the same ranking the ossinsight trends endpoint used to
-//     proxy before that endpoint was retired (2026-09).
-//   - a topone-style JSON proxy, e.g.
-//     https://git-trending.justlikemaki.vip/topone/?since=daily
-//
-// Since is only meaningful for the HTML page, which exposes the window as a
-// query parameter: daily | weekly | monthly.
+// Since selects the window GitHub exposes as a query parameter:
+// daily | weekly | monthly. Leaving it empty leaves GitHub its own default.
 type githubTrendingConfig struct {
 	URL   string `json:"url"`
 	Since string `json:"since"`
 }
 
-// githubTrendingRepo is the per-repo shape returned by the trending proxy.
-// The upstream API is a small scraper whose schema is not officially
-// documented; field tags try both snake_case and camelCase so a schema drift
-// on the remote side is less likely to break us silently.
+// trendingEntry is one repo read off the trending page, before it becomes a
+// RawItem. Keeping the scrape and the row-building apart is what lets the
+// parser be tested against a captured page without a store.
 //
-// Some fields are decoded but not read by this adapter — they are kept so the
-// proxy's contract stays visible and drift keeps decoding instead of failing.
-type githubTrendingRepo struct {
-	Author       string `json:"author"`
-	Name         string `json:"name"`
-	FullName     string `json:"fullName"`
-	FullNameSnk  string `json:"full_name"`
-	URL          string `json:"url"`
-	HTMLURL      string `json:"html_url"`
-	Description  string `json:"description"`
-	Language     string `json:"language"`
-	Stars        int    `json:"stars"`
-	StargazerCnt int    `json:"stargazers_count"`
-	Forks        int    `json:"forks"`
-	ForksCount   int    `json:"forks_count"`
-	CurrentStars int    `json:"currentPeriodStars"`
-	PushedAt     string `json:"pushed_at"`
-	UpdatedAt    string `json:"updated_at"`
-}
-
-// githubTrendingEnvelope handles the case where the response is wrapped,
-// e.g. { "repos": [...] } or { "data": [...] } instead of a bare array.
-type githubTrendingEnvelope struct {
-	Repos []githubTrendingRepo `json:"repos"`
-	Data  []githubTrendingRepo `json:"data"`
-	Items []githubTrendingRepo `json:"items"`
-}
-
-// trendingEntry is the normalized shape both parsers produce, and the only
-// thing the item builder downstream sees.
-//
-// Rank and StarsDelta are not decoration: run.go reads both back out of
+// StarsTotal and StarsDelta are not decoration: run.go reads them back out of
 // metadata_json (repoMetadataSignals, formatRepoHotnessExtra) to rank the
 // section and to shortlist candidates for the opensource coverage rescue.
 type trendingEntry struct {
@@ -82,11 +41,9 @@ type trendingEntry struct {
 	StarsTotal  int // lifetime stargazers
 	Forks       int
 	StarsDelta  int // growth inside the trending window ("N stars today")
-	Rank        int // 1-based position on the trending page
 }
 
-// githubTrendingSource pulls daily trending repos from github.com or a
-// topone-style proxy.
+// githubTrendingSource pulls the trending list from github.com.
 type githubTrendingSource struct {
 	row *store.Source
 	cfg githubTrendingConfig
@@ -119,17 +76,15 @@ func (s *githubTrendingSource) Name() string { return s.row.Name }
 
 func (s *githubTrendingSource) Fetch(ctx context.Context) ([]*store.RawItem, error) {
 	target := s.cfg.URL
-	if isGitHubTrendingPage(target) {
-		if since := strings.TrimSpace(s.cfg.Since); since != "" {
-			target = withQueryParam(target, "since", since)
-		}
+	if since := strings.TrimSpace(s.cfg.Since); since != "" {
+		target = withQueryParam(target, "since", since)
 	}
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, target, nil)
 	if err != nil {
 		return nil, fmt.Errorf("github_trending: new request: %w", err)
 	}
-	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/json;q=0.9")
+	req.Header.Set("Accept", "text/html,application/xhtml+xml")
 	// github.com serves the trend list to anonymous clients, but a browser-ish
 	// UA keeps us off the bot-shaped response path.
 	req.Header.Set("User-Agent", "Mozilla/5.0 (compatible; briefing-v3/0.1; +github_trending)")
@@ -148,7 +103,7 @@ func (s *githubTrendingSource) Fetch(ctx context.Context) ([]*store.RawItem, err
 		return nil, fmt.Errorf("github_trending: read body: %w", err)
 	}
 
-	entries, err := parseTrendingPayload(body)
+	entries, err := parseTrendingHTML(body)
 	if err != nil {
 		return nil, fmt.Errorf("github_trending: decode %s: %w", target, err)
 	}
@@ -159,10 +114,6 @@ func (s *githubTrendingSource) Fetch(ctx context.Context) ([]*store.RawItem, err
 		if e.FullName == "" {
 			continue
 		}
-		rank := e.Rank
-		if rank == 0 {
-			rank = i + 1
-		}
 		content := strings.TrimSpace(e.Description)
 		if content == "" && e.Language != "" {
 			content = "语言: " + e.Language
@@ -172,7 +123,7 @@ func (s *githubTrendingSource) Fetch(ctx context.Context) ([]*store.RawItem, err
 			"stars":       e.StarsDelta, // period growth
 			"stars_total": e.StarsTotal, // lifetime stars
 			"forks":       e.Forks,
-			"rank":        rank,
+			"rank":        i + 1,
 		})
 
 		items = append(items, &store.RawItem{
@@ -196,53 +147,12 @@ func (s *githubTrendingSource) Fetch(ctx context.Context) ([]*store.RawItem, err
 	return items, nil
 }
 
-// parseTrendingPayload sniffs the body shape so a single adapter can serve
-// both the HTML page and the JSON proxy without a config flag to keep in sync.
-func parseTrendingPayload(body []byte) ([]trendingEntry, error) {
-	trimmed := strings.TrimSpace(string(body))
-	if trimmed == "" {
-		return nil, fmt.Errorf("empty body")
-	}
-	if strings.HasPrefix(trimmed, "<") {
-		return parseTrendingHTML(body)
-	}
-	return parseTrendingJSON(body)
-}
-
-func parseTrendingJSON(body []byte) ([]trendingEntry, error) {
-	repos, err := decodeTrendingRepos(body)
-	if err != nil {
-		return nil, err
-	}
-	out := make([]trendingEntry, 0, len(repos))
-	for i := range repos {
-		r := repos[i]
-		full := repoFullName(&r)
-		if full == "" {
-			continue
-		}
-		out = append(out, trendingEntry{
-			FullName:    full,
-			Description: r.Description,
-			Language:    r.Language,
-			// The proxy reports either lifetime stars (stars/stargazers_count)
-			// or window growth (currentPeriodStars) depending on which
-			// scraper is behind it. Keep them in their own fields so the
-			// ranker is never told a delta is a total.
-			StarsTotal: firstNonZero(r.Stars, r.StargazerCnt),
-			Forks:      firstNonZero(r.Forks, r.ForksCount),
-			StarsDelta: r.CurrentStars,
-			Rank:       i + 1,
-		})
-	}
-	if len(out) == 0 {
-		return nil, fmt.Errorf("no repos found in response")
-	}
-	return out, nil
-}
-
 // parseTrendingHTML reads github.com/trending. The page has no API and needs
 // no key; it is the same ranking ossinsight used to proxy.
+//
+// Returning an error on an empty page rather than an empty slice is what makes
+// a dead feed visible: ingestAll logs it as a source failure, and the section
+// it feeds would otherwise just render blank.
 func parseTrendingHTML(body []byte) ([]trendingEntry, error) {
 	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
 	if err != nil {
@@ -261,7 +171,6 @@ func parseTrendingHTML(body []byte) ([]trendingEntry, error) {
 			StarsTotal:  parseCount(art.Find(`a[href$="/stargazers"]`).First().Text()),
 			Forks:       parseCount(art.Find(`a[href$="/forks"]`).First().Text()),
 			StarsDelta:  parseCount(art.Find("span.float-sm-right").First().Text()),
-			Rank:        len(out) + 1,
 		})
 	})
 	if len(out) == 0 {
@@ -315,20 +224,9 @@ func parseCount(s string) int {
 	return n
 }
 
-// isGitHubTrendingPage reports whether the URL points at the official HTML
-// trending page — the only endpoint that understands ?since=.
-func isGitHubTrendingPage(rawURL string) bool {
-	u, err := url.Parse(rawURL)
-	if err != nil {
-		return false
-	}
-	switch strings.ToLower(u.Hostname()) {
-	case "github.com", "www.github.com":
-		return strings.HasPrefix(strings.Trim(u.Path, "/"), "trending")
-	}
-	return false
-}
-
+// withQueryParam appends key=value to rawURL, choosing the separator from
+// whether a query string is already present. Shared with the ossinsight
+// adapter, which appends ?period= the same way.
 func withQueryParam(rawURL, key, value string) string {
 	sep := "?"
 	if strings.Contains(rawURL, "?") {
@@ -337,62 +235,13 @@ func withQueryParam(rawURL, key, value string) string {
 	return rawURL + sep + key + "=" + url.QueryEscape(value)
 }
 
-// decodeTrendingRepos handles the two common envelope shapes: a bare JSON
-// array of repos, or an object wrapping the array under "repos"/"data"/"items".
-func decodeTrendingRepos(body []byte) ([]githubTrendingRepo, error) {
-	trimmed := strings.TrimSpace(string(body))
-	if trimmed == "" {
-		return nil, fmt.Errorf("empty body")
-	}
-	if strings.HasPrefix(trimmed, "[") {
-		var arr []githubTrendingRepo
-		if err := json.Unmarshal(body, &arr); err != nil {
-			return nil, err
-		}
-		return arr, nil
-	}
-	var env githubTrendingEnvelope
-	if err := json.Unmarshal(body, &env); err != nil {
-		return nil, err
-	}
-	switch {
-	case len(env.Repos) > 0:
-		return env.Repos, nil
-	case len(env.Data) > 0:
-		return env.Data, nil
-	case len(env.Items) > 0:
-		return env.Items, nil
-	}
-	return nil, fmt.Errorf("no repos found in response")
-}
-
-func repoFullName(r *githubTrendingRepo) string {
-	if r.FullName != "" {
-		return r.FullName
-	}
-	if r.FullNameSnk != "" {
-		return r.FullNameSnk
-	}
-	if r.Author != "" && r.Name != "" {
-		return r.Author + "/" + r.Name
-	}
-	return ""
-}
-
+// splitOwner returns the "owner" half of an "owner/name" slug. Shared with the
+// ossinsight adapter.
 func splitOwner(full string) string {
 	if i := strings.IndexByte(full, '/'); i > 0 {
 		return full[:i]
 	}
 	return ""
-}
-
-func firstNonZero(vals ...int) int {
-	for _, v := range vals {
-		if v != 0 {
-			return v
-		}
-	}
-	return 0
 }
 
 func init() {

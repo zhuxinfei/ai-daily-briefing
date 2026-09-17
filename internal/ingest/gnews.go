@@ -246,8 +246,7 @@ func feedItemSourceName(fi *gofeed.Item) string {
 	return ""
 }
 
-// firstNonEmptyString mirrors firstNonEmpty (defined in github_trending.go)
-// but with an unambiguous name to avoid collisions as the package grows.
+// firstNonEmptyString returns the first non-empty value, or "".
 func firstNonEmptyString(vals ...string) string {
 	for _, v := range vals {
 		if v != "" {

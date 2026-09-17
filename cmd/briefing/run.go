@@ -141,6 +141,13 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 	}
 	stage(fmt.Sprintf("store: %d raw items persisted", len(rawItems)))
 
+	// --- 3b. Bound the state DB -----------------------------------------
+	// Immediately after the only unbounded write, so the file is already small
+	// before any of the many failure returns below can skip it — the state
+	// push runs with `if: always()`, so a run that dies at compose or gate
+	// still ships whatever this file holds.
+	pruneRawItemsForRetention(ctx, s, cfg, stage)
+
 	// --- 4. Filter by time window ---------------------------------------
 	cutoff := date.Add(-time.Duration(cfg.Window.LookbackHours) * time.Hour)
 	filtered := filterByWindow(rawItems, cutoff)
@@ -251,7 +258,7 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 	// item.CrossMentionCount, 在 rank prompt 里作为硬信号让 LLM 综合 star
 	// 热度 + 跨源讨论度 + 描述业务价值做评分. 修正之前 "Hermes trending#1
 	// 却因描述平淡被挤出 opensource top 6" 的问题.
-	ingest.CalculateCrossMentions(filtered, sourceTypes)
+	ingest.CalculateCrossMentions(filtered, sourceCategories)
 	xmCount := 0
 	xmMax := 0
 	for _, it := range filtered {
@@ -351,7 +358,7 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 			// filtered2 里 item.SignalStrength 还是 0 (拿不到共振加权).
 			_ = ingest.CalculateSignalStrength(filtered2)
 			// v1.0.1 Phase 4.6: extended path 也要算 cross_mentions.
-			ingest.CalculateCrossMentions(filtered2, sourceTypes)
+			ingest.CalculateCrossMentions(filtered2, sourceCategories)
 			if ranked2, rerr := ranker.Rank(ctx, filtered2, sourceCategories, sourcePriorities); rerr != nil {
 				stage(fmt.Sprintf("extended rank: failed (%v) — keeping original classify result", rerr))
 			} else {
@@ -1144,22 +1151,16 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 		stage("title-dedup: target=test, skipping persist to avoid polluting sent set")
 	}
 
-	// --- 19. Bound the state DB ----------------------------------------
-	// data/briefing.db rides along on the automation-state branch, where
-	// GitHub refuses any file over 100 MiB. It sat right on that line for
-	// months, so every daily state push was rejected and the branch's history
-	// stopped advancing. fail-soft: the issue is already published, and a
-	// housekeeping failure must not fail the run.
-	pruneRawItemsForRetention(ctx, s, cfg, stage)
-
 	stage("pipeline complete: issue published")
 	return nil
 }
 
-// pruneRawItemsForRetention applies cfg.Retention to the store and then hands
-// the freed pages back to the filesystem. Logging-only on error, matching the
-// other end-of-run housekeeping (dedup persistence), because by this point the
-// briefing has already been published.
+// pruneRawItemsForRetention applies cfg.Retention to the store and hands the
+// freed pages back to the filesystem.
+//
+// Logging-only on error: this is housekeeping on a file that is already
+// correct, and losing a day's prune is recoverable — the next run does it
+// again. It must never fail an otherwise-good briefing.
 func pruneRawItemsForRetention(ctx context.Context, s store.Store, cfg *config.Config, stage func(string)) {
 	days := cfg.Retention.RawItemsDays
 	if days <= 0 {
@@ -1169,6 +1170,11 @@ func pruneRawItemsForRetention(ctx context.Context, s store.Store, cfg *config.C
 	n, err := s.PruneRawItems(ctx, cutoff)
 	if err != nil {
 		stage(fmt.Sprintf("[WARN] retention: prune raw_items: %v", err))
+		return
+	}
+	if n == 0 {
+		// Common on a same-date rerun. VACUUM rewrites the whole file, so
+		// there is nothing to gain from paying for it when no pages were freed.
 		return
 	}
 	stage(fmt.Sprintf("retention: pruned %d raw_items fetched before %s (keep %d days)",

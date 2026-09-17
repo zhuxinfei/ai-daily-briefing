@@ -25,12 +25,11 @@ window:
   lookback_hours: 24
   extended_hours: 0
 
-# 状态库保留期. data/briefing.db 会随 automation-state 分支回传, 而 GitHub
-# 拒绝任何超过 100 MiB 的单个文件 — raw_items 曾经把库顶到 104.5 MB, 导致
-# 从 2026-07 中旬起每天的 "Save state" 推送全被拒 (只有不新增 raw_items 的
-# 周报能擦着 99.68 MiB 过线), 状态分支里的历史因此一直停在 2026-07-13.
-# 按 fetched_at 保留近 N 天, 并 VACUUM 回收空间.
-# 发布去重走 data/sent_urls.txt + data/sent_titles.txt, 与这里无关, 不受影响.
+# 状态库保留期. data/briefing.db 随 automation-state 分支回传, 而 GitHub 拒绝
+# 任何超过 100 MiB 的单个文件; raw_items (每篇文章全文) 是唯一无界增长的表,
+# 曾把库顶过线导致每日推送全被拒. 按 fetched_at 保留近 N 天, 并 VACUUM 回收空间.
+# 发布去重走 data/sent_urls.txt + data/sent_titles.txt, 不受影响.
+# 事故全貌与实测数据见 internal/store/sqlite.go 的 PruneRawItems 注释.
 retention:
   raw_items_days: 30
 

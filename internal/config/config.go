@@ -24,15 +24,12 @@ type Config struct {
 	Sources   []SourceConfig  `yaml:"sources"`
 }
 
-// RetentionConfig bounds the history kept in the state DB.
-//
-// The DB is pushed to the automation-state branch, and GitHub rejects any
-// single file over 100 MiB. raw_items was the table that broke that ceiling
-// (see store.PruneRawItems), so it is the one with a knob.
+// RetentionConfig bounds the history kept in the state DB, which is pushed to
+// the automation-state branch where GitHub rejects any file over 100 MiB.
 type RetentionConfig struct {
 	// RawItemsDays is how many days of fetched raw_items to keep, by
-	// fetched_at. Zero or negative disables pruning — which lets the state DB
-	// grow back over the push limit, so the shipped config sets it.
+	// fetched_at. Zero or negative disables pruning, which lets the state DB
+	// grow back over the push limit — so the shipped config sets it.
 	RawItemsDays int `yaml:"raw_items_days"`
 }
 

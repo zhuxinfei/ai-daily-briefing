@@ -256,11 +256,11 @@ func TestCalculateCrossMentions(t *testing.T) {
 		{ID: 11, SourceID: 200, Title: "Best AI tools", Content: "Notable: hermes-agent, VibeVoice, magika"},
 		{ID: 12, SourceID: 200, Title: "magika goes viral", Content: "magika can detect file types quickly"},
 	}
-	sourceTypes := map[int64]string{
-		100: "ossinsight",
-		200: "rss",
+	sourceCategories := map[int64]string{
+		100: "project",
+		200: "news",
 	}
-	CalculateCrossMentions(items, sourceTypes)
+	CalculateCrossMentions(items, sourceCategories)
 
 	// Verify counts (只 full + dashed 匹配, brand "Hermes" 不再算)
 	checks := map[int64]int{
@@ -287,30 +287,41 @@ func TestCalculateCrossMentions(t *testing.T) {
 	}
 }
 
-// TestCalculateCrossMentions_GitHubTrendingSource covers the source swap: when
-// the ossinsight trends endpoint was retired (2026-09) the feed moved to the
-// github_trending adapter, and this signal was gated on the "ossinsight"
-// literal alone. Keying it on one provider meant the hotness signal silently
-// switched off for every item the new source produced — no error, just a
-// CrossMentionCount of 0 forever.
-func TestCalculateCrossMentions_GitHubTrendingSource(t *testing.T) {
+// TestCalculateCrossMentions_KeyedOnCategoryNotAdapter covers the source swap
+// and the reason it is keyed the way it is.
+//
+// The signal used to be gated on the adapter type "ossinsight"; retiring that
+// feed (2026-09) switched it off silently — no error, just a CrossMentionCount
+// of 0 forever. Keying it on a set of adapter types would only postpone the
+// same failure to the next swap, so it keys on the configured category
+// instead. Both items below are project-category feeds under *different*
+// adapter types; both must earn credit, which is the property a type-keyed
+// version cannot have.
+func TestCalculateCrossMentions_KeyedOnCategoryNotAdapter(t *testing.T) {
 	items := []*store.RawItem{
-		// trending (source_id=100) — supplied by the github_trending adapter
 		{ID: 1, SourceID: 100, Title: "anthropics/claude-cookbook", Content: "Recipes"},
-		// news (source_id=200)
-		{ID: 10, SourceID: 200, Title: "claude-cookbook updated", Content: "The claude-cookbook repo gained recipes"},
+		{ID: 2, SourceID: 300, Title: "microsoft/VibeVoice", Content: "Voice AI"},
+		// news (source_id=200) — the haystack both project items match against.
+		// Short names must be >= 5 chars to be matchable at all
+		// (extractRepoMatchTerms), which is why these two repos and not, say,
+		// "x/vllm".
+		{ID: 10, SourceID: 200, Title: "claude-cookbook and VibeVoice both shipped",
+			Content: "The claude-cookbook repo gained recipes; VibeVoice got a new voice"},
 	}
-	sourceTypes := map[int64]string{
-		100: "github_trending",
-		200: "rss",
+	sourceCategories := map[int64]string{
+		100: "project", // adapter type "github_trending"
+		300: "project", // a hypothetical future project feed, different adapter
+		200: "news",
 	}
-	CalculateCrossMentions(items, sourceTypes)
+	CalculateCrossMentions(items, sourceCategories)
 
-	if items[0].CrossMentionCount == 0 {
-		t.Errorf("github_trending item got CrossMentionCount=0; the trending signal must not be " +
-			"keyed on the retired ossinsight provider alone")
+	for _, it := range items[:2] {
+		if it.CrossMentionCount == 0 {
+			t.Errorf("project-category item id=%d got CrossMentionCount=0; the signal must key on "+
+				"category, not on the adapter type that happens to supply the feed", it.ID)
+		}
 	}
-	if items[1].CrossMentionCount != 0 {
-		t.Errorf("non-trending item should have 0 mentions, got %d", items[1].CrossMentionCount)
+	if items[2].CrossMentionCount != 0 {
+		t.Errorf("non-project item should have 0 mentions, got %d", items[2].CrossMentionCount)
 	}
 }

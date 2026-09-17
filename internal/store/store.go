@@ -31,15 +31,14 @@ type Store interface {
 	ListRecentRawItems(ctx context.Context, domainID string, since time.Time) ([]*RawItem, error)
 	UpdateRawItemContent(ctx context.Context, id int64, content string) error
 
-	// Retention
+	// Retention. See sqliteStore.PruneRawItems for why raw_items is the table
+	// with a bound and why the state DB needs one.
+	//
 	// PruneRawItems deletes raw_items fetched before the cutoff, returning the
-	// number of rows removed. raw_items is the only unbounded table here — it
-	// stores the full body of every article ever fetched — and the state DB is
-	// pushed to a git branch that rejects files over 100 MiB.
+	// number of rows removed.
 	PruneRawItems(ctx context.Context, before time.Time) (int64, error)
-	// Compact checkpoints the WAL and rewrites the database so the space freed
-	// by PruneRawItems is actually returned to the filesystem. DELETE alone only
-	// frees pages inside the file.
+	// Compact rewrites the database so the pages PruneRawItems freed actually
+	// leave the file — DELETE alone only marks them reusable.
 	Compact(ctx context.Context) error
 
 	// Issue

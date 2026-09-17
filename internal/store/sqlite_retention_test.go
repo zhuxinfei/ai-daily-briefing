@@ -1,18 +1,15 @@
-// sqlite_retention_test.go — tests for the state-DB retention added after the
-// 2026-07 incident: raw_items grew to ~84 MiB, pushing data/briefing.db past
-// the 100 MiB per-file limit GitHub enforces on the automation-state branch, so
-// every daily state push was rejected and the branch's history froze.
+// sqlite_retention_test.go — tests for the state-DB retention (see
+// sqliteStore.PruneRawItems for the incident it answers).
 //
-// The two properties that matter:
-//
-//	PruneRawItems deletes strictly by fetched_at, keeping the retention window.
-//	Compact actually returns the freed pages to the filesystem — a DELETE on
-//	its own leaves the file exactly as large as it was.
+// The two properties worth pinning: PruneRawItems deletes strictly by
+// fetched_at, and Compact actually returns the freed pages to the filesystem —
+// a DELETE on its own leaves the file exactly as large as it was.
 
 package store
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -26,11 +23,12 @@ func insertRawItemsAt(t *testing.T, ctx context.Context, s Store, sourceID int64
 	t.Helper()
 	items := make([]*RawItem, 0, n)
 	for i := 0; i < n; i++ {
+		id := fmt.Sprintf("%s-%s-%d", fetchedAt.Format("20060102"), content, i)
 		items = append(items, &RawItem{
 			DomainID:   "ai",
 			SourceID:   sourceID,
-			ExternalID: fetchedAt.Format("20060102") + "-" + content + "-" + string(rune('a'+i%26)),
-			URL:        "https://example.com/" + fetchedAt.Format("20060102") + "/" + content + "-" + string(rune('a'+i%26)),
+			ExternalID: id,
+			URL:        "https://example.com/" + id,
 			Title:      "title",
 			FetchedAt:  fetchedAt,
 			Content:    content,
@@ -38,6 +36,28 @@ func insertRawItemsAt(t *testing.T, ctx context.Context, s Store, sourceID int64
 	}
 	if err := s.InsertRawItems(ctx, items); err != nil {
 		t.Fatalf("InsertRawItems: %v", err)
+	}
+}
+
+// TestMigrate_IndexesClassifiedItemsRawItem pins migration 007. The index is
+// invisible — nothing fails without it, pruning just gets slower every day as
+// classified_items grows (0.83 s at 1.4k child rows, 7.12 s at 30k). A
+// migration that silently did not apply would look exactly like success.
+func TestMigrate_IndexesClassifiedItemsRawItem(t *testing.T) {
+	ctx := context.Background()
+	s := newTestStore(t, ctx) // runs Migrate
+
+	sqlite, ok := s.(*sqliteStore)
+	if !ok {
+		t.Fatalf("expected *sqliteStore, got %T", s)
+	}
+	var name string
+	err := sqlite.db.QueryRowContext(ctx,
+		`SELECT name FROM sqlite_master WHERE type='index' AND tbl_name='classified_items' AND name=?`,
+		"idx_classified_items_raw_item",
+	).Scan(&name)
+	if err != nil {
+		t.Fatalf("index idx_classified_items_raw_item missing after Migrate: %v", err)
 	}
 }
 
