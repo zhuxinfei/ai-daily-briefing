@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"slices"
 	"testing"
 	"time"
 
@@ -227,7 +228,24 @@ func TestShouldPostGateAlert(t *testing.T) {
 	}
 }
 
+// TestProdPublishIssues covers the prod-channel readiness gate in run.go.
+// The gate blocks hard: any returned issue makes the run skip the prod channel
+// and fail, so both which checks exist and which do NOT exist are load-bearing.
+//
+// This is table-driven per module on purpose. The earlier version asserted a
+// bare count for the all-missing case; when the OurMD (对我们的启发) check was
+// re-added, the count drifted out from under it and the test simply sat red —
+// a count says nothing about *which* checks exist, so it cannot tell you
+// whether the expectation or the production code is the thing that moved.
+// Naming each module in its own case keeps that legible.
 func TestProdPublishIssues(t *testing.T) {
+	// Every case below carries a report URL that is not a public HTTP(S)
+	// address. checkPublicReportURL was deliberately downgraded to warn-only
+	// (#2), so it must never contribute to the returned issues — pinning that
+	// is the point of keeping the bad link in the fixtures rather than
+	// removing it.
+	const nonPublicURL = "file:///tmp/report.html"
+
 	t.Run("complete_modules_and_public_link", func(t *testing.T) {
 		origProbe := urlProbe
 		urlProbe = func(ctx context.Context, method, rawURL string) (int, error) {
@@ -248,17 +266,80 @@ func TestProdPublishIssues(t *testing.T) {
 		}
 	})
 
-	t.Run("missing_modules_and_bad_link", func(t *testing.T) {
-		rendered := &publish.RenderedIssue{
-			Issue:     &store.Issue{},
-			Insight:   &store.IssueInsight{},
-			ReportURL: "file:///tmp/report.html",
+	t.Run("per_module", func(t *testing.T) {
+		cases := []struct {
+			name       string
+			summary    string
+			industryMD string
+			ourMD      string
+			want       []string
+		}{
+			{
+				name:    "every module present",
+				summary: "1. 今日摘要", industryMD: "1. 行业洞察", ourMD: "1. 对我们的启发",
+				want: nil,
+			},
+			{
+				name:    "行业洞察 missing",
+				summary: "1. 今日摘要", ourMD: "1. 对我们的启发",
+				want: []string{"缺少完整行业洞察"},
+			},
+			{
+				name:    "对我们的启发 missing",
+				summary: "1. 今日摘要", industryMD: "1. 行业洞察",
+				want: []string{"缺少完整对我们的启发"},
+			},
+			{
+				name:    "今日摘要 missing",
+				summary: "", industryMD: "1. 行业洞察", ourMD: "1. 对我们的启发",
+				want: []string{"缺少完整今日摘要"},
+			},
+			{
+				name: "every module missing",
+				want: []string{"缺少完整行业洞察", "缺少完整对我们的启发", "缺少完整今日摘要"},
+			},
+			{
+				// The checks use strings.TrimSpace, so whitespace must read as
+				// absent — a section of blank lines is not content.
+				name:    "whitespace-only counts as missing",
+				summary: "   ", industryMD: "\n\t ", ourMD: " ",
+				want: []string{"缺少完整行业洞察", "缺少完整对我们的启发", "缺少完整今日摘要"},
+			},
 		}
-		issues := prodPublishIssues(context.Background(), rendered)
-		// #2: checkPublicReportURL 降级为 warn-only 后不再计入 issues,
-		// 只剩 2 条 (industry/summary 缺失).
-		if len(issues) != 2 {
-			t.Fatalf("prodPublishIssues() len = %d, want 2; issues=%v", len(issues), issues)
+		for _, tc := range cases {
+			t.Run(tc.name, func(t *testing.T) {
+				rendered := &publish.RenderedIssue{
+					Issue:     &store.Issue{Summary: tc.summary},
+					Insight:   &store.IssueInsight{IndustryMD: tc.industryMD, OurMD: tc.ourMD},
+					ReportURL: nonPublicURL,
+				}
+				got := prodPublishIssues(context.Background(), rendered)
+				if !slices.Equal(got, tc.want) {
+					t.Errorf("prodPublishIssues() = %v, want %v", got, tc.want)
+				}
+			})
+		}
+	})
+
+	t.Run("nil receivers", func(t *testing.T) {
+		// A nil insight is the "generation never ran" case: both insight
+		// modules are missing, and the summary is still checked on its own.
+		rendered := &publish.RenderedIssue{
+			Issue:     &store.Issue{Summary: "1. 今日摘要"},
+			Insight:   nil,
+			ReportURL: nonPublicURL,
+		}
+		want := []string{"缺少完整行业洞察", "缺少完整对我们的启发"}
+		if got := prodPublishIssues(context.Background(), rendered); !slices.Equal(got, want) {
+			t.Errorf("nil Insight: prodPublishIssues() = %v, want %v", got, want)
+		}
+
+		// No issue at all short-circuits to a single message.
+		if got := prodPublishIssues(context.Background(), &publish.RenderedIssue{}); !slices.Equal(got, []string{"缺少日报对象"}) {
+			t.Errorf("nil Issue: prodPublishIssues() = %v, want [缺少日报对象]", got)
+		}
+		if got := prodPublishIssues(context.Background(), nil); !slices.Equal(got, []string{"缺少日报对象"}) {
+			t.Errorf("nil rendered: prodPublishIssues() = %v, want [缺少日报对象]", got)
 		}
 	})
 }
