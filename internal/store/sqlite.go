@@ -492,10 +492,13 @@ func (s *sqliteStore) PruneRawItems(ctx context.Context, before time.Time) (int6
 func (s *sqliteStore) Compact(ctx context.Context) error {
 	// VACUUM cannot run inside a transaction and needs to be the only writer;
 	// drop the pool's idle connections first so none is holding a read lock,
-	// then put the pool back. Restoring matters: Compact runs early in the
-	// pipeline (straight after InsertRawItems), so the store keeps serving the
-	// whole rest of the run — leaving MaxIdleConns at 0 would close every
-	// connection after each query and reopen one for the next.
+	// then put the pool back.
+	//
+	// Restoring is defensive rather than currently load-bearing: the caller
+	// defers Compact to the end of the run, so only Close follows. It is here
+	// because SetMaxIdleConns is process-wide and permanent — leaving it at 0
+	// would silently make every later query open a fresh connection — and that
+	// is not a trap worth leaving for whoever moves this call next.
 	s.db.SetMaxIdleConns(0)
 	defer s.db.SetMaxIdleConns(defaultMaxIdleConns)
 

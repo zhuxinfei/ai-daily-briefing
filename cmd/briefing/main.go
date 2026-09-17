@@ -321,12 +321,18 @@ func seedCommand(ctx context.Context, cfg *config.Config) error {
 // it wrote.
 //
 // It deliberately walks all of cfg.Sources, including disabled ones, so that
-// the config is authoritative in BOTH directions. Upserting only the enabled
-// subset — which is what this used to do — means `enabled: false` never
-// reaches the database: the existing row keeps enabled=1 and its old config,
-// so the source goes on running and the flag can be switched on but never off.
-// That is not hypothetical; it left the retired ossinsight feed running after
-// config/ai.yaml had supposedly disabled it.
+// the enabled flag is authoritative in both directions. Upserting only the
+// enabled subset — which is what this used to do — means `enabled: false`
+// never reaches the database: the existing row keeps enabled=1 and its old
+// config, so the source goes on running and the flag can be switched on but
+// never off. That is not hypothetical; it left the retired ossinsight feed
+// running after config/ai.yaml had supposedly disabled it.
+//
+// Note the limit of that: rows are keyed UNIQUE(domain_id, type, name), so
+// this makes the config authoritative for the enabled flag but NOT for a
+// source's identity. Renaming a source's `name:` inserts a second row and
+// leaves the old one enabled, and the feed then runs twice. Changing an
+// existing source's name means retiring its row first.
 func seedSources(ctx context.Context, s store.Store, cfg *config.Config) (int, error) {
 	// Serialize the full SourceConfig so adapters can recover type-specific
 	// options (query/hl/gl/limit/...).
