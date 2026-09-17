@@ -309,28 +309,45 @@ func seedCommand(ctx context.Context, cfg *config.Config) error {
 		return fmt.Errorf("upsert domain: %w", err)
 	}
 
-	// Upsert each enabled source. We serialize the full SourceConfig so
-	// adapters can recover type-specific options (query/hl/gl/limit/...).
-	inserted := 0
-	for _, src := range cfg.EnabledSources() {
+	n, err := seedSources(ctx, s, cfg)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("seed: %d sources upserted\n", n)
+	return nil
+}
+
+// seedSources upserts every source declared in the config and returns how many
+// it wrote.
+//
+// It deliberately walks all of cfg.Sources, including disabled ones, so that
+// the config is authoritative in BOTH directions. Upserting only the enabled
+// subset — which is what this used to do — means `enabled: false` never
+// reaches the database: the existing row keeps enabled=1 and its old config,
+// so the source goes on running and the flag can be switched on but never off.
+// That is not hypothetical; it left the retired ossinsight feed running after
+// config/ai.yaml had supposedly disabled it.
+func seedSources(ctx context.Context, s store.Store, cfg *config.Config) (int, error) {
+	// Serialize the full SourceConfig so adapters can recover type-specific
+	// options (query/hl/gl/limit/...).
+	written := 0
+	for _, src := range cfg.Sources {
 		cfgJSON, err := marshalSourceConfig(src)
 		if err != nil {
-			return fmt.Errorf("marshal source %s: %w", src.ID, err)
+			return 0, fmt.Errorf("marshal source %s: %w", src.ID, err)
 		}
-		_, err = s.UpsertSource(ctx, &store.Source{
+		if _, err := s.UpsertSource(ctx, &store.Source{
 			DomainID:   cfg.Domain.ID,
 			Type:       src.Type,
 			Name:       src.Name,
 			ConfigJSON: cfgJSON,
 			Enabled:    src.Enabled,
-		})
-		if err != nil {
-			return fmt.Errorf("upsert source %s: %w", src.ID, err)
+		}); err != nil {
+			return 0, fmt.Errorf("upsert source %s: %w", src.ID, err)
 		}
-		inserted++
+		written++
 	}
-	fmt.Printf("seed: %d sources upserted\n", inserted)
-	return nil
+	return written, nil
 }
 
 // marshalSourceConfig serializes a SourceConfig to a JSON string blob
