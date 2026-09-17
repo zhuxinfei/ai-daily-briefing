@@ -1,0 +1,59 @@
+name: CI
+
+# Guards pull requests only. The scheduled daily/weekly briefings are shipped by
+# their own workflows and are untouched by this one.
+#
+# Why this exists: the repo had no PR checks at all, only the scheduled
+# pipelines, so nothing ever looked at a change before it landed. By 2026-09
+# that had cost two silent drifts — a test whose expectation was edited to 2
+# while the production code still returned 3 (it sat red and was read as
+# "known failure"), and 17 files of gofmt drift, including a block pasted into
+# an else{} branch without re-indenting. Neither could have survived a single
+# PR run. Catch them here instead of by hand, months later.
+on:
+  pull_request:
+  workflow_dispatch:
+
+# Read-only: this workflow reports, it never writes to the repo.
+permissions:
+  contents: read
+
+# A new push to the same PR supersedes the old run.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      # Formatting first: it is the cheapest failure to hit and the easiest to
+      # fix, so there is no reason to make anyone wait for a compile first.
+      - name: Check formatting
+        run: |
+          unformatted="$(gofmt -l .)"
+          if [ -n "$unformatted" ]; then
+            echo "::error::gofmt found unformatted files. Run 'gofmt -w .' and commit the result:"
+            echo "$unformatted"
+            exit 1
+          fi
+
+      - name: Build
+        run: go build ./...
+
+      - name: Vet
+        run: go vet ./...
+
+      # -count=1 disables the test result cache. This is a gate, so the tests
+      # must actually execute rather than report a cached pass — a stale
+      # "(cached)" is exactly how a green result can stop meaning anything.
+      - name: Test
+        run: go test -count=1 ./...
