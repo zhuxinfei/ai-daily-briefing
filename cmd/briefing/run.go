@@ -141,13 +141,6 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 	}
 	stage(fmt.Sprintf("store: %d raw items persisted", len(rawItems)))
 
-	// --- 3b. Bound the state DB -----------------------------------------
-	// Immediately after the only unbounded write, so the file is already small
-	// before any of the many failure returns below can skip it — the state
-	// push runs with `if: always()`, so a run that dies at compose or gate
-	// still ships whatever this file holds.
-	pruneRawItemsForRetention(ctx, s, cfg, stage)
-
 	// --- 4. Filter by time window ---------------------------------------
 	cutoff := date.Add(-time.Duration(cfg.Window.LookbackHours) * time.Hour)
 	filtered := filterByWindow(rawItems, cutoff)
@@ -239,14 +232,12 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 	}
 	sourceCategories := make(map[int64]string, len(sourceRows))
 	sourcePriorities := make(map[int64]int, len(sourceRows)) // v1.0.1 Phase 4.1
-	sourceTypes := make(map[int64]string, len(sourceRows))   // v1.0.1 Phase 4.6 (for CrossMentions)
 	for _, sr := range sourceRows {
 		if sr == nil {
 			continue
 		}
 		sourceCategories[sr.ID] = sr.Category
 		sourcePriorities[sr.ID] = sr.Priority
-		sourceTypes[sr.ID] = sr.Type
 	}
 
 	// 诊断日志 (2026-04-16 research=0 追踪): filter+dedup 后各 category 计数,
@@ -1151,12 +1142,32 @@ func runPipeline(ctx context.Context, cfg *config.Config, date time.Time, gf *gl
 		stage("title-dedup: target=test, skipping persist to avoid polluting sent set")
 	}
 
+	// --- 19. Bound the state DB -----------------------------------------
+	// Ordering is load-bearing — do NOT move this earlier, however tempting
+	// (it looks like it belongs next to InsertRawItems, and putting it there
+	// was a real bug):
+	//
+	// InsertRawItems does INSERT OR IGNORE and then reads the surviving row id
+	// back, so an item whose (source_id, external_id) is already in the table
+	// inherits the OLD row — old fetched_at, old content. A repo that trends
+	// today and last trended more than the retention window ago is exactly
+	// that case. Pruning before the classify rows are written therefore
+	// deletes a row whose id this run is still holding, and step 6f's
+	// InsertClassifiedItems then fails its foreign key — which run.go swallows
+	// as "N skipped (FK / zero-id)" and the run still exits 0.
+	//
+	// Running last means every raw_item this run published is already
+	// referenced by classified_items, so it is spared; nothing downstream
+	// writes those ids again.
+	pruneRawItemsForRetention(ctx, s, cfg, stage)
+
 	stage("pipeline complete: issue published")
 	return nil
 }
 
 // pruneRawItemsForRetention applies cfg.Retention to the store and hands the
-// freed pages back to the filesystem.
+// freed pages back to the filesystem. Must run after the classify rows are
+// persisted — see the call site for why.
 //
 // Logging-only on error: this is housekeeping on a file that is already
 // correct, and losing a day's prune is recoverable — the next run does it
@@ -1175,6 +1186,9 @@ func pruneRawItemsForRetention(ctx context.Context, s store.Store, cfg *config.C
 	if n == 0 {
 		// Common on a same-date rerun. VACUUM rewrites the whole file, so
 		// there is nothing to gain from paying for it when no pages were freed.
+		// Still logged: "did retention run?" should be answerable from the
+		// run's own output rather than inferred from silence.
+		stage(fmt.Sprintf("retention: nothing older than %s to prune", cutoff.Format("2006-01-02")))
 		return
 	}
 	stage(fmt.Sprintf("retention: pruned %d raw_items fetched before %s (keep %d days)",

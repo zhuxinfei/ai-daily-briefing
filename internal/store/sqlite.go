@@ -89,6 +89,11 @@ type sqliteStore struct {
 	db *sql.DB
 }
 
+// defaultMaxIdleConns mirrors database/sql's own default. The store never
+// configures the pool, so Compact restores this after briefly dropping idle
+// connections for its VACUUM.
+const defaultMaxIdleConns = 2
+
 // -------- Lifecycle --------
 
 // Migrate runs every pending migration in order. The flow is:
@@ -443,9 +448,11 @@ func (s *sqliteStore) UpdateRawItemContent(ctx context.Context, id int64, conten
 //
 // The spared set grows by roughly one row per published item per day, and each
 // spared row carries a full article body — so the file is bounded, not fixed.
-// At ~30 items/day that is on the order of a few MB a year against a 100 MiB
-// ceiling, which is why it is left alone rather than pruned by lineage (which
-// would mean deleting classified_items by issue age first, in FK order).
+// Measured on the real state DB it was 1,387 rows / 1.81 MB after 51 days
+// (~1.3 KB per item, ~36 KB a day, so roughly 13 MB a year) against a 100 MiB
+// ceiling. That is why it is left alone rather than pruned by lineage, which
+// would mean deleting classified_items by issue age first, in FK order; if the
+// growth rate ever changes materially, that is the lever.
 //
 // The rest is safe to drop: the only reader, ListRecentRawItems, is called from
 // tests alone, and publication dedup runs off data/sent_urls.txt and
@@ -484,8 +491,13 @@ func (s *sqliteStore) PruneRawItems(ctx context.Context, before time.Time) (int6
 // is exactly the kind this code exists to prevent.
 func (s *sqliteStore) Compact(ctx context.Context) error {
 	// VACUUM cannot run inside a transaction and needs to be the only writer;
-	// drop the pool's idle connections first so none is holding a read lock.
+	// drop the pool's idle connections first so none is holding a read lock,
+	// then put the pool back. Restoring matters: Compact runs early in the
+	// pipeline (straight after InsertRawItems), so the store keeps serving the
+	// whole rest of the run — leaving MaxIdleConns at 0 would close every
+	// connection after each query and reopen one for the next.
 	s.db.SetMaxIdleConns(0)
+	defer s.db.SetMaxIdleConns(defaultMaxIdleConns)
 
 	rows, err := s.db.QueryContext(ctx, `PRAGMA wal_checkpoint(TRUNCATE)`)
 	if err != nil {
