@@ -12,6 +12,14 @@ name: CI
 # PR run. Catch them here instead of by hand, months later.
 on:
   pull_request:
+  # Also on main. History shows zero merge commits here — every change before
+  # these branches landed by pushing straight to main — so a PR-only trigger
+  # would be inert the moment that habit slips, and the gate would stop
+  # existing without saying so. Same silence that let both failures below
+  # happen. Scoped to main so the automation-state branch's daily state push
+  # (and the site repo) don't trigger it.
+  push:
+    branches: [main]
   workflow_dispatch:
 
 # Read-only: this workflow reports, it never writes to the repo.
