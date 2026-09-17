@@ -228,22 +228,14 @@ func TestShouldPostGateAlert(t *testing.T) {
 	}
 }
 
-// TestProdPublishIssues covers the prod-channel readiness gate in run.go.
-// The gate blocks hard: any returned issue makes the run skip the prod channel
-// and fail, so both which checks exist and which do NOT exist are load-bearing.
-//
-// This is table-driven per module on purpose. The earlier version asserted a
-// bare count for the all-missing case; when the OurMD (对我们的启发) check was
-// re-added, the count drifted out from under it and the test simply sat red —
-// a count says nothing about *which* checks exist, so it cannot tell you
-// whether the expectation or the production code is the thing that moved.
-// Naming each module in its own case keeps that legible.
+// TestProdPublishIssues covers the prod-channel readiness gate in run.go. The
+// gate blocks hard — any returned issue skips the prod channel and fails the
+// run — so which checks exist is load-bearing, and the per-module table below
+// names each one rather than counting them.
 func TestProdPublishIssues(t *testing.T) {
-	// Every case below carries a report URL that is not a public HTTP(S)
-	// address. checkPublicReportURL was deliberately downgraded to warn-only
-	// (#2), so it must never contribute to the returned issues — pinning that
-	// is the point of keeping the bad link in the fixtures rather than
-	// removing it.
+	// Every case carries the same non-public report URL: checkPublicReportURL
+	// is deliberately warn-only, so it must never contribute to the returned
+	// issues, and keeping the bad link in the fixtures pins that.
 	const nonPublicURL = "file:///tmp/report.html"
 
 	t.Run("complete_modules_and_public_link", func(t *testing.T) {
