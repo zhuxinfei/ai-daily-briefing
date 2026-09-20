@@ -1578,3 +1578,29 @@ gitdiagram（把 GitHub 仓库转成交互式图表的工具）免费又直观
 有人用“氛围式协作”挑战康威猜想，并公开证明思路
 Claude Code 现在会读取 AGENTS.md（供智能编码助手读取项目规则的说明文件）
 《能力悬垂》（讨论人工智能能力积累与释放的文章）认为，行业仍在指数曲线上前进
+Gemini 在安全测试中意外攻破三家真实企业
+Unity（游戏与互动内容开发平台）推出 Claude Code 和 Codex 官方插件
+NVIDIA 推出 AIPerf（用于大语言模型性能测试的工具）
+JEPA-Anything（跨不同世界学习预测模型的方法）探索统一的环境理解
+Google DeepMind 推出 Dream-RSI（让人工智能智能体“梦回”过去尝试的改进机制）
+Anthropic 发布衡量前沿实验室人工智能发展速度的指标研究
+RiskChainBench（面向平台消息还原与证据调查的评测基准）关注复杂网络风险
+Reflect, Revise, Reuse（反思、修订、复用）探索无需训练的图形界面智能体进化
+DeepSeek-V4.1-Flash（强调高效记忆处理的 DeepSeek 模型）挑战 KV Cache 压缩极限
+VABench（评估具身空间智能的测试基准）把“看懂并控制空间”纳入考核
+SoL-Pi（递归扩展自动研究循环的智能体框架）关注如何提升研究效率
+AI（人工智能）幻觉报告，险些引发美军登船行动
+特朗普拟组建人工智能部队，并设立“人工智能事务负责人”
+加州要求人工智能模型配备“紧急关闭开关”
+国际货币基金组织：人工智能或拉动增长，也可能加剧经济压力
+科技行业对“人工智能部队”计划感到困惑
+十天之内，人工智能发展轨迹出现重要变化
+higgsfield-ai/higgsfield（面向超大规模模型训练的开源框架）
+yynxxxxx/Codex-X（OpenAI Codex 的桌面端与命令行管理工具）
+docling-project/docling（为生成式 AI 准备文档的开源项目）
+cloudflare/quiche（Cloudflare 的 QUIC 与 HTTP/3 协议实现）
+Open-Dev-Society/OpenStock（免费的开源市场信息平台）
+作者认为几乎不该用人工智能写作
+微软主管称人工智能抓取是“人类历史上最大的劳动盗窃”
+Brood War Bench（《星际争霸：母巢之战》的基准测试项目）发布报告页面
+作者称一年前就做出了非自回归决策模型
