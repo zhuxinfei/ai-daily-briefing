@@ -1663,3 +1663,25 @@ Amazon 封锁外部服务，但实体投入正成为人工智能时代的护城�
 Claude Opus 5.5（Anthropic 的 Claude 新型号）与 GPT-6 Sol、Luna（OpenAI 推出的两款新模型）同场，引发新一轮价格战讨论
 Transformers（常用的人工智能模型开发工具库）现可直接运行 llama.cpp 量化模型
 llm-anthropic 0.29（让命令行工具调用 Claude 的插件新版）加入 Claude Opus 5.5 支持
+Anthropic 发布 Claude Opus 5.5（Anthropic 的新一代高阶 AI 模型），价格下调 20%
+Anthropic 工程师解释：Claude 变得更聪明后，写作反而变差
+The Tasteful Agent（衡量并提升智能体长期决策“品味”的研究）尝试让人工智能不只会完成任务，还能把事情做得更合适
+Ovis-Embedding（面向多种信息形式的统一嵌入模型）探索跨模态内容的通用表示
+Claude 发现带有 CRISPR（基因研究中常见的规律重复序列）式重复结构的新型酶系统
+JEV-as-a-Judge（让人工智能有把握时裁决、没把握时上报的评审机制）主打“知道自己不知道”
+心理健康领域的大语言模型（能够理解并生成文字的通用模型）正从模式识别走向个性化陪伴
+Lean Pool（由人工智能维护的形式化数学档案项目）探索让数学知识库自动更新
+几何—语义耦合（把空间结构与内容含义关联起来）帮助机器理解三维场景中的互动
+Meta 的 Muse（AI 智能体产品，可代用户执行任务）一周吸引 50 万用户，同时陷入模仿争议
+ChatGPT Voice（ChatGPT 的语音交互功能）接入邮件、日历与 Slack（企业沟通协作平台），更接近电影《她》中的助手
+GPT-6（OpenAI 的新一代大模型）改进 prompt caching（重复提示词缓存机制），进一步降低使用成本与等待时间
+Gemini 3.8 text-to-speech（把文字自动转换成语音的模型）正式亮相
+treg（面向 Agent 工具的统一调用项目）开源，定位类似 OpenRouter
+PanWatch（自托管 AI 盯盘助手）覆盖 A 股、港股与美股
+MVT（Mobile Verification Toolkit，移动设备安全取证工具）帮助排查手机是否遭到入侵
+harness-sdk（用于搭建和全程控制 AI Agent 的开发工具包）支持多种模型与云环境
+YouTube（Google 旗下视频平台）CEO 尼尔·莫汉：我们选择押注人工智能，而不是害怕它
+Gemini 3.8（Google 的文字转语音模型）发布，并有配套体验场可供试用
+Claude 发现：只要能准确测量问题，就能进一步提升运行速度
+Claude 发现带有 CRISPR（细菌识别特定遗传片段、也是基因编辑基础的系统）类重复序列的新型酶系统
+Muse（Meta 被讨论的消费级智能代理项目）引发热议：智能代理是未来，还是泡沫？
