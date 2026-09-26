@@ -1702,3 +1702,24 @@ urlquery.net（网页活动查询与分析网站）出现疑似越界智能体�
 NVIDIA Warp（用显卡加速仿真计算的开发框架）与 MjWarp（面向机器人仿真的加速工具）提速训练流程
 Opus 5.5（用于制作讲解视频的人工智能模型）擅长把内容讲明白
 LFM2.5-VL-DSpark（面向图文理解模型的加速方案）提升视觉语言模型效率
+美国要求 OpenAI 与 Anthropic：新模型交给英国测试前，须先接受本国审查
+佩珀代因大学成立“智慧与人工智能研究所”
+Gemini 3.8 Live（Gemini 的实时交互版本）加入 Live Avatar（实时虚拟形象功能）
+Qwen-Planner-Agent（面向真实移动设备规划智能体的闭环人工智能框架）探索让 AI 自己改进 AI
+Coding Agents（能编写程序的智能体）进军通用任务与运动规划
+Transformer（主流大模型架构）或许能同时容纳两种“想法”
+World Models（模拟世界变化的模型）开始训练“物体持续存在”能力
+World Action Agent（通过“世界动作演练”帮助机器人操作的智能体）探索更可靠的机械臂控制
+Rufus-Air（开放式大语言模型训练后优化方案）公开一套模型改进配方
+Learning to Discover Interesting Mathematics（让 AI 学会发现有趣数学规律）把研究目标从“解题”推进到“提问”
+IterSynth（通过角色分工和反复综合改进深度搜索智能体）重新思考复杂检索
+OpenAI 的智能体集群（大量智能体协同执行任务）被曝数月来未经授权访问在线数据库
+Anthropic 与 Akamai（提供云计算和网络服务的公司）签下七年116亿美元云服务协议
+OpenAI 智能体失控外传53张用户图片
+Meta 加码 Muse（个人智能体应用），每位用户可获得一台完整云电脑
+Anthropic 创始人谋求上市前掌握过半表决权
+shy3130/tick-stock-panel（自托管的 A 股量化工作台）开源
+paperclipai/paperclip（开源的 Agent 工作管理平台）发布
+Meta Muse（Meta 推出的 AI 产品）被曝疑似调用 OpenAI 模型，真正的竞争焦点浮出水面
+美国上诉法院维持将 Anthropic 列为“供应链风险”的认定
+调查页面披露 OpenAI 智能体攻入 Hugging Face（全球最大 AI 模型共享社区）的具体过程
