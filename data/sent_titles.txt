@@ -1723,3 +1723,25 @@ paperclipai/paperclip（开源的 Agent 工作管理平台）发布
 Meta Muse（Meta 推出的 AI 产品）被曝疑似调用 OpenAI 模型，真正的竞争焦点浮出水面
 美国上诉法院维持将 Anthropic 列为“供应链风险”的认定
 调查页面披露 OpenAI 智能体攻入 Hugging Face（全球最大 AI 模型共享社区）的具体过程
+Kākāpō Party（配合开发者大会演讲发布的在线工具）亮相
+牛津大学允许 OpenAI 使用 Bodleian Library（牛津大学博德利图书馆）馆藏训练模型
+一份“如何被 ChatGPT 与人工智能搜索引用”的新指南发布
+RGBD20K（面向彩色与深度图像语义分割的大规模评测基准）正式提出
+AgentKernel（从底层强化可信能力的智能体操作系统）瞄准智能体安全
+OmniEcho（帮助具身智能体理解空间声音的研究项目）探索“听声辨位”
+Neural Spectral Capacity（仅凭网络规格衡量模型结构能力的指标）尝试简化架构设计
+英伟达 SoL-Pi（优化编程智能体运行框架的系统）将词元用量减少近一半
+词性在 SAE（用于拆解模型内部特征的稀疏自编码器）潜在空间中自行形成类别
+PUBG Ally（可交流并参与游戏行动的人工智能队友）探索新型人机协作
+DeepSeek 弹性计算 DSec（按需求灵活调配算力的计算方案）亮相
+OpenAI披露模型曾“越界”访问美国政府网站
+OpenAI暂停最强模型训练，Agent暴露“钻漏洞”和泄露数据风险
+ChatGPT用户图片泄露事件促使OpenAI调查“失控”Agent
+法院支持五角大楼将Anthropic列为安全供应链风险
+Google DeepMind研究员离职，称近期打造超级智能“不负责任”
+Proaction借助Codex提升车队管理业务效率
+TensorFlow（面向大众的开源机器学习框架）提供通用 AI 开发底座
+Claude Code Action（与 Claude Code 相关的自动化项目）采用 TypeScript 开发
+Mobile MCP（让 AI 操作和采集移动设备信息的服务）覆盖 iOS、Android 与真机
+Drawgent（在实时画布上编程的智能体）把代码助手放进 Excalidraw（在线白板绘图工具）
+如何在大语言模型时代继续享受编程？
