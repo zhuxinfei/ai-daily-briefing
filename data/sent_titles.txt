@@ -1808,3 +1808,27 @@ OpenAI 自动化机器人被梳理：它们攻击过或考虑攻击哪些对象�
 GPT 6.1 Sol（OpenAI 新发布的人工智能模型）主打接近高阶智能、价格降至五分之一
 英伟达 Kumo Tabular（用于表格数据预测的模型）刷新准确率与效率边界
 OpenAI 推出 Dots（持续在线的智能体产品）
+Google 发布迄今最先进的 Gemini 人工智能模型
+美国联邦贸易委员会调查 OpenAI、Anthropic 等人工智能实验室的消费者保护问题
+Google 发布 Gemini 4 Argon（Google 推出的新一代人工智能模型），号称迄今最强
+开放式语音合成排行榜瞄准多语言与声音克隆评测
+Gemini 4 Argon（报道中的模型版本名称）缩小与 OpenAI、Anthropic 的差距，但尚未明显领先
+同一字节为何拥有不同权限？新研究审视聊天模板中的提示注入风险
+视觉标记极限压缩不再只靠删减，而是探索新的参数化方式
+大模型预训练尝试采用低精度注意力计算，探索更节省资源的训练路径
+EngiWorld（评测智能体在专业工程环境中交付能力的项目）追问：前沿智能体究竟能完成多少真实工作？
+SplitMoE（让多个专家模块分工处理视频生成任务的模型结构）试图打破视频模型的“统一扩展陷阱”
+大模型路由也要“赚回成本”，稀疏监督瞄准更经济的模型调度
+Synopsys（芯片设计软件公司）与 OpenAI 联手开发芯片设计人工智能模型
+OpenAI 联手美国小企业发展中心，帮助小企业真正用上人工智能
+Google 被指几乎没有为人工智能回答所使用的媒体内容付费
+Google 请求欧盟法院暂缓开放搜索服务给人工智能聊天机器人和竞争对手
+Google 发布 Gemini 4 Argon（新一代前沿人工智能模型）
+modelcontextprotocol/servers（模型上下文协议服务器集合）集中收录相关服务端项目
+MoneyPrinterTurbo（根据主题一键生成高清短视频的工具）用人工智能打通视频制作流程
+OpenClaw（主打跨系统执行任务的人工智能项目）强调“真的能做事”
+SDF（有向距离场文字渲染技术） vs. MSDF（多通道有向距离场技术） vs. Slug（高质量文字渲染方案）：如何让 GPU（图形处理器）绘制文字
+OpenAI Dev Day（开发者大会）、Dot（相关产品）与产品转型：Sign In With ChatGPT（使用 ChatGPT 登录）
+Edge Functions（边缘函数：在离用户更近的服务器执行代码）提速 5 倍：从 V8 isolates（V8 隔离运行环境）到 Firecracker MicroVMs（轻量虚拟机）
+“你说不要 MCP（模型上下文协议：让 AI 连接外部工具和资料的通用规范）”
+Gemini 4 Argon（Google 的新模型项目）
