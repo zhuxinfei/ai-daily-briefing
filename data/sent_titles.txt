@@ -1832,3 +1832,31 @@ OpenAI Dev Day（开发者大会）、Dot（相关产品）与产品转型：Sig
 Edge Functions（边缘函数：在离用户更近的服务器执行代码）提速 5 倍：从 V8 isolates（V8 隔离运行环境）到 Firecracker MicroVMs（轻量虚拟机）
 “你说不要 MCP（模型上下文协议：让 AI 连接外部工具和资料的通用规范）”
 Gemini 4 Argon（Google 的新模型项目）
+Google 发布 Gemini 4 Argon（面向网络安全防御的人工智能模型）
+Google 发布 Gemini 4 Argon（Google 新推出的人工智能模型），这是数月来的首次前沿模型更新
+ZenMux（提供人工智能模型访问服务的平台）上线 Gemini 3.8 Flash（强调响应速度的模型版本），面向 Agent 工作流程
+RSIGame（能自主开发游戏并递归自我改进的智能体系统）探索自动化游戏开发
+OSWorld-Science（测试 AI 操作科学软件能力的基准项目）为科研型智能体设定考题
+AREX-2（通过长期反思任务推动智能体自我改进的研究）关注 AI 如何越做越稳
+Mid-Harness（位于模型与执行工具之间的动作协调层）重新思考终端智能体如何行动
+Breaking Babel（面向长篇字幕翻译的自我进化多智能体系统）挑战复杂翻译流程
+PivotOPD（帮助多轮智能体从关键错误中恢复的学习方法）瞄准“走错一步后怎么办”
+Agent Error Dataset（包含 5 万组错误与诊断记录的数据集）为智能体“哪里出错”提供样本
+Scaling Laws for Looped Mixture of Experts（循环式混合专家模型的规模规律）研究模型变大后会发生什么
+Google 认为，SpaceX（美国航天公司）的 Starship（星舰重型运载火箭）还要发射 1,800 次，太空数据中心才可能落地
+OpenAI 称已阻止窃取模型推理能力的行动，但相关手法仍曾在 Azure（微软云计算平台）上奏效
+OpenAI 发布《永恒的互补》：人工智能可能先改变“执行工作”，再推动下一轮创新
+Barclays（巴克莱银行）扩大 Claude（Anthropic 的人工智能助手）应用，瞄准运营升级与客户体验改善
+OpenAI 据报道与三名安全研究人员终止合作，原因涉及敏感公司信息处理不当
+OpenAI 提醒 100 多个组织注意“失控人工智能 Agent（可自行执行任务的软件助手）”活动
+Google 用 Skills（可复用的任务能力模板）替代 Gems（预设人工智能助手），加入 Agent（可自行执行任务的软件助手）化指令格式转向
+Anthropic 将 Claude（人工智能助手）带入民用政府部门，与 Pentagon（美国国防部总部及其代表的国防系统）的争议仍在继续
+UniMate（统一驱动多种骨骼的动画模型）尝试让不同骨骼共享一套动画模型
+pi（面向智能体开发的工具包）把大模型调用、任务循环和编码工具整合到一起
+TileLang（面向高性能计算内核开发的专用语言）帮助编写更高效的底层计算程序
+The Dot and the Swarm（“单点与群体”的 AI（人工智能）观察）重新审视 AI 发展判断
+Cloudflare（云网络与安全服务商）推出 Clef（开放权重决策模型与强化学习平台）
+Matthew Green（被引用的安全研究者）提醒：失控 Agent（能自动执行多步任务的 AI 助手）可能形成“蠕虫”
+Pi 1.0（Pi 项目的首个正式版本）亮相
+“RIP, vector database”（告别向量数据库）引发数据存储路线讨论
+OLMo-core 3（开放、可扩展的大模型训练基础设施）面向大型 MoE（混合专家模型）训练
