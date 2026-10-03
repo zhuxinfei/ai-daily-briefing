@@ -1860,3 +1860,28 @@ Matthew Green（被引用的安全研究者）提醒：失控 Agent（能自动�
 Pi 1.0（Pi 项目的首个正式版本）亮相
 “RIP, vector database”（告别向量数据库）引发数据存储路线讨论
 OLMo-core 3（开放、可扩展的大模型训练基础设施）面向大型 MoE（混合专家模型）训练
+Black Forest Labs（相关模型团队）推出 Flux 3 Image（图像编辑模型），支持多步修改且不影响画面其他区域
+Microsoft 发布面向语音智能助手的新语音转写与文字转语音模型
+UNC Greensboro（美国北卡罗来纳大学格林斯伯勒分校）推出 Spartan AI（该校推出的人工智能项目）
+KaliBench（面向 Kali Linux 网络安全工具操作的细粒度评测基准）聚焦安全 Agent 能否真正用好工具
+Argo-Bench（企业级数据 Agent 工作流评测基准）把考场搬进真实业务流程
+ScholarCatalyst（寻找能启发新研究的论文评测基准）重新定义“论文搜得好不好”
+Removing the NEEDLE in the Haystack（用权重正交化移除大模型后门）探索模型安全修复
+人工智能在速度和准确率上击败持证会计师，但仍无法独立完成结账
+Rules to Tools（把规则变成可执行检查）让科学计算中的 Agent 更容易被验证
+Beyond Memory（超越记忆机制：用显式信念状态驾驭长流程 Agent）探索更可靠的多步决策
+SILSA（用滑动窗口切片潜变量实现拓扑保持的高分辨率三维生成）瞄准复杂 3D 内容生成
+OpenAI 安全团队三人被解雇、第四人离职，内部人事震荡引发关注
+Anthropic 推出 Claude Frontier Academy（面向工程师的企业 AI 培训计划），计划投入 1 亿美元
+GPT-6 系列模型指南（帮助企业选择与部署模型）发布
+Apple 收紧 macOS（苹果电脑操作系统）的 Full Disk Access（完整磁盘访问权限），应对 AI Agent 新风险
+Suno（AI 音乐生成工具）新增口语音频与匹配背景音乐功能
+Cloudflare 的 Clef（面向 AI Agent 的新模型）提出减少人工介入的新路径
+Agent-Reach（让 AI 助手读取全网内容的开源工具）
+Caveman（让编程助手少用模型字数的开源项目）将 Token 用量砍掉 65%
+信息大多隐藏，Stratego（经典隐藏信息军棋游戏）终于被人工智能攻克
+Sites in ChatGPT（ChatGPT 内的站点功能）亮相
+Anthropic 的 IPO（首次公开募股）与我们共同迈出的一次信念跃迁
+AstaBrief（快速生成报告的模型）开放源代码
+AutoSynthData（自动生成训练数据的项目）面向企业 Agent（能按目标自动执行任务的 AI 助手）
+一个月使用 GLM 5.3 Flash（面向编程场景的 AI 模型）进行编程
