@@ -1904,3 +1904,17 @@ Sentry（帮助开发者发现程序问题的工具）主打错误追踪与性�
 production-agentic-rag-course（面向生产环境的智能体检索增强生成课程）采用 Python（常用于人工智能开发的编程语言）编写
 按量付费服务亟须默认设置“硬性预算上限”
 Kolibri（强调自主可控的开放权重模型）正式发布
+Anthropic 邀请 Claude 用户分享语音数据，用于训练人工智能模型
+Google 将 Gemini 免费版限制为 Flash-Lite（Gemini 的轻量版模型）
+InterEvolve（测试时进化奖励程序的研究）探索人形机器人如何边走边操作
+GPT-6 Astra（面向机器人智能体的模型系统）实现更少令牌、更高行动成功率
+OneStreamer（统一视频感知、记忆与主动响应的模型）面向连续视频交互
+Persona Dosing（分级控制模型人格特征的激活调节方法）探索更细致的性格控制
+Google 研究人员找到阻止自我改进型 AI 智能体记住测试题的方法
+《Video Generation Models（视频生成模型）：Post-Training（训练后的进一步优化）与 Alignment（让模型更符合人类意图的对齐过程）》综述梳理视频模型的发展重点
+PhysVista（评测视觉语言模型物理智能的基准测试）建立“看、想、评”的检验流程
+Controlled Decoding Attacks（受控解码攻击）研究如何测试黑盒大模型的安全边界
+特朗普宣布组建“超级智能部队”，加强人工智能政策协调
+Google 暂停开源漏洞赏金计划，人工智能提交量激增带来审核压力
+michael-denyer/pstack-claude（面向 Claude Code 的智能体工作流项目）
+tester-army/e2e（面向网页和移动应用的端到端测试框架）
