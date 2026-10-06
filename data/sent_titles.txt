@@ -1918,3 +1918,28 @@ Controlled Decoding Attacks（受控解码攻击）研究如何测试黑盒大�
 Google 暂停开源漏洞赏金计划，人工智能提交量激增带来审核压力
 michael-denyer/pstack-claude（面向 Claude Code 的智能体工作流项目）
 tester-army/e2e（面向网页和移动应用的端到端测试框架）
+Aleph Alpha（人工智能公司）发布 Kolibri（开放权重模型，参数可供外部使用）
+Nvidia 支持的 Reflection（人工智能公司）发布首个挑战中国开放模型的 AI 模型（人工智能模型）
+OpenAI 推出视觉广告（与图片生成结果并排展示的广告）
+《Scaling Trajectories for Complex Tasks through Recursive Self-Rewrite》（通过递归自我改写扩展复杂任务能力）探讨模型如何“边做边重写”
+《Latent-MOPD》（潜在空间多教师在线策略蒸馏）研究多位“老师”如何共同教模型
+研究人员发现中国人工智能“智能体舰队”，疑似运行在腾讯基础设施上
+《HyperBrowseComp》（多语言多模态网页浏览智能体压力测试）为网页智能体设置更复杂的考题
+《Pivot-SD》（枢轴式自蒸馏）探索如何更高效地训练掩码扩散语言模型
+《SimuVerity》（工程级 Simulink 模型生成智能体评测）检验人工智能能否完成严肃工程建模
+《EditHero》（英雄级编辑基准）聚焦长流程零件级三维编辑与“氛围建模”
+研究显示，高效推理训练并不一定会损害思维链的可信度与可监控性
+OpenAI 公开欧盟文本溯源规则应对方案
+调查显示，多数美国人希望人工智能发展放慢，甚至完全停止
+麻省理工学院报告：人工智能正在削弱师生交流与信任
+Meta 和 Microsoft 逐渐减少对 Claude 的依赖，Anthropic 转向竞争对手
+Reka AI（一家人工智能公司）推出 Rho-1（统一处理多种输入的模型）
+ChatGPT 在图像生成等待界面加入商品轮播广告
+tester-army/e2e（端到端测试框架，模拟用户完整操作流程）面向网页与移动应用测试
+thedotmack/claude-mem（为 AI Agent 保存长期记忆的工具）让跨会话协作更连续
+Apple 与 Hacker（黑客）未来
+Anthropic 的 IPO（首次公开募股）前瞻：这些关键数字值得关注
+Anthropic 报告女性日记内容后，她面临重罪指控
+ChatGPT 正把真实漫画家的签名加到虚构的《纽约客》漫画上
+Opus 5.5（执行科研任务的 AI 模型）发现两种室温磁性半导体候选材料
+Dust（不依赖反向传播训练模型的研究项目）探索 Transformer（主流大模型架构）的新训练方式
