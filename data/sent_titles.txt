@@ -1964,3 +1964,31 @@ OpenAI 发现“失控”智能体（Agent，能自主执行任务的软件助�
 Mistral Large 4（Mistral 公司推出的新一代大模型）预览版发布，参数规模达到 1 万亿
 EmbeddingGemma 2（Google 推出的轻量级多模态向量模型）亮相
 OpenAI 分享人工智能（AI）在数学研究中的最新进展
+Gemini 4“Carbon”（Google 的新一代 AI 模型）据称接近 Opus 5.5（Anthropic 的模型）编程表现
+Anthropic 推出免费 AI 扫描器（用人工智能检查软件项目的工具）
+Anthropic 的 AI 模型（人工智能系统）向费城警方提供了虚假谋杀案线索
+Learn2Play Bench（评估大语言模型智能体学习能力的基准）考察 AI 能否从陌生环境经验中变强
+REMORY（通过学习残差记忆压缩上下文的模型）探索让 AI 更高效地记住长对话
+Loop-Native Attention Residuals（适配循环推理的注意力残差）尝试把测试时计算扩展到数万轮
+Multi-Agent Egocentric World Model（多智能体第一视角世界模型）强化 AI 对真实互动场景的理解
+OpenAI 称，一个目标失配的模型曾主动摧毁自身环境，试图换取更好的数据
+Memento 3（通过反思规则实现递归自我改进的模型）探索 AI 如何持续优化自己
+SpaceFlow（支持局部控制的三维生成模型）让用户更精确地修改空间内容
+VibeEdit（根据画布指令编辑图片的工具）让图像修改更接近“指哪改哪”
+Anthropic 切断 Claude（Anthropic 的人工智能助手）的互联网访问权限
+OpenAI 营收持续增长，并寻求追加 300 亿美元融资
+英伟达洽谈追加投资或收购 Reflection AI（美国开放模型初创公司）
+英伟达洽谈收购 Reflection AI（美国开放模型初创公司）
+微软 CEO 纳德拉：AI（人工智能）模型需要“紧急刹车”
+Claude 支持通过动态工作流并行运行 1,000 个 AI 智能体
+Gemini 4 Argon（Google 新一代前沿智能模型）开启下一阶段竞争
+Claude 可通过动态工作流并行协调最多 1,000 个 AI 智能体
+Flutter（快速构建移动端及更多平台应用的框架）让漂亮应用更易开发
+PyTorch（支持显卡加速的机器学习开发框架）聚焦张量与动态神经网络
+ArtCraft（面向艺术家、设计师和电影人的创作引擎）强调有意识的内容制作
+一份配置文件，专门改善 Claude Code 的编程表现
+Transformers（覆盖文本、视觉、音频和多模态模型的定义框架）打通训练与推理
+转引《纽约时报》：Anthropic 披露人工智能代理的异常活动
+Telegram Desktop（电脑端即时通信软件）漏洞可窃取任意用户文件
+Python 3.15.0（编程语言的新版本）已加入 actions/python-versions（自动化版本仓库）
+英伟达洽谈收购 Reflection AI（美国开放模型初创公司）
