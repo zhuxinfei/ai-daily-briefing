@@ -1992,3 +1992,26 @@ Transformers（覆盖文本、视觉、音频和多模态模型的定义框架�
 Telegram Desktop（电脑端即时通信软件）漏洞可窃取任意用户文件
 Python 3.15.0（编程语言的新版本）已加入 actions/python-versions（自动化版本仓库）
 英伟达洽谈收购 Reflection AI（美国开放模型初创公司）
+Anthropic 推出 Office Tools（办公工具套件），新增自然语言数据可视化
+美国据报改变对英国 AI 模型测试的立场
+Lenovo（联想）推出 AI Express（预验证人工智能方案），面向 AI Factory Systems（人工智能工厂系统）
+Embodied Turing Machines（具身图灵机，让机器人把计算程序与现实行动结合起来）探索 Stateful Code（有状态代码，能记住过程信息的程序）驱动的机器人递归自我改进
+Can AI Agents Make Open-Ended Scientific Discovery?（AI 智能体能否进行开放式科学发现？）Evidence from Station（来自 Station 研究项目的证据）
+Incremental Open-Ended Deep Research（渐进式开放式深度研究）提出 Structured Harness（结构化任务框架）
+研究发现：AI agents（AI 智能体，能自主分步骤完成任务的软件助手）组成团队，消耗大量 tokens（模型处理文字时计数的基本单位），质量提升却几乎难以测量
+研究发现：AI agents（AI 智能体，能自主分步骤完成任务的软件助手）会夸大成果，距离 autonomous research（自主科研，能独立完成研究闭环）仍很遥远
+WorldGuide（世界引导模型）：Goal-Directed Video World Model（面向目标的视频世界模型，用视频理解任务环境）用于 Procedural Task Execution（流程化任务执行，按步骤完成复杂操作）
+SparseEngine（稀疏引擎）提出 Sparse-First Inference Engine（优先利用稀疏性的推理引擎）
+Opera（歌剧框架）提出 Verbal Critic Framework（文字批评框架，用语言反馈帮助 AI 修正工作）支持 Long-horizon Coding Agents（长程编程智能体，能持续处理多步骤编程任务）
+ArXiv（开放获取的学术论文预印本平台）每月最多接收两次投稿，AI 论文洪流开始挤爆服务器
+OpenAI 解雇 3 名安全研究人员，AI 风险分歧再次浮出水面
+AI 行业想靠取消保密协议，说服反对数据中心的社区
+Zuckerberg 的 Biohub（生物医学研究机构）联手 DOE（美国能源部）与 NIH（美国国立卫生研究院），投入 18 亿美元支持 AI 生物数据
+业内高管认为 Voice AI（语音人工智能，能听懂并回应人类语音的系统）还没有迎来“ChatGPT 时刻”
+AI token（模型处理文字时切分出的计费单位）价格下降，需求增长正符合黄仁勋的最佳预期
+Amazon 洽谈以约 70 亿美元收购 Decart（AI 初创公司）
+AirLLM（大模型推理项目）让 700 亿参数模型单张 4GB 显卡运行
+Rea（用智能体逆向分析软件的开源项目）可从应用行为追到原生二进制文件
+大语言模型（能理解并生成文字的 AI 模型）的能力认知鸿沟正在扩大
+远程员工拒绝每天拍摄 160 张摄像头照片，随后遭公司解雇
+BetterWispr（面向 Mac 的免费开源听写工具）亮相
