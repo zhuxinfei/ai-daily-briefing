@@ -2039,3 +2039,26 @@ Granite Switch 4.1（统一提供聊天、决策与语音能力的模型服务�
 HiRO-ACEv2（极端天气模拟模型）把预测分辨率提升到 3 公里
 “神经网络（模仿大脑连接方式处理信息的模型）是干净的”引发讨论
 Meta 推出 Muse Spark Open（开放权重的前沿多模态大模型）
+Anthropic 邀请 METR（评估 AI 模型能力与风险的外部机构）审查模型与安全实践
+犹他州推出 AI 沙盒（供新技术受控试用的测试环境），启动医疗保健试点
+中国拟收紧开放权重模型（公开模型参数、便于他人部署的模型）及 23 项人工智能技术的出口管制
+Gemini 4 Argon（协作型智能体团队）击败 Minecraft（开放世界沙盒游戏）
+Data World（从零扩展数据环境的研究）探索数据如何规模化
+Memory as Weights（把长期记忆融入模型参数）面向连续视频理解
+Trajectory-Level Speculation（按完整操作轨迹提前推测）提升工具型智能体效率
+Athanor（面向智能体的自主研究系统）瞄准模型训练后的持续改进
+MLExpert（面向机器学习工程的通用智能体模型）尝试自主完成研发工作
+LEASH（能识别不确定性并逐级升级监督的电脑操作智能体机制）提升使用安全性
+MAI-Gym（用于测试和训练图形界面智能体的平台）覆盖手机与电脑环境
+中国拟以国家安全为由收紧人工智能技术出口
+Anthropic 向议员推介自拟人工智能安全法案
+ChatGPT 变身 Chrome 浏览器助手，可读取并操作已打开页面
+Itaú（巴西金融机构）把生成式人工智能推向全体客户
+anthropics/claude-plugins-official（Anthropic 官方维护的 Claude Code 插件目录）
+K-Dense-AI/scientific-agent-skills（面向科学研究的 AI Agent 技能库）
+Anthropic 揭示 ECDSA（椭圆曲线数字签名算法）的曲线来源
+Anthropic 六月获评垃圾级信用评级中的最高等级
+Mercor 研究称，美国九成工作时长尚未被人工智能基准测试覆盖
+HuggingFace（人工智能模型共享社区）推出 Beam（可拥有和定制的 501B 参数开源模型）
+Anthropic 重新思考代码审查：关键不是“人看没看过”
+Apple 推出 Muse Spark Open（开放版人工智能研究项目），展示 MLX（苹果设备上的模型运行框架）在 Mac Studio（苹果桌面电脑）上的应用
