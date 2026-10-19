@@ -2082,3 +2082,26 @@ Llmspeed（本地大模型测速工具）让你先“感受速度”再买硬件
 文章探讨：凭记忆也能重新发明 Transformers（大模型常用的神经网络架构）
 Rivian（电动汽车公司）CEO（首席执行官）：Robotics（机器人技术）进展比想象中更快
 OpenCode（代码开发工具）遭入侵，用户凭据（登录或验证身份的信息）泄露
+Gemini 4 Argon（谷歌模型代号）可通过 Google 搜索中的 AI Mode（人工智能对话模式）获得更多使用额度
+Samsara（实体运营管理平台）推出 Agent Studio（无代码人工智能工作流工具）
+Violoop（通过鼠标和键盘操作电脑的人工智能设备）以 399 美元上市
+FlashMask-3（面向掩码规则的分布式注意力方案）提升大模型计算效率
+Embedding-Space Directional Exploration（在语义空间中定向探索的方法）尝试改进大模型强化学习
+Hybrid Reasoning Agents（在隐藏空间思考、用文字行动的混合推理智能体）提出新架构
+四个 Gemini 4 Argon（Gemini 系列中的智能体模型）在无人帮助下通关 Minecraft（开放世界沙盒游戏）
+Velox（利用空间记忆提高效率的世界模型）让环境模拟更省计算
+新 Benchmark（用统一任务衡量模型能力的标准化测试）指出智能体不擅长长期决策
+DeltaStreamer（面向连续视频理解的智能体模型）尝试像人一样边看边理解
+SWE-at-Scale（从历史修复记录批量生成软件问题的项目）扩展编程任务构建
+Anthropic 将 5% 股份投入公共利益基金
+Disney 将接收 Character.AI（AI 角色对话平台）大部分员工
+Anthropic 几乎停止招聘初级员工，人工智能代理的工作量已达六倍
+Anthropic 正与律所制定 AI 代理谈判规范
+“会自我复制的人工智能蠕虫”引发 Anthropic 担忧
+两家德国法院认定 Google 需为 AI Overviews（搜索结果摘要功能）承担责任
+ComfyUI（模块化扩散模型工作台）开源登场
+llm-course（大语言模型学习课程）提供从入门到实践的路线图
+Jasna（视频画面修复工具）开源，专注改善旧视频质量
+DeepSeek 推出搜索与抓取服务，每 1000 次成功请求收费 0.75 美元
+llm-echo 0.5（用于测试大模型调用的工具）发布
+Sphinx（上线前检查开发者是否理解代码的工具）为 AI 编程流程加入“考试”
