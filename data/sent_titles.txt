@@ -2105,3 +2105,24 @@ Jasna（视频画面修复工具）开源，专注改善旧视频质量
 DeepSeek 推出搜索与抓取服务，每 1000 次成功请求收费 0.75 美元
 llm-echo 0.5（用于测试大模型调用的工具）发布
 Sphinx（上线前检查开发者是否理解代码的工具）为 AI 编程流程加入“考试”
+Anthropic 用 Claude 通过自动反馈设计出更高效的量子电路
+开发者造出一门专门“难住” ChatGPT 的编程语言
+Zillow（美国房地产信息平台）推出 Claude Connector（让 Claude 调用房源服务的连接工具）
+GPT-6-Astra（一个待验证具身能力的模型）真的实现了具身智能吗？
+Lean4AgenticRL（结合可验证多层过程奖励的智能体强化学习方法）推进复杂任务训练
+Tree-Aware Posterior Distillation（利用决策树结构进行后验蒸馏的方法）改进长流程智能体强化学习
+Towards Looped Models Done Right, Part I（循环式模型设计研究第一部分）探索更高效的大模型结构
+OpenMobile-2（面向手机操作的开放式智能体项目）打造更灵活的移动端智能体
+Nscale（提供算力服务的公司）与 Anthropic 或洽谈第二笔 450 亿美元算力交易
+Microsoft Azure（微软的云计算平台）提出从边缘到云端的主权 AI（按本国规则管理数据与算力）基础
+新型云算力厂商洗牌将至，英伟达可能面临更大压力
+英伟达收购 Modal（人工智能初创公司），瞄准新一代中央处理器
+Hugging Face（人工智能模型共享社区）政策负责人：内置式人工智能评测器不会是简单答案
+Microsoft：Agent（可代替人执行多步任务的人工智能助手）像“内部威胁”，前沿大模型仍不能盲目信任
+报道称 Nscale（提供算力服务的公司）与 Anthropic 又在商谈 450 亿美元人工智能云交易
+Headroom（大模型输入压缩开源工具）帮助编程智能体节省文本用量
+MiniMax M3.1 Flash（MiniMax 官方博客公布的新模型）亮相
+Mistral（法国人工智能公司）推出 Timestral（面向时间序列数据的基础模型）
+Import AI 477（人工智能行业通讯第 477 期）：作者称已向 IMF（国际货币基金组织）表示“奇点已经开始”
+TorchNeuron（帮助模型接入亚马逊人工智能芯片的软件组件）让 Hugging Face（全球人工智能模型共享社区）模型更易运行在 Amazon Trainium（亚马逊的人工智能训练芯片）上
+《My obituary for programming》（一篇讨论编程职业失落感的文章）：编程 Agent（能自主写代码和完成开发任务的人工智能助手）正在带走“解题乐趣”
