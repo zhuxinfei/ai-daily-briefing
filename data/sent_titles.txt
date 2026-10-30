@@ -2315,3 +2315,25 @@ RuView（利用普通无线网络信号感知空间与人体状态的项目）�
 Dayjob: Tax（用 50 项专业税务任务评测智能代理的项目）关注 AI 能否胜任真实税务工作
 Nvidia Nemotron 3.5 Transcribe 与 Granary v2（两项可按提示调整的多语言语音转写项目）亮相
 GitHub Octoverse 2026（围绕 GitHub 开发活动的年度观察）显示代码提交与推送量创新高
+Mistral（大模型开发公司）发布万亿参数模型权重，瞄准网络安全
+Gemini 应用支持在聊天中直接编辑文档和 PDF（固定版式电子文档格式）
+Google 向第三方智能代理开放 Android 开发，并推出新的 Gemini API（供外部软件调用 Gemini 能力的接口）
+OpenAI 用分层监控提前发现前沿模型失准
+Efficient Streaming Audio-Visual Target Speaker Extraction（面向真实环境的流式音视频目标说话人提取研究）聚焦嘈杂场景
+RealCLI（评估人与命令行智能体协作的统一测试体系）探索人机协作评测
+OmniShowcase（利用多视角图片生成主体一致全向视频的研究）瞄准视频一致性
+Sensorimotor Alignment（用感知与动作协调度预测具身策略成败的研究）提出替代评估视角
+Amortizing Sequential Experimental Design（让推理大模型分摊连续实验规划成本的研究）探索更高效的实验设计
+TauIndianBankBench（面向印度银行流程的工具型对话智能体评测）强调按规程办事
+PersonaCUABench（评估计算机操作智能体服务不同用户能力的测试体系）关注人群差异
+OpenAI 支持的 Thrive Holdings（专注收购并改造传统企业的控股公司）斥资 153 亿美元收购 ADT（家庭安防服务商）
+Google 推出 Gemini 4 Carbon（主打编程与网络安全能力的 AI 模型），宣称网络安全能力大幅跃升
+OpenAI 更新 Model Spec（规定模型应如何回应用户的行为规范），兼顾更强能力与社会效益
+Google 的 AI 搜索压力开始进入财报视野，部分投资者担忧其核心业务
+OpenMausBot（可操作虚拟电脑的开源机器人）提供 Grok Bot 替代方案
+OpenBot（让智能代理拥有独立电脑的开源项目）把 AI 同事“装进”电脑
+Mistral Large 4（Mistral 推出的新一代大模型）正式开放模型权重
+AnySpeechRecognizer（苹果设备开放语音识别模型）与 AnyDecisionModel（苹果设备开放决策模型）亮相
+Granite Switch 4.1.1（让模型像软件一样更新的方案）发布新版本
+自主 Fable-class models（能自行行动的游戏世界模型）被用于搭建多人游戏世界
+AI Agent swarms（多个智能体协同运行的集群）进入 Minecraft（沙盒建造游戏）与 Mindustry（自动化策略游戏）实验
