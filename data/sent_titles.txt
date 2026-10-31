@@ -2337,3 +2337,22 @@ AnySpeechRecognizer（苹果设备开放语音识别模型）与 AnyDecisionMode
 Granite Switch 4.1.1（让模型像软件一样更新的方案）发布新版本
 自主 Fable-class models（能自行行动的游戏世界模型）被用于搭建多人游戏世界
 AI Agent swarms（多个智能体协同运行的集群）进入 Minecraft（沙盒建造游戏）与 Mindustry（自动化策略游戏）实验
+OpenAI 更新模型行为准则，直面模型难控问题
+多词元预测（让模型一次预测多个后续文本单元）迎来新研究
+规划落地智能体尝试在真实 iOS 应用中边操作边学习
+柏拉图表征假说（不同模型可能学到相似内部规律）获得新证明与改进思路
+A-RSI（通过动态更新任务实现无数据多模态自我提升的方案）探索模型“自己出题、自己进步”
+Anthropic 研究：专家也会把智能体的随机意见当成自己的判断
+WebAnything（把开放网页转成智能体训练环境的研究项目）瞄准规模化网页任务
+Nemotron 3.5 Super 与 Lightning（面向推理和智能体任务的开放模型）采用混合架构
+AI 投资热潮出现裂缝，巨额投入的可持续性遭到质疑
+OpenAI 强调合理使用对创作者、研究者与 AI 创新均有价值
+OpenAI 支持用 robots.txt（网站向自动程序声明访问规则的文件）表达 AI 训练偏好
+OpenAI 更新 Model Spec（规定模型应如何判断与回应的行为规范）
+OpenAI 加强 ChatGPT 青少年保护与暴力风险预防
+Google 首颗数据中心卫星上线，搭载 TPU（Google 专用 AI 计算芯片）和 Gemma 4（Google 的 AI 模型）
+Cursor 插件市场出现恶意 Claude Code 扩展，曾试图远程访问并窃取数据
+NESformer（把任天堂系统装进模型权重的开源实验）用约十亿字节实现可运行系统
+Lightpanda（专为人工智能和自动化设计的无界面浏览器）开源
+Claude Code 扩展被曝在 VS Code（微软的代码编辑器）与 Cursor（人工智能编程工具）的 Marketplace（插件市场）中藏有后门
+人工智能没有取代 SRE（保障线上系统稳定运行的工程师），却可能让其技能退化
