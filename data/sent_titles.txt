@@ -2356,3 +2356,26 @@ NESformer（把任天堂系统装进模型权重的开源实验）用约十亿�
 Lightpanda（专为人工智能和自动化设计的无界面浏览器）开源
 Claude Code 扩展被曝在 VS Code（微软的代码编辑器）与 Cursor（人工智能编程工具）的 Marketplace（插件市场）中藏有后门
 人工智能没有取代 SRE（保障线上系统稳定运行的工程师），却可能让其技能退化
+Google 为 AI Mode（搜索中的人工智能交互模式）与 Gemini 开放连接应用功能预览
+Google 推出 Gemini 4 Carbon（优先面向网络安全防御人员的新模型），调用起价为每百万文本单位 2 美元
+Anthropic 推行数字水印，但两个旧版 Claude 模型仍留有覆盖缺口
+Lean（用于形式化证明的编程语言与定理证明器）研究瞄准真实代码验证的规模化
+养蜂技巧和摔跤建议，竟可能让模型学会破坏监督
+EPSBench（评测大模型智能代理盈利预测能力的基准）聚焦财报预测
+WeVisCut（从旁白到长视频的一体化智能剪辑系统）想把整个剪辑室装进一个智能代理
+Intrinsic Distribution Matching（内在分布匹配方法）探索如何让数据规律彼此对齐
+角色耦合词元化研究，让像素生成模型学会“读取、分配、路由”
+“以弱促强”研究用弱化诱导的同策略自蒸馏训练大型推理模型
+科技行业豪掷 8280 亿美元布局 AI，华尔街市值蒸发 1 万亿美元
+OpenAI 仅筹得 110 亿美元，距离 300 亿美元目标仍有明显缺口
+Google AI Mode（Google 搜索中的 AI 回答模式）被指难以给网站导流，Reddit（美国大型社区论坛平台）发出警告
+OpenAI 计划用 Daybreak Blue（网络安全会话项目）数据训练模型
+Microsoft 向四分之一员工提供自愿离职方案，同时保护 AI 关键团队
+Apple 强调“不为 AI 而做 AI”，新负责人为当前策略辩护
+Google DeepMind（Google 旗下 AI 研究团队）用卫星数据绘制全球森林地图
+Orkas（本地优先的桌面人工智能团队工具）开源，可协调 16 个专业助手
+claude-mem（让智能助手跨会话保留记忆的开源项目）解决“聊完就忘”
+“2026.44：At Long Last…（终于等到……）”
+Parameter Labs 揭示 ChatGPT 账户被接管漏洞
+“Do the math”：一文解释 ChatGPT 账户如何被接管
+Anthropic 封禁涉及大模型训练的用户
