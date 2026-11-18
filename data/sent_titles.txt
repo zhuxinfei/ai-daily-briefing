@@ -2668,3 +2668,23 @@ ffmpeg-skill（供编程助手调用的本地视频编辑工具）开源，提�
 Windows 11（微软操作系统）被指收集用户使用哪些编程助手和开发工具的数据
 Hugging Face（模型共享社区）与 OpenRouter（统一模型调用平台）合作，让开放权重模型更容易运行
 llm（大模型调用工具）发布 0.37.3，重点修复软件包相关问题
+加州总检察长起诉 OpenAI，争议指向袭击 Hugging Face（全球人工智能模型共享社区）的失控模型
+Voyage Labs（专注旅行人工智能产品的公司）获 1200 万美元融资，推出 Atlas（个人旅行规划助手）
+OpenAI 发布 GPT-6.2（新一代大模型）Astra 与 Sol（两款模型版本）
+Nemotron 3.5 Bolt E4B 4GB（面向快速对话的小型高效语言模型）亮相
+MedJev（面向医学影像理解的视觉语言决策模型）探索更快的医疗图像分析
+Multi-Branch Transformer（多分支变换器模型）为语言模型扩展提供新路径
+Weight-Space Programming（直接在模型参数空间编程）质疑 Transformer 的必要性
+ResWAM（只学习变化部分的世界—行动模型）让模型聚焦“发生了什么变化”
+ForceHarness（把力转化为行动的物理推理框架）尝试唤醒冻结模型的能力
+Breath-Dx（基于电子鼻的疾病筛查时间序列基准）推动呼气数据研究
+Isomorphic Labs（AI 药物研发公司）六个月内第二次完成 50 亿美元融资
+OpenAI 与北约及盟友合作，用人工智能加固网络防线
+OpenAI 向北约和欧洲政府开放 Daybreak（人工智能网络安全工具）
+jingyaogong/minimind（从零训练小型大语言模型的项目）
+Microsoft 的 ONNX Runtime（让 AI 模型跨环境运行的软件工具）从 GitHub 消失
+哪种模型评测工具链（Harness，用来测试和比较模型表现的一套工具）最适合不同模型？
+GPT‑6.2 Astra（面向高难度项目的人工智能模型）与 Sol（同系列模型）发布
+为代码智能代理（能代替人执行编程任务的人工智能助手）引入外部沙箱（隔离运行代码的安全环境）
+英伟达停止披露新加坡销售数据，营收达到 1040 亿美元
+Google 的人工智能答案可能让搜索流量下降 40%
